@@ -160,15 +160,14 @@ function Navbar({ onOpenPopup }: { onOpenPopup: () => void }) {
   return (
     <nav style={{
       position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-      borderBottom: scrolled ? '1px solid rgba(0,0,0,0.08)' : '1px solid transparent',
-      backgroundColor: scrolled ? 'rgba(255,255,255,0.97)' : 'transparent',
-      backdropFilter: scrolled ? 'blur(14px)' : 'none',
+      borderBottom: '1px solid rgba(255,255,255,0.08)',
+      backgroundColor: '#000',
       transition: 'all 0.3s',
     }}>
       <div className="section-container" style={{ height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <div style={{ width: 28, height: 28, background: '#1E52E8', borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 900, color: '#fff' }}>FS</div>
-          <span style={{ fontWeight: 700, fontSize: 14, color: '#0A0A0A', letterSpacing: '-0.01em' }}>Full Sales System</span>
+          <span style={{ fontWeight: 700, fontSize: 14, color: '#fff', letterSpacing: '-0.01em' }}>Full Sales System</span>
         </div>
         <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 13, padding: '9px 20px', display: 'none' }} id="nav-cta">
           Acessar FSS Flix
