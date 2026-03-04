@@ -7,7 +7,7 @@ const FSSFLIX_URL = 'https://COLOQUE_URL_DO_FSSFLIX_AQUI.curseduca.pro'
 const YOUTUBE_PLAYLIST_URL = 'https://www.youtube.com/playlist?list=PLzJ4B1s6bJZ2DL9jhvEgx2ANhwi6LiQk_'
 // ──────────────────────────────────────────────────────────────────────────────
 
-/* ─────────────────────────────────────────────
+/* ────────────────────────────────────────────
    INTERSECTION OBSERVER HOOK
 ───────────────────────────────────────────── */
 function useInView(threshold = 0.12) {
@@ -101,8 +101,7 @@ function LeadPopup({ onClose, onSuccess }: { onClose: () => void; onSuccess: () 
       >
         {/* Logo */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 20 }}>
-          <div style={{ width: 34, height: 34, background: '#1E52E8', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 900, fontSize: 13 }}>FS</div>
-          <span style={{ fontWeight: 700, fontSize: 14, color: '#0A0A0A' }}>Full Sales Flix</span>
+          <img src="/logo-fss.png" alt="Full Sales System" style={{ height: 44, width: 'auto', display: 'block' }} />
         </div>
 
         <h2 style={{ fontSize: 'clamp(19px, 3vw, 23px)', fontWeight: 800, color: '#0A0A0A', marginBottom: 8, letterSpacing: '-0.025em', lineHeight: 1.3 }}>
@@ -167,8 +166,7 @@ function Navbar({ onOpenPopup }: { onOpenPopup: () => void }) {
     }}>
       <div className="section-container" style={{ height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <div style={{ width: 28, height: 28, background: '#1E52E8', borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 900, color: '#fff' }}>FS</div>
-          <span style={{ fontWeight: 700, fontSize: 14, color: '#0A0A0A', letterSpacing: '-0.01em' }}>Full Sales System</span>
+          <img src="/logo-fss.png" alt="Full Sales System" style={{ height: 36, width: 'auto', display: 'block' }} />
         </div>
         <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 13, padding: '9px 20px', display: 'none' }} id="nav-cta">
           Acessar FSS Flix
@@ -642,8 +640,7 @@ function Footer({ onOpenPopup }: { onOpenPopup: () => void }) {
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: 40, marginBottom: 48 }}>
           <div style={{ maxWidth: 300 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-              <div style={{ width: 32, height: 32, background: '#1E52E8', borderRadius: 7, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: 14, color: '#fff' }}>FS</div>
-              <span style={{ fontWeight: 700, fontSize: 15, color: '#fff' }}>Full Sales System</span>
+              <img src="/logo-fss.png" alt="Full Sales System" style={{ height: 40, width: 'auto', display: 'block' }} />
             </div>
             <p style={{ fontSize: 14, color: '#71717A', lineHeight: 1.65 }}>
               Estruturação comercial para empresas que já faturam e querem crescer com processo e previsibilidade.
