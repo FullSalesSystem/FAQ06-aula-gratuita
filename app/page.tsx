@@ -187,12 +187,6 @@ function HeroSection({ onOpenPopup }: { onOpenPopup: () => void }) {
       <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: 900, height: 420, background: 'radial-gradient(ellipse at center top, rgba(224,21,21,0.05) 0%, transparent 65%)', pointerEvents: 'none' }} />
 
       <div className="section-container" style={{ position: 'relative', maxWidth: 860 }}>
-        <div className="animate-fade-up" style={{ animationDelay: '0ms', marginBottom: 24, display: 'inline-block' }}>
-          <span className="tag">
-            <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#E01515', display: 'inline-block' }} />
-            Full Sales System
-          </span>
-        </div>
 
         <h1
           className="animate-fade-up"
