@@ -530,6 +530,7 @@ const pressLogos = [
   { name: 'Sebrae', imgSrc: null },
   { name: 'Pequenas Empresas & Negócios', imgSrc: '/press-pequenas-empresas.png' },
   { name: 'Band.com.br', imgSrc: '/press-band.png' },
+  { name: 'Estadão', imgSrc: '/press-estadao.png' },
 ]
 
 function PressSection() {
