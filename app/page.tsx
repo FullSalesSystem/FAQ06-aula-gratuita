@@ -522,7 +522,14 @@ const pressItems = [
 ]
 
 // ▼ Logos dos veículos de imprensa — substitua com logos reais ▼
-const pressLogos = ['Forbes', 'Valor Econômico', 'Exame', 'CNN Brasil', 'Sebrae', 'Pequenas Empresas']
+const pressLogos = [
+  { name: 'Forbes', imgSrc: null },
+  { name: 'Valor Econômico', imgSrc: null },
+  { name: 'Exame', imgSrc: null },
+  { name: 'CNN Brasil', imgSrc: null },
+  { name: 'Sebrae', imgSrc: null },
+  { name: 'Pequenas Empresas & Negócios', imgSrc: '/press-pequenas-empresas.png' },
+]
 
 function PressSection() {
   return (
@@ -540,14 +547,14 @@ function PressSection() {
         {/* Press logos strip */}
         <FadeUp delay={60}>
           <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 12, marginBottom: 48 }}>
-            {pressLogos.map((name, i) => (
+            {pressLogos.map((logo, i) => (
               <div
                 key={i}
                 style={{
                   height: 52,
                   minWidth: 120,
                   padding: '0 20px',
-                  background: '#F8F9FA',
+                  background: logo.imgSrc ? '#FFFFFF' : '#F8F9FA',
                   border: '1px solid rgba(0,0,0,0.07)',
                   borderRadius: 8,
                   display: 'flex',
@@ -559,8 +566,11 @@ function PressSection() {
                   letterSpacing: '-0.01em',
                 }}
               >
-                {/* Substitua pelo <Image> com logo real */}
-                {name}
+                {logo.imgSrc ? (
+                  <img src={logo.imgSrc} alt={logo.name} style={{ maxHeight: 36, maxWidth: '100%', objectFit: 'contain', filter: 'grayscale(100%)', opacity: 0.7 }} />
+                ) : (
+                  logo.name
+                )}
               </div>
             ))}
           </div>
