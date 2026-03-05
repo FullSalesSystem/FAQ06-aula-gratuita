@@ -339,7 +339,6 @@ function FlixCTASection({ onOpenPopup }: { onOpenPopup: () => void }) {
     <section className="section-pad" style={{ background: '#F8F9FA', borderTop: '1px solid rgba(0,0,0,0.06)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
       <div className="section-container" style={{ maxWidth: 800, textAlign: 'center' }}>
         <FadeUp>
-          <SectionLabel text="Full Sales Flix" />
           <h2 style={{ fontSize: 'clamp(26px, 4vw, 46px)', fontWeight: 800, letterSpacing: '-0.03em', color: '#0A0A0A', lineHeight: 1.1, marginBottom: 18 }}>
             Acesse gratuitamente todo o conteúdo da{' '}
             <span style={{ color: '#E01515' }}>Full Sales System</span>
@@ -399,7 +398,6 @@ function TrustSection() {
     <section className="section-pad" style={{ background: '#FFFFFF' }}>
       <div className="section-container">
         <FadeUp style={{ textAlign: 'center', marginBottom: 52 }}>
-          <SectionLabel text="Quem Confia na FSS" />
           <h2 style={{ fontSize: 'clamp(24px, 4vw, 40px)', fontWeight: 800, letterSpacing: '-0.025em', color: '#0A0A0A', lineHeight: 1.12 }}>
             +600 empresas já aplicaram o sistema
           </h2>
@@ -502,7 +500,6 @@ function AboutSection() {
 
           {/* Bio */}
           <FadeUp delay={120}>
-            <SectionLabel text="Quem é a FSS" />
             <h2 style={{ fontSize: 'clamp(24px, 3.5vw, 38px)', fontWeight: 800, letterSpacing: '-0.025em', color: '#0A0A0A', lineHeight: 1.14, marginBottom: 16 }}>
               A Full Sales System é uma empresa de{' '}
               <span style={{ color: '#E01515' }}>estruturação comercial</span>, não de cursos
@@ -561,7 +558,6 @@ function PressSection() {
     <section className="section-pad" style={{ background: '#FFFFFF' }}>
       <div className="section-container">
         <FadeUp style={{ textAlign: 'center', marginBottom: 48 }}>
-          <SectionLabel text="Sessão de Imprensa" />
           <h2 style={{ fontSize: 'clamp(24px, 4vw, 40px)', fontWeight: 800, letterSpacing: '-0.025em', color: '#0A0A0A', lineHeight: 1.12 }}>
             Full Sales System na Mídia
           </h2>
