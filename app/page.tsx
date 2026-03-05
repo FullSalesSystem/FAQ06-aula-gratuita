@@ -180,154 +180,131 @@ function Navbar({ onOpenPopup }: { onOpenPopup: () => void }) {
 /* ─────────────────────────────────────────────
    HERO — HEADLINE
 ───────────────────────────────────────────── */
-function HeroSection({ onOpenPopup }: { onOpenPopup: () => void }) {
-  return (
-    <section style={{ paddingTop: 120, paddingBottom: 64, background: '#FFFFFF', position: 'relative', overflow: 'hidden', textAlign: 'center' }}>
-      {/* Glow */}
-      <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: 900, height: 420, background: 'radial-gradient(ellipse at center top, rgba(224,21,21,0.05) 0%, transparent 65%)', pointerEvents: 'none' }} />
-
-      <div className="section-container" style={{ position: 'relative', maxWidth: 860 }}>
-
-        <h1
-          className="animate-fade-up"
-          style={{
-            animationDelay: '70ms',
-            fontSize: 'clamp(32px, 5.5vw, 64px)',
-            fontWeight: 800,
-            lineHeight: 1.06,
-            letterSpacing: '-0.035em',
-            color: '#0A0A0A',
-            marginBottom: 20,
-            maxWidth: 840,
-            marginLeft: 'auto',
-            marginRight: 'auto',
-          }}
-        >
-          O conteúdo que já estruturou{' '}
-          <span style={{ background: 'linear-gradient(90deg, #E01515, #1E52E8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-            +600 comerciais
-          </span>{' '}
-          — agora gratuito para você
-        </h1>
-
-        <p
-          className="animate-fade-up"
-          style={{ animationDelay: '140ms', fontSize: 'clamp(16px, 2vw, 20px)', color: '#525252', lineHeight: 1.6, maxWidth: 580, margin: '0 auto 36px' }}
-        >
-          Aprenda gratuitamente a construir um sistema comercial com previsibilidade, escala e liberdade — direto de quem fez R$30M no 2º ano de operação.
-        </p>
-
-        <div className="animate-fade-up" style={{ animationDelay: '200ms', display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center' }}>
-          <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 16, padding: '15px 36px' }}>
-            Acessar Full Sales Flix <IconArrow />
-          </button>
-          <a href={YOUTUBE_PLAYLIST_URL} target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ fontSize: 15, padding: '14px 28px', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
-            <IconYouTube /> Ver playlist no YouTube
-          </a>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-/* ─────────────────────────────────────────────
-   VIDEO
-───────────────────────────────────────────── */
-function VideoSection({ hasAccess, onOpenPopup }: { hasAccess: boolean; onOpenPopup: () => void }) {
+function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasAccess: boolean }) {
   const [active, setActive] = useState(false)
-
   return (
-    <section style={{ paddingBottom: 80, background: '#FFFFFF' }}>
-      <div className="section-container" style={{ maxWidth: 860 }}>
-        <FadeUp>
-          <div style={{
-            position: 'relative', borderRadius: 14, overflow: 'hidden',
-            border: '1px solid rgba(0,0,0,0.09)',
-            boxShadow: '0 24px 64px rgba(0,0,0,0.11), 0 4px 16px rgba(0,0,0,0.06)',
-            background: '#000', aspectRatio: '16/9',
-          }}>
-            {/* Thumbnail + overlay — shown when video is not yet active */}
-            {!active && (
-              <div
-                style={{
+    <section style={{ paddingTop: 80, paddingBottom: 80, background: '#FFFFFF', position: 'relative', overflow: 'hidden' }}>
+      {/* Glow */}
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 500, background: 'radial-gradient(ellipse at 30% top, rgba(224,21,21,0.05) 0%, transparent 65%)', pointerEvents: 'none' }} />
+
+      <div className="section-container" style={{ position: 'relative', maxWidth: 1200 }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: 48,
+          alignItems: 'center',
+        }}>
+          {/* LEFT COLUMN — Text */}
+          <div style={{ textAlign: 'left' }}>
+            <h1 className="animate-fade-up" style={{
+              animationDelay: '70ms',
+              fontSize: 'clamp(28px, 4vw, 52px)',
+              fontWeight: 800,
+              lineHeight: 1.08,
+              letterSpacing: '-0.035em',
+              color: '#0A0A0A',
+              marginBottom: 20,
+            }}>
+              O conteúdo que já estruturou{' '}
+              <span style={{ background: 'linear-gradient(90deg, #E01515, #1E52E8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                +600 comerciais
+              </span>{' '}
+              — agora gratuito para você
+            </h1>
+            <p className="animate-fade-up" style={{
+              animationDelay: '140ms',
+              fontSize: 'clamp(15px, 1.6vw, 18px)',
+              color: '#525252',
+              lineHeight: 1.65,
+              marginBottom: 36,
+              maxWidth: 480,
+            }}>
+              Aprenda gratuitamente a construir um sistema comercial com previsibilidade, escala e liberdade — direto de quem fez R$30M no 2º ano de operação.
+            </p>
+            <div className="animate-fade-up" style={{ animationDelay: '200ms', display: 'flex', flexWrap: 'wrap', gap: 12 }}>
+              <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 16, padding: '15px 32px' }}>
+                Acessar Full Sales Flix <IconArrow />
+              </button>
+              <a href={YOUTUBE_PLAYLIST_URL} target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ fontSize: 15, padding: '14px 24px', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+                <IconYouTube /> Ver playlist no YouTube
+              </a>
+            </div>
+          </div>
+
+          {/* RIGHT COLUMN — Video */}
+          <FadeUp>
+            <div style={{
+              position: 'relative',
+              borderRadius: 14,
+              overflow: 'hidden',
+              border: '1px solid rgba(0,0,0,0.09)',
+              boxShadow: '0 24px 64px rgba(0,0,0,0.11), 0 4px 16px rgba(0,0,0,0.06)',
+              background: '#000',
+              aspectRatio: '16/9',
+            }}>
+              {/* Thumbnail + overlay */}
+              {!active && (
+                <div style={{
                   position: 'absolute', inset: 0,
                   backgroundImage: `url(https://img.youtube.com/vi/8GPRCLbxNRA/maxresdefault.jpg)`,
                   backgroundSize: 'cover', backgroundPosition: 'center',
                   ...(hasAccess ? {} : { filter: 'blur(4px)', transform: 'scale(1.06)' }),
-                }}
-              />
-            )}
-
-            {/* Dark overlay */}
-            {!active && (
-              <div style={{ position: 'absolute', inset: 0, background: hasAccess ? 'rgba(0,0,0,0.35)' : 'rgba(0,0,0,0.62)' }} />
-            )}
-
-            {/* Locked state — user hasn't registered yet */}
-            {!hasAccess && !active && (
-              <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16, padding: 24, zIndex: 2 }}>
-                {/* Lock icon */}
-                <div style={{ width: 64, height: 64, borderRadius: '50%', background: 'rgba(255,255,255,0.12)', border: '2px solid rgba(255,255,255,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(4px)' }}>
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-                    <rect x="5" y="11" width="14" height="10" rx="2" fill="white" fillOpacity="0.9" />
-                    <path d="M8 11V7a4 4 0 0 1 8 0v4" stroke="white" strokeWidth="2" strokeLinecap="round" />
-                  </svg>
+                }} />
+              )}
+              {!active && (
+                <div style={{ position: 'absolute', inset: 0, background: hasAccess ? 'rgba(0,0,0,0.35)' : 'rgba(0,0,0,0.62)' }} />
+              )}
+              {/* Locked state */}
+              {!hasAccess && !active && (
+                <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16, padding: 24, zIndex: 2 }}>
+                  <div style={{ width: 56, height: 56, borderRadius: '50%', background: 'rgba(255,255,255,0.12)', border: '2px solid rgba(255,255,255,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(4px)' }}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                      <rect x="5" y="11" width="14" height="10" rx="2" fill="white" fillOpacity="0.9" />
+                      <path d="M8 11V7a4 4 0 0 1 8 0v4" stroke="white" strokeWidth="2" strokeLinecap="round" />
+                    </svg>
+                  </div>
+                  <div style={{ textAlign: 'center' }}>
+                    <p style={{ color: '#fff', fontWeight: 700, fontSize: 'clamp(14px, 2vw, 17px)', marginBottom: 6, textShadow: '0 2px 8px rgba(0,0,0,0.4)' }}>
+                      Preencha o cadastro para assistir
+                    </p>
+                    <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 13, marginBottom: 18 }}>Acesso gratuito e imediato</p>
+                    <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 13, padding: '11px 24px' }}>
+                      Liberar Acesso Gratuito <IconArrow />
+                    </button>
+                  </div>
                 </div>
-                <div style={{ textAlign: 'center' }}>
-                  <p style={{ color: '#fff', fontWeight: 700, fontSize: 'clamp(15px, 2.5vw, 18px)', marginBottom: 6, textShadow: '0 2px 8px rgba(0,0,0,0.4)' }}>
-                    Preencha o cadastro para assistir
-                  </p>
-                  <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 13, marginBottom: 20 }}>
-                    Acesso gratuito e imediato
-                  </p>
-                  <button
-                    onClick={onOpenPopup}
-                    className="btn-primary"
-                    style={{ fontSize: 14, padding: '12px 28px' }}
-                  >
-                    Liberar Acesso Gratuito <IconArrow />
-                  </button>
+              )}
+              {/* Unlocked play state */}
+              {hasAccess && !active && (
+                <div onClick={() => setActive(true)} style={{ position: 'absolute', inset: 0, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2 }}>
+                  <div style={{ width: 68, height: 68, borderRadius: '50%', background: '#E01515', display: 'flex', alignItems: 'center', justifyContent: 'center', animation: 'pulse-ring 2.4s ease infinite' }}
+                    onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.08)')}
+                    onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}>
+                    <svg width="24" height="24" viewBox="0 0 26 26" fill="none"><path d="M8 5.5L21 13L8 20.5V5.5Z" fill="white" /></svg>
+                  </div>
+                  <div style={{ position: 'absolute', bottom: 12, right: 12, background: 'rgba(0,0,0,0.72)', color: '#fff', fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 4 }}>45 min</div>
+                  <div style={{ position: 'absolute', top: 12, left: 12, background: '#E01515', color: '#fff', fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 4, letterSpacing: '0.04em', textTransform: 'uppercase' }}>Aula Gratuita</div>
                 </div>
-              </div>
-            )}
-
-            {/* Unlocked play state */}
-            {hasAccess && !active && (
-              <div
-                onClick={() => setActive(true)}
-                style={{ position: 'absolute', inset: 0, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2 }}
-              >
-                <div
-                  style={{ width: 76, height: 76, borderRadius: '50%', background: '#E01515', display: 'flex', alignItems: 'center', justifyContent: 'center', animation: 'pulse-ring 2.4s ease infinite' }}
-                  onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.08)')}
-                  onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
-                >
-                  <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M8 5.5L21 13L8 20.5V5.5Z" fill="white" /></svg>
-                </div>
-                <div style={{ position: 'absolute', bottom: 14, right: 14, background: 'rgba(0,0,0,0.72)', color: '#fff', fontSize: 12, fontWeight: 600, padding: '3px 10px', borderRadius: 4 }}>45 min</div>
-                <div style={{ position: 'absolute', top: 14, left: 14, background: '#E01515', color: '#fff', fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 4, letterSpacing: '0.04em', textTransform: 'uppercase' }}>Aula Gratuita</div>
-              </div>
-            )}
-
-            {/* Active iframe */}
-            {active && (
-              <iframe
-                src="https://www.youtube.com/embed/8GPRCLbxNRA?autoplay=1&rel=0&modestbranding=1"
-                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none' }}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            )}
-          </div>
-        </FadeUp>
+              )}
+              {/* Active iframe */}
+              {active && (
+                <iframe src="https://www.youtube.com/embed/8GPRCLbxNRA?autoplay=1&rel=0&modestbranding=1"
+                  style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none' }}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen />
+              )}
+            </div>
+          </FadeUp>
+        </div>
       </div>
+      <style>{`
+        @media (max-width: 768px) {
+          .hero-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </section>
   )
 }
-
-/* ─────────────────────────────────────────────
-   FSS FLIX CTA
-───────────────────────────────────────────── */
 function FlixCTASection({ onOpenPopup }: { onOpenPopup: () => void }) {
   return (
     <section className="section-pad" style={{ background: '#F8F9FA', borderTop: '1px solid rgba(0,0,0,0.06)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
@@ -733,8 +710,7 @@ export default function Home() {
     <main style={{ backgroundColor: '#FFFFFF', color: '#0A0A0A', overflowX: 'hidden' }}>
       {showPopup && <LeadPopup onClose={closePopup} onSuccess={handleSuccess} />}
       <Navbar onOpenPopup={openPopup} />
-      <HeroSection onOpenPopup={openPopup} />
-      <VideoSection hasAccess={hasAccess} onOpenPopup={openPopup} />
+      <HeroSection onOpenPopup={openPopup} hasAccess={hasAccess} />
       <FlixCTASection onOpenPopup={openPopup} />
       <TrustSection />
       <AboutSection />
