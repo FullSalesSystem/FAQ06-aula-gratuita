@@ -524,7 +524,7 @@ const pressItems = [
 // ▼ Logos dos veículos de imprensa — substitua com logos reais ▼
 const pressLogos = [
   { name: 'Forbes', imgSrc: null },
-  { name: 'Valor Econômico', imgSrc: null },
+  { name: 'Valor Econômico', imgSrc: '/press-valor-economico.png' },
   { name: 'Exame', imgSrc: null },
   { name: 'CNN Brasil', imgSrc: null },
   { name: 'Sebrae', imgSrc: null },
@@ -553,23 +553,26 @@ function PressSection() {
               <div
                 key={i}
                 style={{
-                  height: 52,
-                  minWidth: 120,
-                  padding: '0 20px',
+                  height: 64,
+                  minWidth: 140,
+                  padding: 0,
                   background: logo.imgSrc ? '#FFFFFF' : '#F8F9FA',
-                  border: '1px solid rgba(0,0,0,0.07)',
-                  borderRadius: 8,
+                  border: '1px solid rgba(0,0,0,0.09)',
+                  borderRadius: 10,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
+                  overflow: 'hidden',
                   color: '#9CA3AF',
                   fontSize: 13,
                   fontWeight: 700,
                   letterSpacing: '-0.01em',
+                  boxShadow: logo.imgSrc ? '0 2px 8px rgba(0,0,0,0.06)' : 'none',
+                  transition: 'box-shadow 0.2s, transform 0.2s',
                 }}
               >
                 {logo.imgSrc ? (
-                  <img src={logo.imgSrc} alt={logo.name} style={{ maxHeight: 36, maxWidth: '100%', objectFit: 'contain', filter: 'grayscale(100%)', opacity: 0.7 }} />
+                  <img src={logo.imgSrc} alt={logo.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
                 ) : (
                   logo.name
                 )}
