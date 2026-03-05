@@ -529,6 +529,7 @@ const pressLogos = [
   { name: 'CNN Brasil', imgSrc: null },
   { name: 'Sebrae', imgSrc: null },
   { name: 'Pequenas Empresas & Negócios', imgSrc: '/press-pequenas-empresas.png' },
+  { name: 'Band.com.br', imgSrc: '/press-band.png' },
 ]
 
 function PressSection() {
