@@ -523,14 +523,11 @@ const pressItems = [
 
 // ▼ Logos dos veículos de imprensa — substitua com logos reais ▼
 const pressLogos = [
-  { name: 'Forbes', imgSrc: null },
   { name: 'Valor Econômico', imgSrc: '/press-valor-economico.png' },
-  { name: 'Exame', imgSrc: null },
-  { name: 'CNN Brasil', imgSrc: null },
-  { name: 'Sebrae', imgSrc: null },
   { name: 'Pequenas Empresas & Negócios', imgSrc: '/press-pequenas-empresas.png' },
   { name: 'Band.com.br', imgSrc: '/press-band.png' },
   { name: 'Estadão', imgSrc: '/press-estadao.png' },
+  { name: 'Terra', imgSrc: '/press-terra.png' },
 ]
 
 function PressSection() {
@@ -553,29 +550,22 @@ function PressSection() {
               <div
                 key={i}
                 style={{
-                  height: 64,
-                  minWidth: 140,
-                  padding: 0,
-                  background: logo.imgSrc ? '#FFFFFF' : '#F8F9FA',
+                  height: 72,
+                  minWidth: 150,
+                  flex: '1 1 150px',
+                  padding: '10px 18px',
+                  background: '#FFFFFF',
                   border: '1px solid rgba(0,0,0,0.09)',
                   borderRadius: 10,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   overflow: 'hidden',
-                  color: '#9CA3AF',
-                  fontSize: 13,
-                  fontWeight: 700,
-                  letterSpacing: '-0.01em',
-                  boxShadow: logo.imgSrc ? '0 2px 8px rgba(0,0,0,0.06)' : 'none',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
                   transition: 'box-shadow 0.2s, transform 0.2s',
                 }}
               >
-                {logo.imgSrc ? (
-                  <img src={logo.imgSrc} alt={logo.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-                ) : (
-                  logo.name
-                )}
+                <img src={logo.imgSrc} alt={logo.name} style={{ maxWidth: '100%', maxHeight: '100%', width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
               </div>
             ))}
           </div>
