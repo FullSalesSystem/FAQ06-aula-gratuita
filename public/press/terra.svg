@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 100" width="320" height="100">
+  <rect width="320" height="100" fill="white"/>
+  <text x="145" y="72" font-family="Arial Rounded MT Bold, Arial, sans-serif" font-size="54" font-weight="900" fill="#FF6600" text-anchor="middle" letter-spacing="-1">terra</text>
+  <!-- Colorful TV-screen icon -->
+  <g transform="translate(228, 12)">
+    <!-- Outer shape -->
+    <path d="M0,18 Q0,0 18,0 L54,0 Q72,0 72,18 L72,54 Q72,72 54,72 L18,72 Q0,72 0,54 Z" fill="none"/>
+    <!-- Green segment (top-left) -->
+    <path d="M6,18 Q6,6 18,6 L40,6 L40,40 L6,40 Z" fill="#8BC34A" opacity="0.9"/>
+    <!-- Purple segment (top-right) -->
+    <path d="M40,6 L54,6 Q66,6 66,18 L66,40 L40,40 Z" fill="#9C27B0" opacity="0.8"/>
+    <!-- Red segment (bottom-right) -->
+    <path d="M40,40 L66,40 L66,54 Q66,66 54,66 L40,66 Z" fill="#E53935" opacity="0.9"/>
+    <!-- Orange segment (bottom-left) -->
+    <path d="M6,40 L40,40 L40,66 L18,66 Q6,66 6,54 Z" fill="#FF6600" opacity="0.9"/>
+    <!-- White inner rounded square -->
+    <path d="M22,22 Q22,16 28,16 L44,16 Q50,16 50,22 L50,50 Q50,56 44,56 L28,56 Q22,56 22,50 Z" fill="white"/>
+  </g>
+</svg>
