@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, ReactNode, FormEvent } from 'react'
+import Image from 'next/image'
 
 // ─── CONFIGURAR ESTES VALORES ──────────────────────────────────────────────────
 const FSSFLIX_URL = 'https://COLOQUE_URL_DO_FSSFLIX_AQUI.curseduca.pro'
@@ -555,8 +556,13 @@ const pressItems = [
   { outlet: 'Veículo C', quote: 'Coloque aqui a citação ou manchete real do veículo de imprensa. Substitua por conteúdo real.', logo: 'VEÍCULO C' },
 ]
 
-// ▼ Logos dos veículos de imprensa — substitua com logos reais ▼
-const pressLogos = ['Forbes', 'Valor Econômico', 'Exame', 'CNN Brasil', 'Sebrae', 'Pequenas Empresas']
+const pressLogos = [
+  { name: 'Valor Econômico', file: 'valor.png', bg: '#FFFFFF' },
+  { name: 'Pequenas Empresas & Grandes Negócios', file: 'pen.png', bg: '#D35400' },
+  { name: 'Band', file: 'band.png', bg: '#1A1A1A' },
+  { name: 'Estadão', file: 'estadao.png', bg: '#FFFFFF' },
+  { name: 'Terra', file: 'terra.png', bg: '#FFFFFF' },
+]
 
 function PressSection() {
   return (
@@ -575,27 +581,29 @@ function PressSection() {
         {/* Press logos strip */}
         <FadeUp delay={60}>
           <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 12, marginBottom: 48 }}>
-            {pressLogos.map((name, i) => (
+            {pressLogos.map((logo, i) => (
               <div
                 key={i}
                 style={{
-                  height: 52,
-                  minWidth: 120,
-                  padding: '0 20px',
-                  background: '#F8F9FA',
-                  border: '1px solid rgba(0,0,0,0.07)',
-                  borderRadius: 8,
+                  height: 72,
+                  width: 180,
+                  background: logo.bg,
+                  border: '1px solid rgba(0,0,0,0.09)',
+                  borderRadius: 10,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: '#9CA3AF',
-                  fontSize: 13,
-                  fontWeight: 700,
-                  letterSpacing: '-0.01em',
+                  overflow: 'hidden',
+                  padding: 12,
                 }}
               >
-                {/* Substitua pelo <Image> com logo real */}
-                {name}
+                <Image
+                  src={`/press/${logo.file}`}
+                  alt={logo.name}
+                  width={156}
+                  height={48}
+                  style={{ objectFit: 'contain', width: '100%', height: '100%' }}
+                />
               </div>
             ))}
           </div>
