@@ -450,19 +450,20 @@ function AboutSection() {
     <section className="section-pad" style={{ background: '#F8F9FA', borderTop: '1px solid rgba(0,0,0,0.06)' }}>
       <div className="section-container">
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 56, alignItems: 'center' }}>
-          {/* Photo placeholder */}
+          {/* Photo */}
           <FadeUp>
             <div style={{
               width: '100%', maxWidth: 420, aspectRatio: '4/5',
-              background: '#EFEFEF', border: '1px solid rgba(0,0,0,0.07)',
-              borderRadius: 16, display: 'flex', flexDirection: 'column',
-              alignItems: 'center', justifyContent: 'center', gap: 12,
-              position: 'relative', overflow: 'hidden',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
+              borderRadius: 16, position: 'relative', overflow: 'hidden',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.12)',
             }}>
-              <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '45%', background: 'linear-gradient(to top, rgba(224,21,21,0.05) 0%, transparent 100%)', pointerEvents: 'none' }} />
-              <div style={{ width: 96, height: 96, borderRadius: '50%', background: 'linear-gradient(135deg, #E01515, #1E52E8)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 36, fontWeight: 800, color: '#fff', letterSpacing: '-0.02em' }}>VS</div>
-              <p style={{ color: '#9CA3AF', fontSize: 13 }}>Foto — Vinícius de Sá</p>
+              <Image
+                src="/vinicius-sa.jpg"
+                alt="Vinícius de Sá"
+                fill
+                style={{ objectFit: 'cover', objectPosition: 'center top' }}
+              />
+              <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '40%', background: 'linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 100%)', pointerEvents: 'none' }} />
               <div style={{ position: 'absolute', bottom: 24, right: 24, background: '#fff', border: '1px solid rgba(0,0,0,0.09)', borderRadius: 10, padding: '10px 14px', boxShadow: '0 4px 12px rgba(0,0,0,0.08)' }}>
                 <div style={{ fontSize: 18, fontWeight: 800, color: '#16A34A' }}>R$30M</div>
                 <div style={{ fontSize: 11, color: '#9CA3AF', marginTop: 2 }}>no 2º ano</div>
