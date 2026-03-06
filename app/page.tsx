@@ -520,31 +520,31 @@ const pressItems = [
     outlet: 'Estadão',
     title: 'Full Sales System: três mentes empreendedoras que transformaram desafios em estratégias',
     quote: 'Nos últimos anos, ajudamos os nossos clientes a girar mais de 500 milhões de faturamento em vendas. Mas quando olhamos para esses números enxergamos algo ainda maior: não foi só o aumento nas vendas, mas eles se tornaram protagonistas da própria empresa.',
-    logo: 'estadao.svg',
+    logo: '/press-estadao.png',
     logoBg: '#FFFFFF',
   },
   {
     outlet: 'Valor Econômico',
     title: 'Full Sales System aponta o caminho para crescer em 2026 com estratégias mais inteligentes',
     quote: 'Empresas que adotam estruturas de vendas inteligentes e estratégias orgânicas robustas tendem a prosperar em cenários de incerteza, criando vantagem competitiva mesmo com menor investimento direto em mídia.',
-    logo: 'valor.svg',
+    logo: '/press-valor-economico.png',
     logoBg: '#FFFFFF',
   },
   {
     outlet: 'Pequenas Empresas & Grandes Negócios',
     title: 'Yuri Barbosa, Vinícius de Sá e Matheus Garcia trilharam caminhos distintos, mas marcados pelo mesmo ponto de virada',
     quote: 'Os sócios desenvolveram uma metodologia própria, capaz de integrar processos comerciais eficientes, automação estratégica e construção de autoridade digital. O objetivo não era apenas aumentar vendas, mas criar um modelo de crescimento consistente.',
-    logo: 'pen.svg',
+    logo: '/press-pequenas-empresas.png',
     logoBg: '#D35400',
   },
 ]
 
 const pressLogos = [
-  { name: 'Valor Econômico', file: 'valor.svg', bg: '#FFFFFF' },
-  { name: 'Pequenas Empresas & Grandes Negócios', file: 'pen.svg', bg: '#D35400' },
-  { name: 'Band', file: 'band.svg', bg: '#1A1A1A' },
-  { name: 'Estadão', file: 'estadao.svg', bg: '#FFFFFF' },
-  { name: 'Terra', file: 'terra.svg', bg: '#FFFFFF' },
+  { name: 'Valor Econômico', src: '/press-valor-economico.png', bg: '#FFFFFF' },
+  { name: 'Pequenas Empresas & Grandes Negócios', src: '/press-pequenas-empresas.png', bg: '#D35400' },
+  { name: 'Band', src: '/press-band.png', bg: '#1A1A1A' },
+  { name: 'Estadão', src: '/press-estadao.png', bg: '#FFFFFF' },
+  { name: 'Terra', src: '/press-terra.png', bg: '#FFFFFF' },
 ]
 
 function PressSection() {
@@ -581,7 +581,7 @@ function PressSection() {
                 }}
               >
                 <Image
-                  src={`/press/${logo.file}`}
+                  src={logo.src}
                   alt={logo.name}
                   width={156}
                   height={48}
@@ -615,7 +615,7 @@ function PressSection() {
                   width: 'fit-content',
                 }}>
                   <Image
-                    src={`/press/${item.logo}`}
+                    src={item.logo}
                     alt={item.outlet}
                     width={120}
                     height={32}
