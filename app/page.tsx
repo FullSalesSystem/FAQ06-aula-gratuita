@@ -469,8 +469,8 @@ function AboutSection() {
               boxShadow: '0 4px 20px rgba(0,0,0,0.12)',
             }}>
               <Image
-                src="/vinicius-sa.jpg"
-                alt="Vinícius de Sá"
+                src="/socios.png"
+                alt="Sócios FSS"
                 fill
                 style={{ objectFit: 'cover', objectPosition: 'center top' }}
               />
