@@ -77,7 +77,6 @@ function LeadPopup({ onClose, onSuccess }: { onClose: () => void; onSuccess: () 
     sessionStorage.setItem('fss_popup', '1')
     sessionStorage.setItem('fss_registered', '1')
     onSuccess()           // libera o vídeo
-    window.open(FSSFLIX_URL, '_blank')
     onClose()
     setLoading(false)
   }
@@ -189,14 +188,12 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 500, background: 'radial-gradient(ellipse at 30% top, rgba(224,21,21,0.05) 0%, transparent 65%)', pointerEvents: 'none' }} />
 
       <div className="section-container" style={{ position: 'relative', maxWidth: 1200 }}>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: 48,
-          alignItems: 'center',
-        }}>
-          {/* LEFT COLUMN — Text */}
-          <div style={{ textAlign: 'left' }}>
+        {/* Hero grid: desktop = 2 cols (text-top | video spanning 2 rows, buttons | video)
+            mobile  = 1 col  (text-top → video → buttons, source order) */}
+        <div id="hero-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48 }}>
+
+          {/* TEXT TOP — col 1 / row 1 */}
+          <div id="hero-text-top" style={{ textAlign: 'left', alignSelf: 'end' }}>
             <h1 className="animate-fade-up" style={{
               animationDelay: '70ms',
               fontSize: 'clamp(28px, 4vw, 52px)',
@@ -217,24 +214,15 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
               fontSize: 'clamp(15px, 1.6vw, 18px)',
               color: '#525252',
               lineHeight: 1.65,
-              marginBottom: 36,
               maxWidth: 480,
             }}>
               Aprenda gratuitamente a construir um sistema comercial com previsibilidade, escala e liberdade — direto de quem fez R$30M no 2º ano de operação.
             </p>
-            <div className="animate-fade-up" style={{ animationDelay: '200ms', display: 'flex', flexWrap: 'wrap', gap: 12 }}>
-              <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 16, padding: '15px 32px' }}>
-                Acessar Full Sales Flix <IconArrow />
-              </button>
-              <a href={YOUTUBE_PLAYLIST_URL} target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ fontSize: 15, padding: '14px 24px', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
-                <IconYouTube /> Ver playlist no YouTube
-              </a>
-            </div>
           </div>
 
-          {/* RIGHT COLUMN — Video */}
-          <FadeUp>
-            <div style={{
+          {/* VIDEO — col 2 / rows 1+2 (desktop); between text and buttons (mobile via source order) */}
+          <FadeUp style={{ gridRow: 'span 2', alignSelf: 'center' }} >
+            <div id="hero-video" style={{
               position: 'relative',
               borderRadius: 14,
               overflow: 'hidden',
@@ -296,11 +284,24 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
               )}
             </div>
           </FadeUp>
+
+          {/* BUTTONS — col 1 / row 2 */}
+          <div id="hero-buttons" className="animate-fade-up" style={{ animationDelay: '200ms', display: 'flex', flexWrap: 'wrap', gap: 12, alignSelf: 'start' }}>
+            <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 16, padding: '15px 32px' }}>
+              Acessar Full Sales Flix <IconArrow />
+            </button>
+            <a href={YOUTUBE_PLAYLIST_URL} target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ fontSize: 15, padding: '14px 24px', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+              <IconYouTube /> Ver playlist no YouTube
+            </a>
+          </div>
+
         </div>
       </div>
       <style>{`
         @media (max-width: 768px) {
-          .hero-grid { grid-template-columns: 1fr !important; }
+          #hero-grid { grid-template-columns: 1fr !important; gap: 24px !important; }
+          #hero-text-top { margin-bottom: 0 !important; }
+          #hero-video { grid-row: auto !important; }
         }
       `}</style>
     </section>
@@ -578,7 +579,7 @@ function PressSection() {
 
         {/* Press logos strip */}
         <FadeUp delay={60}>
-          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 12, marginBottom: 48 }}>
+          <div id="press-logos" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 12, marginBottom: 48 }}>
             {pressLogos.map((logo, i) => (
               <div
                 key={i}
@@ -626,6 +627,12 @@ function PressSection() {
           ))}
         </div>
       </div>
+      <style>{`
+        @media (max-width: 768px) {
+          #press-logos { flex-wrap: nowrap !important; overflow-x: auto; justify-content: flex-start !important; padding-bottom: 8px; }
+          #press-logos > div { flex-shrink: 0; width: 140px !important; }
+        }
+      `}</style>
     </section>
   )
 }
