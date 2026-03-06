@@ -577,35 +577,25 @@ function PressSection() {
           </p>
         </FadeUp>
 
-        {/* Press logos strip */}
+        {/* Press logos strip — desktop: flex wrap | mobile: marquee */}
         <FadeUp delay={60}>
-          <div id="press-logos" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 12, marginBottom: 48 }}>
+          {/* Desktop */}
+          <div id="press-logos-desktop" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 12, marginBottom: 48 }}>
             {pressLogos.map((logo, i) => (
-              <div
-                key={i}
-                style={{
-                  height: 72,
-                  width: 180,
-                  background: logo.bg,
-                  border: '1px solid rgba(0,0,0,0.09)',
-                  borderRadius: 10,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  overflow: 'hidden',
-                  padding: 12,
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-                }}
-              >
-                <Image
-                  src={logo.src}
-                  alt={logo.name}
-                  width={156}
-                  height={48}
-                  style={{ objectFit: 'contain', width: '100%', height: '100%', transform: `scale(${logo.scale})`, transformOrigin: 'center center' }}
-                />
+              <div key={i} style={{ height: 72, width: 180, background: logo.bg, border: '1px solid rgba(0,0,0,0.09)', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', padding: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
+                <Image src={logo.src} alt={logo.name} width={156} height={48} style={{ objectFit: 'contain', width: '100%', height: '100%', transform: `scale(${logo.scale})`, transformOrigin: 'center center' }} />
               </div>
             ))}
+          </div>
+          {/* Mobile: marquee carousel */}
+          <div id="press-logos-mobile" style={{ overflow: 'hidden', marginBottom: 48, position: 'relative', display: 'none' }}>
+            <div className="marquee-track" style={{ animationDuration: '18s' }}>
+              {[...pressLogos, ...pressLogos].map((logo, i) => (
+                <div key={i} style={{ flexShrink: 0, height: 64, width: 150, background: logo.bg, border: '1px solid rgba(0,0,0,0.09)', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', padding: 10, boxShadow: '0 2px 8px rgba(0,0,0,0.06)', marginRight: 12 }}>
+                  <Image src={logo.src} alt={logo.name} width={130} height={44} style={{ objectFit: 'contain', width: '100%', height: '100%', transform: `scale(${logo.scale})`, transformOrigin: 'center center' }} />
+                </div>
+              ))}
+            </div>
           </div>
         </FadeUp>
 
@@ -629,8 +619,8 @@ function PressSection() {
       </div>
       <style>{`
         @media (max-width: 768px) {
-          #press-logos { flex-wrap: nowrap !important; overflow-x: auto; justify-content: flex-start !important; padding-bottom: 8px; }
-          #press-logos > div { flex-shrink: 0; width: 140px !important; }
+          #press-logos-desktop { display: none !important; }
+          #press-logos-mobile { display: block !important; }
         }
       `}</style>
     </section>
