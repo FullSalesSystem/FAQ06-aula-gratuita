@@ -358,11 +358,21 @@ function FlixCTASection({ onOpenPopup }: { onOpenPopup: () => void }) {
    QUEM CONFIA NA FSS
 ───────────────────────────────────────────── */
 
-// ▼ Substitua com os logos reais das empresas clientes ▼
-const trustLogos = [
-  'Empresa A', 'Empresa B', 'Empresa C', 'Empresa D',
-  'Empresa E', 'Empresa F', 'Empresa G', 'Empresa H',
-  'Empresa I', 'Empresa J', 'Empresa K', 'Empresa L',
+const clientLogos = [
+  { src: '/cliente-ajs.png',       name: 'AJS' },
+  { src: '/cliente-dm.png',        name: 'DM' },
+  { src: '/cliente-hotelaria.png', name: 'Hotelaria' },
+  { src: '/cliente-instituto.png', name: 'Instituto' },
+  { src: '/cliente-kaizen.png',    name: 'Kaizen' },
+  { src: '/cliente-maximus.png',   name: 'Maximus' },
+  { src: '/cliente-mbi.png',       name: 'MBI' },
+  { src: '/cliente-mental.png',    name: 'Mental One' },
+  { src: '/cliente-perpetuo.png',  name: 'Perpétuo' },
+  { src: '/cliente-positiva.png',  name: 'Positiva' },
+  { src: '/cliente-salvus.png',    name: 'Salvus' },
+  { src: '/cliente-taugor.png',    name: 'Taugor' },
+  { src: '/cliente-ticto.png',     name: 'Ticto' },
+  { src: '/cliente-tio.png',       name: 'Tio' },
 ]
 
 function TrustSection() {
@@ -378,35 +388,36 @@ function TrustSection() {
           </p>
         </FadeUp>
 
-        {/* Logo grid — SUBSTITUA OS PLACEHOLDERS COM LOGOS REAIS */}
         <FadeUp delay={80}>
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
             gap: 12,
             marginBottom: 56,
           }}>
-            {trustLogos.map((name, i) => (
+            {clientLogos.map((logo, i) => (
               <div
                 key={i}
                 style={{
-                  height: 68,
-                  background: '#F8F9FA',
-                  border: '1px solid rgba(0,0,0,0.07)',
+                  height: 72,
+                  background: '#FFFFFF',
+                  border: '1px solid rgba(0,0,0,0.09)',
                   borderRadius: 10,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  padding: '0 16px',
-                  color: '#9CA3AF',
-                  fontSize: 13,
-                  fontWeight: 600,
-                  letterSpacing: '-0.01em',
-                  transition: 'border-color 0.2s',
+                  overflow: 'hidden',
+                  padding: 12,
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
                 }}
               >
-                {/* Substitua o texto pelo componente <Image> com logo real */}
-                {name}
+                <Image
+                  src={logo.src}
+                  alt={logo.name}
+                  width={136}
+                  height={48}
+                  style={{ objectFit: 'contain', width: '100%', height: '100%' }}
+                />
               </div>
             ))}
           </div>
@@ -521,7 +532,7 @@ const pressItems = [
     outlet: 'Estadão',
     title: 'Full Sales System: três mentes empreendedoras que transformaram desafios em estratégias',
     quote: 'Nos últimos anos, ajudamos os nossos clientes a girar mais de 500 milhões de faturamento em vendas. Mas quando olhamos para esses números enxergamos algo ainda maior: não foi só o aumento nas vendas, mas eles se tornaram protagonistas da própria empresa.',
-    logo: '/press-estadao.png',
+    logo: '/estadao-novo.png',
     logoBg: '#FFFFFF',
   },
   {
@@ -544,7 +555,7 @@ const pressLogos = [
   { name: 'Valor Econômico', src: '/press-valor-economico.png', bg: '#FFFFFF', scale: 1.2 },
   { name: 'Pequenas Empresas & Grandes Negócios', src: '/press-pequenas-empresas.png', bg: '#D35400', scale: 2.3 },
   { name: 'Band', src: '/press-band.png', bg: '#1A1A1A', scale: 1 },
-  { name: 'Estadão', src: '/press-estadao.png', bg: '#FFFFFF', scale: 3.0 },
+  { name: 'Estadão', src: '/estadao-novo.png', bg: '#FFFFFF', scale: 3.0 },
   { name: 'Terra', src: '/press-terra.png', bg: '#FFFFFF', scale: 1.2 },
 ]
 
