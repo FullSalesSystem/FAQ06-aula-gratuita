@@ -549,11 +549,28 @@ function AboutSection() {
    SESSÃO DE IMPRENSA
 ───────────────────────────────────────────── */
 
-// ▼ Substitua com os dados reais de imprensa ▼
 const pressItems = [
-  { outlet: 'Veículo A', quote: 'Coloque aqui a citação ou manchete real do veículo de imprensa. Substitua por conteúdo real.', logo: 'VEÍCULO A' },
-  { outlet: 'Veículo B', quote: 'Coloque aqui a citação ou manchete real do veículo de imprensa. Substitua por conteúdo real.', logo: 'VEÍCULO B' },
-  { outlet: 'Veículo C', quote: 'Coloque aqui a citação ou manchete real do veículo de imprensa. Substitua por conteúdo real.', logo: 'VEÍCULO C' },
+  {
+    outlet: 'Estadão',
+    title: 'Full Sales System: três mentes empreendedoras que transformaram desafios em estratégias',
+    quote: 'Nos últimos anos, ajudamos os nossos clientes a girar mais de 500 milhões de faturamento em vendas. Mas quando olhamos para esses números enxergamos algo ainda maior: não foi só o aumento nas vendas, mas eles se tornaram protagonistas da própria empresa.',
+    logo: 'estadao.svg',
+    logoBg: '#FFFFFF',
+  },
+  {
+    outlet: 'Valor Econômico',
+    title: 'Full Sales System aponta o caminho para crescer em 2026 com estratégias mais inteligentes',
+    quote: 'Empresas que adotam estruturas de vendas inteligentes e estratégias orgânicas robustas tendem a prosperar em cenários de incerteza, criando vantagem competitiva mesmo com menor investimento direto em mídia.',
+    logo: 'valor.svg',
+    logoBg: '#FFFFFF',
+  },
+  {
+    outlet: 'Pequenas Empresas & Grandes Negócios',
+    title: 'Yuri Barbosa, Vinícius de Sá e Matheus Garcia trilharam caminhos distintos, mas marcados pelo mesmo ponto de virada',
+    quote: 'Os sócios desenvolveram uma metodologia própria, capaz de integrar processos comerciais eficientes, automação estratégica e construção de autoridade digital. O objetivo não era apenas aumentar vendas, mas criar um modelo de crescimento consistente.',
+    logo: 'pen.svg',
+    logoBg: '#D35400',
+  },
 ]
 
 const pressLogos = [
@@ -613,23 +630,31 @@ function PressSection() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16 }}>
           {pressItems.map((item, i) => (
             <FadeUp key={i} delay={i * 80}>
-              <div className="card" style={{ padding: '28px 26px', height: '100%' }}>
-                <div style={{ fontSize: 32, color: '#E01515', fontWeight: 900, lineHeight: 1, marginBottom: 12, fontFamily: 'Georgia, serif' }}>"</div>
-                <p style={{ fontSize: 15, color: '#374151', lineHeight: 1.65, marginBottom: 20, fontStyle: 'italic' }}>
+              <div className="card" style={{ padding: '28px 26px', height: '100%', display: 'flex', flexDirection: 'column' }}>
+                <div style={{ fontSize: 32, color: '#E01515', fontWeight: 900, lineHeight: 1, marginBottom: 10, fontFamily: 'Georgia, serif' }}>"</div>
+                <p style={{ fontSize: 13, fontWeight: 700, color: '#0A0A0A', lineHeight: 1.4, marginBottom: 12 }}>
+                  {item.title}
+                </p>
+                <p style={{ fontSize: 14, color: '#374151', lineHeight: 1.65, marginBottom: 20, fontStyle: 'italic', flexGrow: 1 }}>
                   {item.quote}
                 </p>
                 <div style={{
-                  display: 'inline-block',
-                  background: '#F3F4F6',
-                  border: '1px solid rgba(0,0,0,0.07)',
-                  borderRadius: 6,
-                  padding: '4px 12px',
-                  fontSize: 12,
-                  fontWeight: 700,
-                  color: '#6B7280',
-                  letterSpacing: '0.04em',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  background: item.logoBg,
+                  border: '1px solid rgba(0,0,0,0.09)',
+                  borderRadius: 8,
+                  padding: '6px 14px',
+                  height: 44,
+                  width: 'fit-content',
                 }}>
-                  {item.logo}
+                  <Image
+                    src={`/press/${item.logo}`}
+                    alt={item.outlet}
+                    width={120}
+                    height={32}
+                    style={{ objectFit: 'contain', maxHeight: 32 }}
+                  />
                 </div>
               </div>
             </FadeUp>
