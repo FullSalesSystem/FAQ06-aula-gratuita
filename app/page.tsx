@@ -389,37 +389,41 @@ function TrustSection() {
         </FadeUp>
 
         <FadeUp delay={80}>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
-            gap: 12,
-            marginBottom: 56,
-          }}>
-            {clientLogos.map((logo, i) => (
-              <div
-                key={i}
-                style={{
-                  height: 72,
-                  background: '#FFFFFF',
-                  border: '1px solid rgba(0,0,0,0.09)',
-                  borderRadius: 10,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  overflow: 'hidden',
-                  padding: 12,
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-                }}
-              >
-                <Image
-                  src={logo.src}
-                  alt={logo.name}
-                  width={136}
-                  height={48}
-                  style={{ objectFit: 'contain', width: '100%', height: '100%' }}
-                />
-              </div>
-            ))}
+          <div style={{ overflow: 'hidden', marginBottom: 56, position: 'relative' }}>
+            {/* fade edges */}
+            <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 80, background: 'linear-gradient(to right, #fff, transparent)', zIndex: 1, pointerEvents: 'none' }} />
+            <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: 80, background: 'linear-gradient(to left, #fff, transparent)', zIndex: 1, pointerEvents: 'none' }} />
+
+            <div className="marquee-track">
+              {[...clientLogos, ...clientLogos].map((logo, i) => (
+                <div
+                  key={i}
+                  style={{
+                    flexShrink: 0,
+                    width: 160,
+                    height: 72,
+                    background: '#FFFFFF',
+                    border: '1px solid rgba(0,0,0,0.09)',
+                    borderRadius: 10,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    overflow: 'hidden',
+                    padding: 12,
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+                    marginRight: 12,
+                  }}
+                >
+                  <Image
+                    src={logo.src}
+                    alt={logo.name}
+                    width={136}
+                    height={48}
+                    style={{ objectFit: 'contain', width: '100%', height: '100%' }}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </FadeUp>
 
