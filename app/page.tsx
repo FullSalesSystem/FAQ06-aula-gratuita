@@ -557,11 +557,11 @@ const pressItems = [
 ]
 
 const pressLogos = [
-  { name: 'Valor Econômico', file: 'valor.png', bg: '#FFFFFF' },
-  { name: 'Pequenas Empresas & Grandes Negócios', file: 'pen.png', bg: '#D35400' },
-  { name: 'Band', file: 'band.png', bg: '#1A1A1A' },
-  { name: 'Estadão', file: 'estadao.png', bg: '#FFFFFF' },
-  { name: 'Terra', file: 'terra.png', bg: '#FFFFFF' },
+  { name: 'Valor Econômico', file: 'valor.svg', bg: '#FFFFFF' },
+  { name: 'Pequenas Empresas & Grandes Negócios', file: 'pen.svg', bg: '#D35400' },
+  { name: 'Band', file: 'band.svg', bg: '#1A1A1A' },
+  { name: 'Estadão', file: 'estadao.svg', bg: '#FFFFFF' },
+  { name: 'Terra', file: 'terra.svg', bg: '#FFFFFF' },
 ]
 
 function PressSection() {

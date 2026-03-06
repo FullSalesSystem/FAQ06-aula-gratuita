@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 100" width="380" height="100">
+  <rect width="380" height="100" fill="white"/>
+  <text x="170" y="75" font-family="Arial Black, Arial, sans-serif" font-size="58" font-weight="900" fill="#2979CC" text-anchor="middle" letter-spacing="1">ESTADÃO</text>
+  <!-- Horse rider silhouette (simplified) -->
+  <g transform="translate(290, 20) scale(0.5)">
+    <!-- Horse body -->
+    <ellipse cx="60" cy="90" rx="38" ry="22" fill="#2979CC"/>
+    <!-- Horse head/neck -->
+    <ellipse cx="92" cy="68" rx="14" ry="10" fill="#2979CC" transform="rotate(-30,92,68)"/>
+    <!-- Horse legs -->
+    <rect x="30" y="105" width="8" height="30" fill="#2979CC" rx="3" transform="rotate(-10,34,110)"/>
+    <rect x="50" y="108" width="8" height="28" fill="#2979CC" rx="3"/>
+    <rect x="68" y="105" width="8" height="30" fill="#2979CC" rx="3" transform="rotate(10,72,110)"/>
+    <rect x="84" y="102" width="8" height="32" fill="#2979CC" rx="3" transform="rotate(20,88,108)"/>
+    <!-- Rider -->
+    <ellipse cx="62" cy="58" rx="10" ry="12" fill="#2979CC"/>
+    <circle cx="60" cy="42" r="10" fill="#2979CC"/>
+    <!-- Bugle -->
+    <rect x="70" y="38" width="24" height="5" fill="#2979CC" rx="2" transform="rotate(-20,70,40)"/>
+  </g>
+</svg>
