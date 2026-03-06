@@ -604,24 +604,7 @@ function PressSection() {
                 <p style={{ fontSize: 14, color: '#374151', lineHeight: 1.65, marginBottom: 20, fontStyle: 'italic', flexGrow: 1 }}>
                   {item.quote}
                 </p>
-                <div style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  background: item.logoBg,
-                  border: '1px solid rgba(0,0,0,0.09)',
-                  borderRadius: 8,
-                  padding: '6px 14px',
-                  height: 44,
-                  width: 'fit-content',
-                }}>
-                  <Image
-                    src={item.logo}
-                    alt={item.outlet}
-                    width={120}
-                    height={32}
-                    style={{ objectFit: 'contain', maxHeight: 32 }}
-                  />
-                </div>
+                <p style={{ fontSize: 13, fontWeight: 700, color: '#0A0A0A' }}>{item.outlet}</p>
               </div>
             </FadeUp>
           ))}
