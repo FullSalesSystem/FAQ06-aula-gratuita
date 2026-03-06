@@ -542,7 +542,7 @@ const pressItems = [
 
 const pressLogos = [
   { name: 'Valor Econômico', src: '/press-valor-economico.png', bg: '#FFFFFF', scale: 1.2 },
-  { name: 'Pequenas Empresas & Grandes Negócios', src: '/press-pequenas-empresas.png', bg: '#D35400', scale: 2.0 },
+  { name: 'Pequenas Empresas & Grandes Negócios', src: '/press-pequenas-empresas.png', bg: '#D35400', scale: 2.3 },
   { name: 'Band', src: '/press-band.png', bg: '#1A1A1A', scale: 1 },
   { name: 'Estadão', src: '/press-estadao.png', bg: '#FFFFFF', scale: 3.0 },
   { name: 'Terra', src: '/press-terra.png', bg: '#FFFFFF', scale: 1.2 },
@@ -586,7 +586,7 @@ function PressSection() {
                   alt={logo.name}
                   width={156}
                   height={48}
-                  style={{ objectFit: 'contain', width: '100%', height: '100%', transform: `scale(${logo.scale})` }}
+                  style={{ objectFit: 'contain', width: '100%', height: '100%', transform: `scale(${logo.scale})`, transformOrigin: 'center center' }}
                 />
               </div>
             ))}
