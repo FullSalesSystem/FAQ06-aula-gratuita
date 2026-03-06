@@ -521,7 +521,7 @@ const pressItems = [
     outlet: 'Estadão',
     title: 'Full Sales System: três mentes empreendedoras que transformaram desafios em estratégias',
     quote: 'Nos últimos anos, ajudamos os nossos clientes a girar mais de 500 milhões de faturamento em vendas. Mas quando olhamos para esses números enxergamos algo ainda maior: não foi só o aumento nas vendas, mas eles se tornaram protagonistas da própria empresa.',
-    logo: '/press-estadao.png',
+    logo: '/estadao-novo.png',
     logoBg: '#FFFFFF',
   },
   {
@@ -544,7 +544,7 @@ const pressLogos = [
   { name: 'Valor Econômico', src: '/press-valor-economico.png', bg: '#FFFFFF', scale: 1.2 },
   { name: 'Pequenas Empresas & Grandes Negócios', src: '/press-pequenas-empresas.png', bg: '#D35400', scale: 2.3 },
   { name: 'Band', src: '/press-band.png', bg: '#1A1A1A', scale: 1 },
-  { name: 'Estadão', src: '/press-estadao.png', bg: '#FFFFFF', scale: 3.0 },
+  { name: 'Estadão', src: '/estadao-novo.png', bg: '#FFFFFF', scale: 3.0 },
   { name: 'Terra', src: '/press-terra.png', bg: '#FFFFFF', scale: 1.2 },
 ]
 
