@@ -559,8 +559,8 @@ const pressLogos = [
   { name: 'Valor Econômico', src: '/press-valor-economico.png', bg: '#FFFFFF', scale: 1.2 },
   { name: 'Pequenas Empresas & Grandes Negócios', src: '/press-pequenas-empresas.png', bg: '#D35400', scale: 2.3 },
   { name: 'Band', src: '/press-band.png', bg: '#1A1A1A', scale: 1 },
-  { name: 'Estadão', src: '/estadao-novo.png', bg: '#FFFFFF', scale: 1.6 },
-  { name: 'Terra', src: '/press-terra.png', bg: '#FFFFFF', scale: 1.2 },
+  { name: 'Estadão', src: '/estadao-novo.png', bg: '#FFFFFF', scale: 2.0 },
+  { name: 'Terra', src: '/press-terra.png', bg: '#FFFFFF', scale: 1.0 },
 ]
 
 function PressSection() {
