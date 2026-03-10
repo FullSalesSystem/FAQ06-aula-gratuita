@@ -385,8 +385,8 @@ function FlixCTASection({ onOpenPopup }: { onOpenPopup: () => void }) {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12, marginBottom: 40, textAlign: 'left', maxWidth: 640, margin: '0 auto 40px' }}>
             {[
               'Aulas de estruturação comercial',
-              'Estudo de caso: Gabriel Bueno',
-              'Processos de fechamento e closer',
+              'Estudos de caso',
+              'Processos de vendas e entrega',
               'Playbook interno de Estruturação Comercial',
               'Guia prático de Social Selling',
               'Acesso imediato e gratuito',
