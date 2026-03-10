@@ -61,7 +61,7 @@ function SectionLabel({ text }: { text: string }) {
    LEAD POPUP
 ───────────────────────────────────────────── */
 function LeadPopup({ onClose, onSuccess }: { onClose: () => void; onSuccess: () => void }) {
-  const [form, setForm] = useState({ name: '', email: '', phone: '' })
+  const [form, setForm] = useState({ name: '', email: '', phone: '', jobTitle: '' })
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e: FormEvent) => {
@@ -125,6 +125,20 @@ function LeadPopup({ onClose, onSuccess }: { onClose: () => void; onSuccess: () 
               type="tel" placeholder="WhatsApp com DDD"
               value={form.phone} onChange={e => setForm(p => ({ ...p, phone: e.target.value }))} required
             />
+            <select
+              value={form.jobTitle}
+              onChange={e => setForm(p => ({ ...p, jobTitle: e.target.value }))}
+              required
+              style={{ color: form.jobTitle ? '#0A0A0A' : '#9CA3AF' }}
+            >
+              <option value="" disabled>Seu cargo</option>
+              <option value="Sócio ou Fundador">Sócio ou Fundador</option>
+              <option value="Empresário ou Empreendedor">Empresário ou Empreendedor</option>
+              <option value="Gerente/Head">Gerente/Head</option>
+              <option value="Superior/Líder">Superior/Líder</option>
+              <option value="Prestador de Serviço/Freelancer">Prestador de Serviço/Freelancer</option>
+              <option value="Colaborador/Funcionário">Colaborador/Funcionário</option>
+            </select>
           </div>
 
           <button
