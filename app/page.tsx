@@ -61,7 +61,7 @@ function SectionLabel({ text }: { text: string }) {
    LEAD POPUP
 ───────────────────────────────────────────── */
 function LeadPopup({ onClose, onSuccess }: { onClose: () => void; onSuccess: () => void }) {
-  const [form, setForm] = useState({ name: '', email: '', phone: '', jobTitle: '' })
+  const [form, setForm] = useState({ name: '', email: '', phone: '', jobTitle: '', revenue: '' })
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e: FormEvent) => {
@@ -138,6 +138,20 @@ function LeadPopup({ onClose, onSuccess }: { onClose: () => void; onSuccess: () 
               <option value="Superior/Líder">Superior/Líder</option>
               <option value="Prestador de Serviço/Freelancer">Prestador de Serviço/Freelancer</option>
               <option value="Colaborador/Funcionário">Colaborador/Funcionário</option>
+            </select>
+            <select
+              value={form.revenue}
+              onChange={e => setForm(p => ({ ...p, revenue: e.target.value }))}
+              required
+              style={{ color: form.revenue ? '#0A0A0A' : '#9CA3AF' }}
+            >
+              <option value="" disabled>Faturamento mensal</option>
+              <option value="Abaixo de R$10 mil">Abaixo de R$10 mil</option>
+              <option value="Entre R$10 mil a R$30 mil">Entre R$10 mil a R$30 mil</option>
+              <option value="Entre R$30 mil a R$100 mil">Entre R$30 mil a R$100 mil</option>
+              <option value="Entre R$100 mil a R$500 mil">Entre R$100 mil a R$500 mil</option>
+              <option value="Entre R$500 mil a R$1 milhão">Entre R$500 mil a R$1 milhão</option>
+              <option value="Mais de R$1 milhão por mês">Mais de R$1 milhão por mês</option>
             </select>
           </div>
 
