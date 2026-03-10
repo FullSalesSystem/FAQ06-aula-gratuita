@@ -14,13 +14,18 @@ import { NextRequest, NextResponse } from 'next/server'
  */
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => ({}))
-  const { name, email, phone, ddi, jobTitle, revenue } = body as {
+  const { name, email, phone, ddi, jobTitle, revenue, utm_source, utm_medium, utm_campaign, utm_content, utm_term } = body as {
     name?: string
     email?: string
     phone?: string
     ddi?: string
     jobTitle?: string
     revenue?: string
+    utm_source?: string
+    utm_medium?: string
+    utm_campaign?: string
+    utm_content?: string
+    utm_term?: string
   }
 
   if (!name || !email) {
@@ -44,6 +49,7 @@ export async function POST(req: NextRequest) {
       phone: ddi && phone ? `${ddi}${phone}` : phone,
       jobTitle,
       revenue,
+      utm: { utm_source, utm_medium, utm_campaign, utm_content, utm_term },
     })
     return NextResponse.json({ ok: true, note: 'curseduca_not_configured' })
   }

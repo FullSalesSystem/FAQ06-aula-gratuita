@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect, useRef, ReactNode, FormEvent } from 'react'
+import { useState, useEffect, useRef, useMemo, Suspense, ReactNode, FormEvent } from 'react'
+import { useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 
 // ─── CONFIGURAR ESTES VALORES ──────────────────────────────────────────────────
@@ -60,7 +61,15 @@ function SectionLabel({ text }: { text: string }) {
 /* ─────────────────────────────────────────────
    LEAD POPUP
 ───────────────────────────────────────────── */
-function LeadPopup({ onClose, onSuccess }: { onClose: () => void; onSuccess: () => void }) {
+interface UtmParams {
+  utm_source?: string
+  utm_medium?: string
+  utm_campaign?: string
+  utm_content?: string
+  utm_term?: string
+}
+
+function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess: () => void; utm: UtmParams }) {
   const [form, setForm] = useState({ name: '', email: '', phone: '', ddi: '+55', jobTitle: '', revenue: '' })
   const [loading, setLoading] = useState(false)
 
@@ -71,7 +80,7 @@ function LeadPopup({ onClose, onSuccess }: { onClose: () => void; onSuccess: () 
       await fetch('/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, ...utm }),
       })
     } catch { /* fail silently */ }
     sessionStorage.setItem('fss_popup', '1')
@@ -779,9 +788,20 @@ function StickyMobileCTA({ onOpenPopup }: { onOpenPopup: () => void }) {
 /* ─────────────────────────────────────────────
    PAGE
 ───────────────────────────────────────────── */
-export default function Home() {
+function HomeContent() {
   const [showPopup, setShowPopup] = useState(false)
   const [hasAccess, setHasAccess] = useState(false)
+  const searchParams = useSearchParams()
+
+  const utm = useMemo<UtmParams>(() => {
+    const params: UtmParams = {}
+    const s = searchParams.get('utm_source'); if (s) params.utm_source = s
+    const m = searchParams.get('utm_medium'); if (m) params.utm_medium = m
+    const c = searchParams.get('utm_campaign'); if (c) params.utm_campaign = c
+    const co = searchParams.get('utm_content'); if (co) params.utm_content = co
+    const t = searchParams.get('utm_term'); if (t) params.utm_term = t
+    return params
+  }, [searchParams])
 
   useEffect(() => {
     if (sessionStorage.getItem('fss_registered')) setHasAccess(true)
@@ -796,7 +816,7 @@ export default function Home() {
 
   return (
     <main style={{ backgroundColor: '#FFFFFF', color: '#0A0A0A', overflowX: 'hidden' }}>
-      {showPopup && <LeadPopup onClose={closePopup} onSuccess={handleSuccess} />}
+      {showPopup && <LeadPopup onClose={closePopup} onSuccess={handleSuccess} utm={utm} />}
       <Navbar onOpenPopup={openPopup} />
       <HeroSection onOpenPopup={openPopup} hasAccess={hasAccess} />
       <FlixCTASection onOpenPopup={openPopup} />
@@ -806,5 +826,13 @@ export default function Home() {
       <Footer onOpenPopup={openPopup} />
       <StickyMobileCTA onOpenPopup={openPopup} />
     </main>
+  )
+}
+
+export default function Home() {
+  return (
+    <Suspense>
+      <HomeContent />
+    </Suspense>
   )
 }
