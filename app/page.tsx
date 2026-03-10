@@ -61,7 +61,7 @@ function SectionLabel({ text }: { text: string }) {
    LEAD POPUP
 ───────────────────────────────────────────── */
 function LeadPopup({ onClose, onSuccess }: { onClose: () => void; onSuccess: () => void }) {
-  const [form, setForm] = useState({ name: '', email: '', phone: '', jobTitle: '', revenue: '' })
+  const [form, setForm] = useState({ name: '', email: '', phone: '', ddi: '+55', jobTitle: '', revenue: '' })
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e: FormEvent) => {
@@ -121,10 +121,34 @@ function LeadPopup({ onClose, onSuccess }: { onClose: () => void; onSuccess: () 
               type="email" placeholder="Seu melhor e-mail"
               value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))} required
             />
-            <input
-              type="tel" placeholder="WhatsApp com DDD"
-              value={form.phone} onChange={e => setForm(p => ({ ...p, phone: e.target.value }))} required
-            />
+            <div style={{ display: 'flex', gap: 8 }}>
+              <select
+                value={form.ddi}
+                onChange={e => setForm(p => ({ ...p, ddi: e.target.value }))}
+                style={{ width: 100, flexShrink: 0, color: '#0A0A0A' }}
+              >
+                <option value="+55">🇧🇷 +55</option>
+                <option value="+351">🇵🇹 +351</option>
+                <option value="+1">🇺🇸 +1</option>
+                <option value="+44">🇬🇧 +44</option>
+                <option value="+34">🇪🇸 +34</option>
+                <option value="+33">🇫🇷 +33</option>
+                <option value="+49">🇩🇪 +49</option>
+                <option value="+39">🇮🇹 +39</option>
+                <option value="+81">🇯🇵 +81</option>
+                <option value="+61">🇦🇺 +61</option>
+                <option value="+54">🇦🇷 +54</option>
+                <option value="+56">🇨🇱 +56</option>
+                <option value="+57">🇨🇴 +57</option>
+                <option value="+52">🇲🇽 +52</option>
+                <option value="+971">🇦🇪 +971</option>
+              </select>
+              <input
+                type="tel" placeholder="WhatsApp com DDD"
+                value={form.phone} onChange={e => setForm(p => ({ ...p, phone: e.target.value }))} required
+                style={{ flex: 1 }}
+              />
+            </div>
             <select
               value={form.jobTitle}
               onChange={e => setForm(p => ({ ...p, jobTitle: e.target.value }))}

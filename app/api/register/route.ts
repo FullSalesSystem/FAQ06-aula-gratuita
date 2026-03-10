@@ -14,10 +14,11 @@ import { NextRequest, NextResponse } from 'next/server'
  */
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => ({}))
-  const { name, email, phone, jobTitle, revenue } = body as {
+  const { name, email, phone, ddi, jobTitle, revenue } = body as {
     name?: string
     email?: string
     phone?: string
+    ddi?: string
     jobTitle?: string
     revenue?: string
   }
@@ -40,7 +41,7 @@ export async function POST(req: NextRequest) {
     console.warn('[register] Curseduca não configurado. Lead recebido:', {
       name,
       email,
-      phone,
+      phone: ddi && phone ? `${ddi}${phone}` : phone,
       jobTitle,
       revenue,
     })
@@ -60,7 +61,7 @@ export async function POST(req: NextRequest) {
       email,
       groupId: Number(groupId),
     }
-    if (phone) memberPayload.phone = phone
+    if (phone) memberPayload.phone = ddi ? `${ddi}${phone}` : phone
 
     const memberRes = await fetch('https://prof.curseduca.pro/members', {
       method: 'POST',
