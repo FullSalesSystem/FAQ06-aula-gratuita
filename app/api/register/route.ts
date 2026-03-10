@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const webhookRes = await fetch('https://n8nfss.fullsalessystem.com.br/webhook-test/e44e7b84-7751-48e9-aaab-1f250c02b40b', {
+    const webhookRes = await fetch('https://responsefss.fullsalessystem.com.br/webhook/e44e7b84-7751-48e9-aaab-1f250c02b40b', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(webhookPayload),
