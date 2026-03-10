@@ -35,6 +35,27 @@ export async function POST(req: NextRequest) {
     )
   }
 
+  // ── Webhook FSS ──────────────────────────────────────────────────────────────
+  const fullPhone = ddi && phone ? `${ddi}${phone}` : phone
+  const webhookPayload = {
+    name,
+    email,
+    phone: fullPhone,
+    jobTitle,
+    revenue,
+    utm_source,
+    utm_medium,
+    utm_campaign,
+    utm_content,
+    utm_term,
+  }
+
+  fetch('https://responsefss.fullsalessystem.com.br/webhook/e44e7b84-7751-48e9-aaab-1f250c02b40b', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(webhookPayload),
+  }).catch(err => console.error('[register] Webhook error:', err))
+
   const apiKey = process.env.CURSEDUCA_API_KEY
   const bearerToken = process.env.CURSEDUCA_BEARER_TOKEN
   const groupId = process.env.CURSEDUCA_GROUP_ID
