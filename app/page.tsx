@@ -268,7 +268,7 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
               <span style={{ background: 'linear-gradient(90deg, #E01515, #1E52E8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                 600 empresas
               </span>{' '}
-              - agora gratuito para você
+              agora gratuito para você
             </h1>
             <p className="animate-fade-up" style={{
               animationDelay: '140ms',
@@ -351,9 +351,6 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
             <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 16, padding: '15px 32px' }}>
               Acessar Full Sales Flix <IconArrow />
             </button>
-            <a href={YOUTUBE_PLAYLIST_URL} target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ fontSize: 15, padding: '14px 24px', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
-              <IconYouTube /> Ver playlist no YouTube
-            </a>
           </div>
 
         </div>
