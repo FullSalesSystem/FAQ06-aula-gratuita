@@ -50,11 +50,16 @@ export async function POST(req: NextRequest) {
     utm_term,
   }
 
-  fetch('https://responsefss.fullsalessystem.com.br/webhook/e44e7b84-7751-48e9-aaab-1f250c02b40b', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(webhookPayload),
-  }).catch(err => console.error('[register] Webhook error:', err))
+  try {
+    const webhookRes = await fetch('https://n8nfss.fullsalessystem.com.br/webhook-test/e44e7b84-7751-48e9-aaab-1f250c02b40b', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(webhookPayload),
+    })
+    console.log('[register] Webhook response:', webhookRes.status)
+  } catch (err) {
+    console.error('[register] Webhook error:', err)
+  }
 
   const apiKey = process.env.CURSEDUCA_API_KEY
   const bearerToken = process.env.CURSEDUCA_BEARER_TOKEN
