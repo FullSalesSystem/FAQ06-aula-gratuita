@@ -117,7 +117,7 @@ function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess
           Libere o acesso gratuito ao <span style={{ color: '#E01515' }}>Full Sales Flix</span>
         </h2>
         <p style={{ fontSize: 14, color: '#6B7280', marginBottom: 24, lineHeight: 1.6 }}>
-          Horas de conteúdo gratuito sobre estruturação comercial, vendas e crescimento — na plataforma da Full Sales System.
+          Horas de conteúdo gratuito sobre estruturação comercial, vendas e crescimento  na plataforma da Full Sales System.
         </p>
 
         <form onSubmit={handleSubmit}>
@@ -239,7 +239,7 @@ function Navbar({ onOpenPopup }: { onOpenPopup: () => void }) {
 }
 
 /* ─────────────────────────────────────────────
-   HERO — HEADLINE
+   HERO  HEADLINE
 ───────────────────────────────────────────── */
 function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasAccess: boolean }) {
   const [active, setActive] = useState(false)
@@ -253,7 +253,7 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
             mobile  = 1 col  (text-top → video → buttons, source order) */}
         <div id="hero-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48 }}>
 
-          {/* TEXT TOP — col 1 / row 1 */}
+          {/* TEXT TOP  col 1 / row 1 */}
           <div id="hero-text-top" style={{ textAlign: 'left', alignSelf: 'end' }}>
             <h1 className="animate-fade-up" style={{
               animationDelay: '70ms',
@@ -264,11 +264,11 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
               color: '#0A0A0A',
               marginBottom: 20,
             }}>
-              O conteúdo que já estruturou{' '}
+              O conteúdo que já estruturou o comercial de mais de{' '}
               <span style={{ background: 'linear-gradient(90deg, #E01515, #1E52E8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                +600 comerciais
+                600 empresas
               </span>{' '}
-              — agora gratuito para você
+              - agora gratuito para você
             </h1>
             <p className="animate-fade-up" style={{
               animationDelay: '140ms',
@@ -277,11 +277,11 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
               lineHeight: 1.65,
               maxWidth: 480,
             }}>
-              Aprenda gratuitamente a construir um sistema comercial com previsibilidade, escala e liberdade — direto de quem fez R$30M no 2º ano de operação.
+              Aprenda gratuitamente a construir um sistema comercial com previsibilidade, escala e liberdade com quem fez R$40M em dois anos de operação.
             </p>
           </div>
 
-          {/* VIDEO — col 2 / rows 1+2 (desktop); between text and buttons (mobile via source order) */}
+          {/* VIDEO  col 2 / rows 1+2 (desktop); between text and buttons (mobile via source order) */}
           <FadeUp style={{ gridRow: 'span 2', alignSelf: 'center' }} >
             <div id="hero-video" style={{
               position: 'relative',
@@ -346,7 +346,7 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
             </div>
           </FadeUp>
 
-          {/* BUTTONS — col 1 / row 2 */}
+          {/* BUTTONS  col 1 / row 2 */}
           <div id="hero-buttons" className="animate-fade-up" style={{ animationDelay: '200ms', display: 'flex', flexWrap: 'wrap', gap: 12, alignSelf: 'start' }}>
             <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 16, padding: '15px 32px' }}>
               Acessar Full Sales Flix <IconArrow />
@@ -378,17 +378,17 @@ function FlixCTASection({ onOpenPopup }: { onOpenPopup: () => void }) {
             <span style={{ color: '#E01515' }}>Full Sales System</span>
           </h2>
           <p style={{ fontSize: 'clamp(15px, 2vw, 18px)', color: '#525252', lineHeight: 1.65, maxWidth: 580, margin: '0 auto 36px' }}>
-            O Full Sales Flix é a plataforma de conteúdo gratuito da FSS — aulas, frameworks e ferramentas práticas para estruturar seu comercial, disponíveis para você agora.
+            O Full Sales Flix é a plataforma de conteúdo gratuito da FSS. Aulas, frameworks e playbooks práticos para estruturar seu comercial, disponíveis para você agora.
           </p>
 
           {/* Features */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12, marginBottom: 40, textAlign: 'left', maxWidth: 640, margin: '0 auto 40px' }}>
             {[
               'Aulas de estruturação comercial',
-              'Frameworks de pré-vendas e SDR',
+              'Estudo de caso: Gabriel Bueno',
               'Processos de fechamento e closer',
-              'Arquitetura de produtos e LTV',
-              'Cases reais com resultados',
+              'Playbook interno de Estruturação Comercial',
+              'Guia prático de Social Selling',
               'Acesso imediato e gratuito',
             ].map((item, i) => (
               <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -443,10 +443,10 @@ function TrustSection() {
       <div className="section-container">
         <FadeUp style={{ textAlign: 'center', marginBottom: 52 }}>
           <h2 style={{ fontSize: 'clamp(24px, 4vw, 40px)', fontWeight: 800, letterSpacing: '-0.025em', color: '#0A0A0A', lineHeight: 1.12 }}>
-            +600 empresas já aplicaram o sistema
+            +550 empresas já atuaram com a Full Sales System
           </h2>
           <p style={{ color: '#6B7280', fontSize: 16, marginTop: 12, maxWidth: 520, margin: '12px auto 0' }}>
-            De escritórios de advocacia a empresas de tecnologia — em todos os segmentos
+            De escritórios de advocacia a empresas de tecnologia, em todos os segmentos
           </p>
         </FadeUp>
 
@@ -555,14 +555,14 @@ function AboutSection() {
               <span style={{ color: '#E01515' }}>estruturação comercial</span>, não de cursos
             </h2>
             <p style={{ fontSize: 15, color: '#525252', lineHeight: 1.7, marginBottom: 24 }}>
-              Fundada por Vinícius de Sá, a Full Sales System ajuda empresas que já faturam a criar sistemas comerciais com previsibilidade. Com +12 anos de experiência e mais de 600 negócios estruturados no Brasil e exterior, a empresa fez R$10M no 1º ano e R$30M no 2º.
+              Fundada por Vinícius de Sá, Yuri Barbosa e Matheus Garcia, a Full Sales System é uma consultoria especializada em equipes comerciais que ajuda empresas a otimizarem o ROI de seus funis de vendas. Com mais de 8 anos de experiência, a FSS acumula mais de 550 empresas aceleradas, mais de R$110 milhões em vendas próprias e mais de R$1 bilhão em faturamento gerado para seus clientes.
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 28 }}>
               {[
-                '+12 anos estruturando comerciais em segmentos como advocacia, contabilidade, tech e saúde',
-                'Empresa própria fez R$10M no 1º ano, R$30M no 2º — com pico de R$5,6M/mês',
-                'NPS de 87 e nota de avaliação 9,44 — resultado, não só conteúdo',
-                'Fundador tirou 55 dias de férias/ano enquanto a empresa batia recordes',
+                'Mais de 550 empresas aceleradas no Brasil, Portugal e EUA em segmentos como advocacia, contabilidade, saúde e tech',
+                'Mais de R$1 bilhão em faturamento gerado para empresas aceleradas e mais de R$110 milhões em vendas próprias',
+                'NPS de 87 e nota de avaliação 9,44 com foco em resultado real, não só em conteúdo',
+                'Metodologia própria de 6 pilares que ativa todos os canais de receita da operação comercial',
               ].map((item, i) => (
                 <div key={i} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
                   <IconCheck />
@@ -572,8 +572,8 @@ function AboutSection() {
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
               {[
-                { label: '+12 anos', desc: 'de experiência' },
-                { label: '+600 empresas', desc: 'estruturadas' },
+                { label: '+8 anos', desc: 'de experiência' },
+                { label: '+550 empresas', desc: 'estruturadas' },
                 { label: 'Brasil · Portugal · EUA', desc: 'atuação global' },
               ].map(t => (
                 <div key={t.label} style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)', borderRadius: 8, padding: '7px 14px', boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}>
@@ -638,7 +638,7 @@ function PressSection() {
           </p>
         </FadeUp>
 
-        {/* Press logos strip — desktop: flex wrap | mobile: marquee */}
+        {/* Press logos strip  desktop: flex wrap | mobile: marquee */}
         <FadeUp delay={60}>
           {/* Desktop */}
           <div id="press-logos-desktop" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 12, marginBottom: 48 }}>
@@ -711,7 +711,7 @@ function Footer({ onOpenPopup }: { onOpenPopup: () => void }) {
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                 {[
                   { label: 'Full Sales Flix', action: () => onOpenPopup() },
-                  { label: 'YouTube — Comercial Faixa Preta', href: YOUTUBE_PLAYLIST_URL },
+                  { label: 'YouTube  Comercial Faixa Preta', href: YOUTUBE_PLAYLIST_URL },
                 ].map((l) => (
                   l.action
                     ? <button key={l.label} onClick={l.action} style={{ background: 'none', border: 'none', padding: 0, fontSize: 14, color: '#A1A1AA', cursor: 'pointer', textAlign: 'left', transition: 'color 0.2s' }} onMouseEnter={e => (e.currentTarget.style.color = '#fff')} onMouseLeave={e => (e.currentTarget.style.color = '#A1A1AA')}>{l.label}</button>
