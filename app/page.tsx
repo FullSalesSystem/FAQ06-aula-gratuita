@@ -254,7 +254,7 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
         <div id="hero-grid" style={{ display: 'grid', gridTemplateColumns: '0.85fr 1.15fr', gap: 48 }}>
 
           {/* TEXT TOP  col 1 / row 1 */}
-          <div id="hero-text-top" style={{ textAlign: 'left', alignSelf: 'end', maxWidth: 300 }}>
+          <div id="hero-text-top" style={{ textAlign: 'left', alignSelf: 'end', maxWidth: 570 }}>
             <h1 className="animate-fade-up" style={{
               animationDelay: '70ms',
               fontSize: 'clamp(22px, 3vw, 40px)',
@@ -275,7 +275,7 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
               fontSize: 'clamp(15px, 1.6vw, 18px)',
               color: '#525252',
               lineHeight: 1.65,
-              maxWidth: 300,
+              maxWidth: 570,
             }}>
               Aprenda gratuitamente a construir um sistema comercial com previsibilidade, escala e liberdade com quem fez R$40M em dois anos de operação.
             </p>
