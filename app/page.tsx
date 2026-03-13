@@ -251,13 +251,13 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
       <div className="section-container" style={{ position: 'relative', maxWidth: 1200 }}>
         {/* Hero grid: desktop = 2 cols (text-top | video spanning 2 rows, buttons | video)
             mobile  = 1 col  (text-top → video → buttons, source order) */}
-        <div id="hero-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48 }}>
+        <div id="hero-grid" style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: 48 }}>
 
           {/* TEXT TOP  col 1 / row 1 */}
           <div id="hero-text-top" style={{ textAlign: 'left', alignSelf: 'end' }}>
             <h1 className="animate-fade-up" style={{
               animationDelay: '70ms',
-              fontSize: 'clamp(28px, 4vw, 52px)',
+              fontSize: 'clamp(22px, 3vw, 40px)',
               fontWeight: 800,
               lineHeight: 1.08,
               letterSpacing: '-0.035em',
