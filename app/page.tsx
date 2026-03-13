@@ -347,8 +347,8 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
           </FadeUp>
 
           {/* BUTTONS  col 1 / row 2 */}
-          <div id="hero-buttons" className="animate-fade-up" style={{ animationDelay: '200ms', display: 'flex', flexWrap: 'wrap', gap: 12, alignSelf: 'start' }}>
-            <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 16, padding: '15px 32px' }}>
+          <div id="hero-buttons" className="animate-fade-up" style={{ animationDelay: '200ms', display: 'flex', flexWrap: 'wrap', gap: 12, alignSelf: 'start', maxWidth: 500 }}>
+            <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 16, padding: '15px 32px', width: '100%' }}>
               Acessar Full Sales Flix <IconArrow />
             </button>
           </div>
