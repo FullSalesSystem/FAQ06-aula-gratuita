@@ -338,7 +338,7 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
               )}
               {/* Active iframe */}
               {active && (
-                <iframe src="https://www.youtube.com/embed/8GPRCLbxNRA?autoplay=1&rel=0&modestbranding=1"
+                <iframe src="https://player-vz-717cd51a-ec6.tv.pandavideo.com.br/embed/?v=74255a28-be9c-4c23-a35f-8f36480161d2"
                   style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none' }}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen />
