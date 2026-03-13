@@ -254,7 +254,7 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
         <div id="hero-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48 }}>
 
           {/* TEXT TOP  col 1 / row 1 */}
-          <div id="hero-text-top" style={{ textAlign: 'left', alignSelf: 'end', maxWidth: 570 }}>
+          <div id="hero-text-top" style={{ textAlign: 'left', alignSelf: 'end', maxWidth: 500 }}>
             <h1 className="animate-fade-up" style={{
               animationDelay: '70ms',
               fontSize: 'clamp(22px, 3vw, 40px)',
