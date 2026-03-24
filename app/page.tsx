@@ -348,9 +348,14 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
 
           {/* BUTTONS  col 1 / row 2 */}
           <div id="hero-buttons" className="animate-fade-up" style={{ animationDelay: '200ms', display: 'flex', flexWrap: 'wrap', gap: 12, alignSelf: 'start', maxWidth: 500 }}>
-            <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 16, padding: '15px 32px', width: '100%' }}>
+            {/* Botão original oculto temporariamente */}
+            <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 16, padding: '15px 32px', width: '100%', visibility: 'hidden', position: 'absolute', left: -9999 }}>
               Acessar Full Sales Flix <IconArrow />
             </button>
+            {/* Botão Playlist YouTube temporário */}
+            <a href={YOUTUBE_PLAYLIST_URL} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, backgroundColor: '#E01515', color: '#ffffff', fontWeight: 800, fontSize: 16, padding: '15px 32px', borderRadius: 8, width: '100%', maxWidth: 400, textDecoration: 'none', boxSizing: 'border-box' as const }}>
+              <IconYouTube /> Playlist no YouTube
+            </a>
           </div>
 
         </div>
@@ -396,10 +401,12 @@ function FlixCTASection({ onOpenPopup }: { onOpenPopup: () => void }) {
           </div>
 
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center' }}>
-            <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 16, padding: '16px 40px' }}>
+            {/* Botão original oculto temporariamente */}
+            <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 16, padding: '16px 40px', visibility: 'hidden', position: 'absolute', left: -9999 }}>
               Quero Acessar o FSS Flix <IconArrow />
             </button>
-            <a href={YOUTUBE_PLAYLIST_URL} target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ fontSize: 14, padding: '14px 24px', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+            {/* Botão Playlist YouTube temporário - vermelho e centralizado */}
+            <a href={YOUTUBE_PLAYLIST_URL} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, backgroundColor: '#E01515', color: '#ffffff', fontWeight: 800, fontSize: 16, padding: '15px 32px', borderRadius: 8, width: '100%', maxWidth: 420, textDecoration: 'none', boxSizing: 'border-box' as const }}>
               <IconYouTube /> Playlist no YouTube
             </a>
           </div>
@@ -730,9 +737,14 @@ function Footer({ onOpenPopup }: { onOpenPopup: () => void }) {
             <p style={{ fontWeight: 700, fontSize: 17, color: '#fff', marginBottom: 4 }}>Pronto para acessar o conteúdo gratuito?</p>
             <p style={{ fontSize: 13, color: '#A1A1AA' }}>Crie sua conta gratuita no Full Sales Flix agora.</p>
           </div>
-          <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 14 }}>
+          {/* Botão original oculto temporariamente */}
+          <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 14, visibility: 'hidden', position: 'absolute', left: -9999 }}>
             Acessar FSS Flix <IconArrow />
           </button>
+          {/* Botão Playlist YouTube temporário */}
+          <a href={YOUTUBE_PLAYLIST_URL} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, backgroundColor: 'rgba(255,255,255,0.1)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.3)', fontWeight: 700, fontSize: 14, padding: '14px 24px', borderRadius: 8, textDecoration: 'none' }}>
+            <IconYouTube /> Playlist no YouTube
+          </a>
         </div>
 
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: 12, paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
