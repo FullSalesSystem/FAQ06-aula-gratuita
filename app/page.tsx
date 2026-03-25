@@ -232,7 +232,6 @@ function Navbar({ onOpenPopup }: { onOpenPopup: () => void }) {
         <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 13, padding: '9px 20px', display: 'none' }} id="nav-cta">
           Acessar FSS Flix
         </button>
-        <style>{`@media(min-width:640px){#nav-cta{display:inline-flex!important}}`}</style>
       </div>
     </nav>
   )
@@ -786,7 +785,7 @@ function StickyMobileCTA({ onOpenPopup }: { onOpenPopup: () => void }) {
           transition: 'transform 0.35s cubic-bezier(0.22,1,0.36,1)',
         }}
       >
-        <button onClick={onOpenPopup} className="btn-primary" style={{ width: '100%', fontSize: 15, padding: '15px 24px' }}>
+        <button onClick={onOpenPopup} className="btn-primary" style={{ width: '100%', fontSize: 15, padding: '15px 24px', display: 'none' }}>
           Acessar Full Sales Flix Gratuitamente <IconArrow />
         </button>
       </div>
