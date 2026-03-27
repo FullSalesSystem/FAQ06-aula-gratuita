@@ -4,6 +4,14 @@ import { useState, useEffect, useRef, useMemo, Suspense, ReactNode, FormEvent } 
 import { useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'vturb-smartplayer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { id?: string }
+    }
+  }
+}
+
 // ─── CONFIGURAR ESTES VALORES ──────────────────────────────────────────────────
 const FSSFLIX_URL = 'https://COLOQUE_URL_DO_FSSFLIX_AQUI.curseduca.pro'
 const YOUTUBE_PLAYLIST_URL = 'https://www.youtube.com/playlist?list=PLzJ4B1s6bJZ2DL9jhvEgx2ANhwi6LiQk_'
@@ -242,6 +250,18 @@ function Navbar({ onOpenPopup }: { onOpenPopup: () => void }) {
 ───────────────────────────────────────────── */
 function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasAccess: boolean }) {
   const [active, setActive] = useState(false)
+  const vturbScriptLoaded = useRef(false)
+
+  useEffect(() => {
+    if (active && !vturbScriptLoaded.current) {
+      vturbScriptLoaded.current = true
+      const s = document.createElement('script')
+      s.src = 'https://scripts.converteai.net/c678e70b-13db-47d3-b046-f3e247d16ff7/players/69c6fec17141a7eb85a55367/v4/player.js'
+      s.async = true
+      document.head.appendChild(s)
+    }
+  }, [active])
+
   return (
     <section style={{ paddingTop: 80, paddingBottom: 80, background: '#FFFFFF', position: 'relative', overflow: 'hidden' }}>
       {/* Glow */}
@@ -335,12 +355,12 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
                   <div style={{ position: 'absolute', top: 12, left: 12, background: '#E01515', color: '#fff', fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 4, letterSpacing: '0.04em', textTransform: 'uppercase' }}>Aula Gratuita</div>
                 </div>
               )}
-              {/* Active iframe */}
+              {/* Active vturb player */}
               {active && (
-                <iframe src="https://player-vz-717cd51a-ec6.tv.pandavideo.com.br/embed/?v=74255a28-be9c-4c23-a35f-8f36480161d2"
-                  style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none' }}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen />
+                <vturb-smartplayer
+                  id="vid-69c6fec17141a7eb85a55367"
+                  style={{ display: 'block', margin: '0 auto', width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }}
+                />
               )}
             </div>
           </FadeUp>
