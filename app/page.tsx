@@ -80,6 +80,12 @@ interface UtmParams {
 function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess: () => void; utm: UtmParams }) {
   const [form, setForm] = useState({ name: '', email: '', phone: '', ddi: '+55', jobTitle: '', revenue: '', segment: '' })
   const [loading, setLoading] = useState(false)
+  const [step, setStep] = useState(1)
+
+  const handleNext = (e: FormEvent) => {
+    e.preventDefault()
+    setStep(2)
+  }
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -93,7 +99,7 @@ function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess
     } catch { /* fail silently */ }
     sessionStorage.setItem('fss_popup', '1')
     sessionStorage.setItem('fss_registered', '1')
-    onSuccess()           // libera o vídeo
+    onSuccess()
     onClose()
     setLoading(false)
   }
@@ -116,127 +122,162 @@ function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess
           animation: 'fadeUp 0.45s cubic-bezier(0.22,1,0.36,1) both',
         }}
       >
-        {/* Logo */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
+        {/* Header: logo + step indicator */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
           <img src="/logo-fss.png" alt="Full Sales System" style={{ height: 38, width: 'auto', display: 'block' }} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            {[1, 2].map(n => (
+              <div key={n} style={{
+                width: n === step ? 20 : 8, height: 8, borderRadius: 4,
+                background: n === step ? '#E01515' : n < step ? '#E01515' : '#E5E7EB',
+                transition: 'all 0.3s',
+              }} />
+            ))}
+            <span style={{ fontSize: 12, color: '#9CA3AF', marginLeft: 4 }}>{step}/2</span>
+          </div>
         </div>
 
         <h2 style={{ fontSize: 'clamp(17px, 2.4vw, 21px)', fontWeight: 800, color: '#0A0A0A', marginBottom: 6, letterSpacing: '-0.025em', lineHeight: 1.3 }}>
-          Libere o acesso gratuito ao <span style={{ color: '#E01515' }}>Full Sales Flix</span>
+          Libere seu acesso gratuito ao <span style={{ color: '#E01515' }}>Full Sales Academy</span>
         </h2>
         <p style={{ fontSize: 13, color: '#6B7280', marginBottom: 18, lineHeight: 1.5 }}>
-          Horas de conteúdo gratuito sobre estruturação comercial, vendas e crescimento na plataforma da Full Sales System.
+          Cadastre-se uma única vez e tenha acesso a horas de conteúdo gratuito sobre estruturação comercial, vendas e crescimento na plataforma da Full Sales System.
         </p>
 
-        <form onSubmit={handleSubmit}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 14 }}>
-            {/* Col 1 */}
-            <input
-              type="text" placeholder="Seu nome completo"
-              value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} required
-            />
-            {/* Col 2 */}
-            <input
-              type="email" placeholder="Seu melhor e-mail"
-              value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))} required
-            />
-            {/* Col 1 */}
-            <div style={{ display: 'flex', gap: 8 }}>
-              <select
-                value={form.ddi}
-                onChange={e => setForm(p => ({ ...p, ddi: e.target.value }))}
-                style={{ width: 90, flexShrink: 0, color: '#0A0A0A' }}
-              >
-                <option value="+55">🇧🇷 +55</option>
-                <option value="+351">🇵🇹 +351</option>
-                <option value="+1">🇺🇸 +1</option>
-                <option value="+44">🇬🇧 +44</option>
-                <option value="+34">🇪🇸 +34</option>
-                <option value="+33">🇫🇷 +33</option>
-                <option value="+49">🇩🇪 +49</option>
-                <option value="+39">🇮🇹 +39</option>
-                <option value="+81">🇯🇵 +81</option>
-                <option value="+61">🇦🇺 +61</option>
-                <option value="+54">🇦🇷 +54</option>
-                <option value="+56">🇨🇱 +56</option>
-                <option value="+57">🇨🇴 +57</option>
-                <option value="+52">🇲🇽 +52</option>
-                <option value="+971">🇦🇪 +971</option>
-              </select>
+        {/* ETAPA 1 */}
+        {step === 1 && (
+          <form onSubmit={handleNext}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 14 }}>
               <input
-                type="tel" placeholder="WhatsApp com DDD"
-                value={form.phone} onChange={e => setForm(p => ({ ...p, phone: e.target.value }))} required
-                style={{ flex: 1, minWidth: 0 }}
+                type="text" placeholder="Seu nome completo"
+                value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} required
+                style={{ gridColumn: '1 / -1' }}
               />
+              <input
+                type="email" placeholder="Seu melhor e-mail"
+                value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))} required
+              />
+              <div style={{ display: 'flex', gap: 8 }}>
+                <select
+                  value={form.ddi}
+                  onChange={e => setForm(p => ({ ...p, ddi: e.target.value }))}
+                  style={{ width: 90, flexShrink: 0, color: '#0A0A0A' }}
+                >
+                  <option value="+55">🇧🇷 +55</option>
+                  <option value="+351">🇵🇹 +351</option>
+                  <option value="+1">🇺🇸 +1</option>
+                  <option value="+44">🇬🇧 +44</option>
+                  <option value="+34">🇪🇸 +34</option>
+                  <option value="+33">🇫🇷 +33</option>
+                  <option value="+49">🇩🇪 +49</option>
+                  <option value="+39">🇮🇹 +39</option>
+                  <option value="+81">🇯🇵 +81</option>
+                  <option value="+61">🇦🇺 +61</option>
+                  <option value="+54">🇦🇷 +54</option>
+                  <option value="+56">🇨🇱 +56</option>
+                  <option value="+57">🇨🇴 +57</option>
+                  <option value="+52">🇲🇽 +52</option>
+                  <option value="+971">🇦🇪 +971</option>
+                </select>
+                <input
+                  type="tel" placeholder="WhatsApp com DDD"
+                  value={form.phone} onChange={e => setForm(p => ({ ...p, phone: e.target.value }))} required
+                  style={{ flex: 1, minWidth: 0 }}
+                />
+              </div>
             </div>
-            {/* Col 2 */}
-            <select
-              value={form.jobTitle}
-              onChange={e => setForm(p => ({ ...p, jobTitle: e.target.value }))}
-              required
-              style={{ color: form.jobTitle ? '#0A0A0A' : '#9CA3AF' }}
-            >
-              <option value="" disabled>Seu cargo</option>
-              <option value="Sócio ou Fundador">Sócio ou Fundador</option>
-              <option value="Empresário ou Empreendedor">Empresário ou Empreendedor</option>
-              <option value="Gerente/Head">Gerente/Head</option>
-              <option value="Superior/Líder">Superior/Líder</option>
-              <option value="Prestador de Serviço/Freelancer">Prestador de Serviço/Freelancer</option>
-              <option value="Colaborador/Funcionário">Colaborador/Funcionário</option>
-            </select>
-            {/* Col 1 */}
-            <select
-              value={form.revenue}
-              onChange={e => setForm(p => ({ ...p, revenue: e.target.value }))}
-              required
-              style={{ color: form.revenue ? '#0A0A0A' : '#9CA3AF' }}
-            >
-              <option value="" disabled>Faturamento mensal</option>
-              <option value="Abaixo de R$10 mil">Abaixo de R$10 mil</option>
-              <option value="Entre R$10 mil a R$30 mil">Entre R$10 mil a R$30 mil</option>
-              <option value="Entre R$30 mil a R$100 mil">Entre R$30 mil a R$100 mil</option>
-              <option value="Entre R$100 mil a R$500 mil">Entre R$100 mil a R$500 mil</option>
-              <option value="Entre R$500 mil a R$1 milhão">Entre R$500 mil a R$1 milhão</option>
-              <option value="Mais de R$1 milhão por mês">Mais de R$1 milhão por mês</option>
-            </select>
-            {/* Col 2 */}
-            <select
-              value={form.segment}
-              onChange={e => setForm(p => ({ ...p, segment: e.target.value }))}
-              required
-              style={{ color: form.segment ? '#0A0A0A' : '#9CA3AF' }}
-            >
-              <option value="" disabled>Segmento</option>
-              <option value="Serviço">Serviço</option>
-              <option value="Varejo">Varejo</option>
-              <option value="Mentoria">Mentoria</option>
-              <option value="Indústria">Indústria</option>
-              <option value="E-commerce">E-commerce</option>
-              <option value="Educação">Educação</option>
-              <option value="Imobiliária">Imobiliária</option>
-              <option value="Finanças">Finanças</option>
-              <option value="Franquia/Franchising">Franquia/Franchising</option>
-              <option value="Saúde">Saúde</option>
-              <option value="SAAS">SAAS</option>
-              <option value="Telecom">Telecom</option>
-              <option value="Turismo">Turismo</option>
-              <option value="Outro">Outro</option>
-            </select>
-          </div>
+            <button type="submit" className="btn-primary" style={{ width: '100%', fontSize: 15 }}>
+              Continuar →
+            </button>
+            <p style={{ fontSize: 11, color: '#9CA3AF', textAlign: 'center', marginTop: 10, lineHeight: 1.5 }}>
+              Ao informar meus dados, eu concordo com os{' '}
+              <a href="https://fss.fullsalessystem.com/termos-de-uso" target="_blank" rel="noopener noreferrer" style={{ color: '#6B7280', textDecoration: 'underline' }}>termos de uso</a>
+              {' '}e{' '}
+              <a href="https://fss.fullsalessystem.com/politicas-de-privacidade" target="_blank" rel="noopener noreferrer" style={{ color: '#6B7280', textDecoration: 'underline' }}>Política de privacidade</a>.
+            </p>
+          </form>
+        )}
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="btn-primary"
-            style={{ width: '100%', fontSize: 15, opacity: loading ? 0.7 : 1 }}
-          >
-            {loading ? 'Liberando...' : 'Liberar Acesso Gratuito →'}
-          </button>
-
-          <p style={{ fontSize: 12, color: '#9CA3AF', textAlign: 'center', marginTop: 10 }}>
-            100% gratuito · Sem cartão de crédito · Acesso imediato
-          </p>
-        </form>
+        {/* ETAPA 2 */}
+        {step === 2 && (
+          <form onSubmit={handleSubmit}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 14 }}>
+              <select
+                value={form.segment}
+                onChange={e => setForm(p => ({ ...p, segment: e.target.value }))}
+                required
+                style={{ color: form.segment ? '#0A0A0A' : '#9CA3AF' }}
+              >
+                <option value="" disabled>Segmento</option>
+                <option value="Serviço">Serviço</option>
+                <option value="Varejo">Varejo</option>
+                <option value="Mentoria">Mentoria</option>
+                <option value="Indústria">Indústria</option>
+                <option value="E-commerce">E-commerce</option>
+                <option value="Educação">Educação</option>
+                <option value="Imobiliária">Imobiliária</option>
+                <option value="Finanças">Finanças</option>
+                <option value="Franquia/Franchising">Franquia/Franchising</option>
+                <option value="Saúde">Saúde</option>
+                <option value="SAAS">SAAS</option>
+                <option value="Telecom">Telecom</option>
+                <option value="Turismo">Turismo</option>
+                <option value="Outro">Outro</option>
+              </select>
+              <select
+                value={form.jobTitle}
+                onChange={e => setForm(p => ({ ...p, jobTitle: e.target.value }))}
+                required
+                style={{ color: form.jobTitle ? '#0A0A0A' : '#9CA3AF' }}
+              >
+                <option value="" disabled>Seu cargo</option>
+                <option value="Sócio ou Fundador">Sócio ou Fundador</option>
+                <option value="Empresário ou Empreendedor">Empresário ou Empreendedor</option>
+                <option value="Gerente/Head">Gerente/Head</option>
+                <option value="Superior/Líder">Superior/Líder</option>
+                <option value="Prestador de Serviço/Freelancer">Prestador de Serviço/Freelancer</option>
+                <option value="Colaborador/Funcionário">Colaborador/Funcionário</option>
+              </select>
+              <select
+                value={form.revenue}
+                onChange={e => setForm(p => ({ ...p, revenue: e.target.value }))}
+                required
+                style={{ color: form.revenue ? '#0A0A0A' : '#9CA3AF', gridColumn: '1 / -1' }}
+              >
+                <option value="" disabled>Faturamento mensal</option>
+                <option value="Abaixo de R$10 mil">Abaixo de R$10 mil</option>
+                <option value="Entre R$10 mil a R$30 mil">Entre R$10 mil a R$30 mil</option>
+                <option value="Entre R$30 mil a R$100 mil">Entre R$30 mil a R$100 mil</option>
+                <option value="Entre R$100 mil a R$500 mil">Entre R$100 mil a R$500 mil</option>
+                <option value="Entre R$500 mil a R$1 milhão">Entre R$500 mil a R$1 milhão</option>
+                <option value="Mais de R$1 milhão por mês">Mais de R$1 milhão por mês</option>
+              </select>
+            </div>
+            <div style={{ display: 'flex', gap: 10 }}>
+              <button
+                type="button"
+                onClick={() => setStep(1)}
+                style={{ padding: '12px 20px', borderRadius: 8, border: '1px solid #E5E7EB', background: '#fff', color: '#6B7280', fontWeight: 600, fontSize: 14, cursor: 'pointer', flexShrink: 0 }}
+              >
+                ← Voltar
+              </button>
+              <button
+                type="submit"
+                disabled={loading}
+                className="btn-primary"
+                style={{ flex: 1, fontSize: 15, opacity: loading ? 0.7 : 1 }}
+              >
+                {loading ? 'Liberando...' : 'Liberar Acesso Gratuito →'}
+              </button>
+            </div>
+            <p style={{ fontSize: 11, color: '#9CA3AF', textAlign: 'center', marginTop: 10, lineHeight: 1.5 }}>
+              Ao informar meus dados, eu concordo com os{' '}
+              <a href="https://fss.fullsalessystem.com/termos-de-uso" target="_blank" rel="noopener noreferrer" style={{ color: '#6B7280', textDecoration: 'underline' }}>termos de uso</a>
+              {' '}e{' '}
+              <a href="https://fss.fullsalessystem.com/politicas-de-privacidade" target="_blank" rel="noopener noreferrer" style={{ color: '#6B7280', textDecoration: 'underline' }}>Política de privacidade</a>.
+            </p>
+          </form>
+        )}
       </div>
     </div>
   )
