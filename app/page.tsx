@@ -78,7 +78,7 @@ interface UtmParams {
 }
 
 function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess: () => void; utm: UtmParams }) {
-  const [form, setForm] = useState({ name: '', email: '', phone: '', ddi: '+55', jobTitle: '', revenue: '' })
+  const [form, setForm] = useState({ name: '', email: '', phone: '', ddi: '+55', jobTitle: '', revenue: '', segment: '' })
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e: FormEvent) => {
@@ -193,6 +193,28 @@ function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess
               <option value="Entre R$100 mil a R$500 mil">Entre R$100 mil a R$500 mil</option>
               <option value="Entre R$500 mil a R$1 milhão">Entre R$500 mil a R$1 milhão</option>
               <option value="Mais de R$1 milhão por mês">Mais de R$1 milhão por mês</option>
+            </select>
+            <select
+              value={form.segment}
+              onChange={e => setForm(p => ({ ...p, segment: e.target.value }))}
+              required
+              style={{ color: form.segment ? '#0A0A0A' : '#9CA3AF' }}
+            >
+              <option value="" disabled>Segmento</option>
+              <option value="Serviço">Serviço</option>
+              <option value="Varejo">Varejo</option>
+              <option value="Mentoria">Mentoria</option>
+              <option value="Indústria">Indústria</option>
+              <option value="E-commerce">E-commerce</option>
+              <option value="Educação">Educação</option>
+              <option value="Imobiliária">Imobiliária</option>
+              <option value="Finanças">Finanças</option>
+              <option value="Franquia/Franchising">Franquia/Franchising</option>
+              <option value="Saúde">Saúde</option>
+              <option value="SAAS">SAAS</option>
+              <option value="Telecom">Telecom</option>
+              <option value="Turismo">Turismo</option>
+              <option value="Outro">Outro</option>
             </select>
           </div>
 
