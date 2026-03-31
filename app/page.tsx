@@ -7,7 +7,7 @@ import Image from 'next/image'
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      'vturb-smartplayer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { id?: string }
+      'vturb-smartplayer': { id?: string; style?: Record<string, string | number>; className?: string }
     }
   }
 }
