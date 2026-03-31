@@ -4,14 +4,6 @@ import { useState, useEffect, useRef, useMemo, Suspense, ReactNode, FormEvent } 
 import { useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      'vturb-smartplayer': { id?: string; style?: Record<string, string | number>; className?: string }
-    }
-  }
-}
-
 // ─── CONFIGURAR ESTES VALORES ──────────────────────────────────────────────────
 const FSSFLIX_URL = 'https://COLOQUE_URL_DO_FSSFLIX_AQUI.curseduca.pro'
 const YOUTUBE_PLAYLIST_URL = 'https://www.youtube.com/playlist?list=PLzJ4B1s6bJZ2DL9jhvEgx2ANhwi6LiQk_'
