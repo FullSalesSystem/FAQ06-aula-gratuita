@@ -273,7 +273,7 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
         <div id="hero-grid" style={{ display: 'grid', gridTemplateColumns: '2fr 3fr', gap: 40, alignItems: 'stretch' }}>
 
           {/* LEFT COL: text + button stacked */}
-          <div id="hero-left" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: 24 }}>
+          <div id="hero-left" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: 24, minHeight: 420 }}>
             <div id="hero-text-top" style={{ textAlign: 'left' }}>
               <h1 className="animate-fade-up" style={{
                 animationDelay: '70ms',
