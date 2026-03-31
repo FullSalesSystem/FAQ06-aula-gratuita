@@ -111,7 +111,7 @@ function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess
       <div
         style={{
           background: '#fff', borderRadius: 18, padding: 'clamp(28px, 5vw, 44px)',
-          maxWidth: 460, width: '100%', position: 'relative',
+          maxWidth: 560, width: '100%', position: 'relative',
           boxShadow: '0 40px 80px rgba(0,0,0,0.28)',
           animation: 'fadeUp 0.45s cubic-bezier(0.22,1,0.36,1) both',
         }}
@@ -273,11 +273,11 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
         <div id="hero-grid" style={{ display: 'grid', gridTemplateColumns: '2fr 3fr', gap: 40, alignItems: 'stretch' }}>
 
           {/* LEFT COL: text + button stacked */}
-          <div id="hero-left" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: 24 }}>
+          <div id="hero-left" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: 24, minHeight: 420 }}>
             <div id="hero-text-top" style={{ textAlign: 'left' }}>
               <h1 className="animate-fade-up" style={{
                 animationDelay: '70ms',
-                fontSize: 'clamp(16px, 2vw, 26px)',
+                fontSize: 'clamp(22px, 2.8vw, 38px)',
                 fontWeight: 800,
                 lineHeight: 1.15,
                 letterSpacing: '-0.03em',
@@ -292,7 +292,7 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
               </h1>
               <p className="animate-fade-up" style={{
                 animationDelay: '140ms',
-                fontSize: 'clamp(12px, 1.2vw, 14px)',
+                fontSize: 'clamp(14px, 1.5vw, 17px)',
                 color: '#525252',
                 lineHeight: 1.65,
               }}>
