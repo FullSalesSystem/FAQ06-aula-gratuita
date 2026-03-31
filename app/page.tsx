@@ -117,7 +117,7 @@ function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess
       <div
         style={{
           background: '#fff', borderRadius: 18, padding: 'clamp(24px, 4vw, 36px)',
-          maxWidth: 740, width: '100%', position: 'relative',
+          maxWidth: 520, width: '100%', position: 'relative',
           boxShadow: '0 40px 80px rgba(0,0,0,0.28)',
           animation: 'fadeUp 0.45s cubic-bezier(0.22,1,0.36,1) both',
         }}
@@ -147,11 +147,10 @@ function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess
         {/* ETAPA 1 */}
         {step === 1 && (
           <form onSubmit={handleNext}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 14 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 14 }}>
               <input
                 type="text" placeholder="Seu nome completo"
                 value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} required
-                style={{ gridColumn: '1 / -1' }}
               />
               <input
                 type="email" placeholder="Seu melhor e-mail"
@@ -201,7 +200,7 @@ function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess
         {/* ETAPA 2 */}
         {step === 2 && (
           <form onSubmit={handleSubmit}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 14 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 14 }}>
               <select
                 value={form.segment}
                 onChange={e => setForm(p => ({ ...p, segment: e.target.value }))}
@@ -242,7 +241,7 @@ function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess
                 value={form.revenue}
                 onChange={e => setForm(p => ({ ...p, revenue: e.target.value }))}
                 required
-                style={{ color: form.revenue ? '#0A0A0A' : '#9CA3AF', gridColumn: '1 / -1' }}
+                style={{ color: form.revenue ? '#0A0A0A' : '#9CA3AF' }}
               >
                 <option value="" disabled>Faturamento mensal</option>
                 <option value="Abaixo de R$10 mil">Abaixo de R$10 mil</option>
