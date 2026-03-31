@@ -111,7 +111,7 @@ function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess
       <div
         style={{
           background: '#fff', borderRadius: 18, padding: 'clamp(28px, 5vw, 44px)',
-          maxWidth: 460, width: '100%', position: 'relative',
+          maxWidth: 560, width: '100%', position: 'relative',
           boxShadow: '0 40px 80px rgba(0,0,0,0.28)',
           animation: 'fadeUp 0.45s cubic-bezier(0.22,1,0.36,1) both',
         }}
