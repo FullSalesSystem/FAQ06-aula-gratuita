@@ -277,7 +277,7 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
             <div id="hero-text-top" style={{ textAlign: 'left' }}>
               <h1 className="animate-fade-up" style={{
                 animationDelay: '70ms',
-                fontSize: 'clamp(16px, 2vw, 26px)',
+                fontSize: 'clamp(22px, 2.8vw, 38px)',
                 fontWeight: 800,
                 lineHeight: 1.15,
                 letterSpacing: '-0.03em',
@@ -292,7 +292,7 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
               </h1>
               <p className="animate-fade-up" style={{
                 animationDelay: '140ms',
-                fontSize: 'clamp(12px, 1.2vw, 14px)',
+                fontSize: 'clamp(14px, 1.5vw, 17px)',
                 color: '#525252',
                 lineHeight: 1.65,
               }}>
