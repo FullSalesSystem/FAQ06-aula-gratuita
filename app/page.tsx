@@ -110,39 +110,42 @@ function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess
     >
       <div
         style={{
-          background: '#fff', borderRadius: 18, padding: 'clamp(28px, 5vw, 44px)',
-          maxWidth: 560, width: '100%', position: 'relative',
+          background: '#fff', borderRadius: 18, padding: 'clamp(24px, 4vw, 36px)',
+          maxWidth: 740, width: '100%', position: 'relative',
           boxShadow: '0 40px 80px rgba(0,0,0,0.28)',
           animation: 'fadeUp 0.45s cubic-bezier(0.22,1,0.36,1) both',
         }}
       >
         {/* Logo */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 20 }}>
-          <img src="/logo-fss.png" alt="Full Sales System" style={{ height: 44, width: 'auto', display: 'block' }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
+          <img src="/logo-fss.png" alt="Full Sales System" style={{ height: 38, width: 'auto', display: 'block' }} />
         </div>
 
-        <h2 style={{ fontSize: 'clamp(19px, 3vw, 23px)', fontWeight: 800, color: '#0A0A0A', marginBottom: 8, letterSpacing: '-0.025em', lineHeight: 1.3 }}>
+        <h2 style={{ fontSize: 'clamp(17px, 2.4vw, 21px)', fontWeight: 800, color: '#0A0A0A', marginBottom: 6, letterSpacing: '-0.025em', lineHeight: 1.3 }}>
           Libere o acesso gratuito ao <span style={{ color: '#E01515' }}>Full Sales Flix</span>
         </h2>
-        <p style={{ fontSize: 14, color: '#6B7280', marginBottom: 24, lineHeight: 1.6 }}>
-          Horas de conteúdo gratuito sobre estruturação comercial, vendas e crescimento  na plataforma da Full Sales System.
+        <p style={{ fontSize: 13, color: '#6B7280', marginBottom: 18, lineHeight: 1.5 }}>
+          Horas de conteúdo gratuito sobre estruturação comercial, vendas e crescimento na plataforma da Full Sales System.
         </p>
 
         <form onSubmit={handleSubmit}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 18 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 14 }}>
+            {/* Col 1 */}
             <input
               type="text" placeholder="Seu nome completo"
               value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} required
             />
+            {/* Col 2 */}
             <input
               type="email" placeholder="Seu melhor e-mail"
               value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))} required
             />
+            {/* Col 1 */}
             <div style={{ display: 'flex', gap: 8 }}>
               <select
                 value={form.ddi}
                 onChange={e => setForm(p => ({ ...p, ddi: e.target.value }))}
-                style={{ width: 100, flexShrink: 0, color: '#0A0A0A' }}
+                style={{ width: 90, flexShrink: 0, color: '#0A0A0A' }}
               >
                 <option value="+55">🇧🇷 +55</option>
                 <option value="+351">🇵🇹 +351</option>
@@ -163,9 +166,10 @@ function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess
               <input
                 type="tel" placeholder="WhatsApp com DDD"
                 value={form.phone} onChange={e => setForm(p => ({ ...p, phone: e.target.value }))} required
-                style={{ flex: 1 }}
+                style={{ flex: 1, minWidth: 0 }}
               />
             </div>
+            {/* Col 2 */}
             <select
               value={form.jobTitle}
               onChange={e => setForm(p => ({ ...p, jobTitle: e.target.value }))}
@@ -180,6 +184,7 @@ function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess
               <option value="Prestador de Serviço/Freelancer">Prestador de Serviço/Freelancer</option>
               <option value="Colaborador/Funcionário">Colaborador/Funcionário</option>
             </select>
+            {/* Col 1 */}
             <select
               value={form.revenue}
               onChange={e => setForm(p => ({ ...p, revenue: e.target.value }))}
@@ -194,6 +199,7 @@ function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess
               <option value="Entre R$500 mil a R$1 milhão">Entre R$500 mil a R$1 milhão</option>
               <option value="Mais de R$1 milhão por mês">Mais de R$1 milhão por mês</option>
             </select>
+            {/* Col 2 */}
             <select
               value={form.segment}
               onChange={e => setForm(p => ({ ...p, segment: e.target.value }))}
