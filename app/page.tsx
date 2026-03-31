@@ -270,18 +270,18 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
       <div className="section-container" style={{ position: 'relative', maxWidth: 1200 }}>
         {/* Hero grid: desktop = 2 cols (text-top | video spanning 2 rows, buttons | video)
             mobile  = 1 col  (text-top → video → buttons, source order) */}
-        <div id="hero-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48 }}>
+        <div id="hero-grid" style={{ display: 'grid', gridTemplateColumns: '2fr 3fr', gap: 40 }}>
 
           {/* TEXT TOP  col 1 / row 1 */}
-          <div id="hero-text-top" style={{ textAlign: 'left', alignSelf: 'end', maxWidth: 500 }}>
+          <div id="hero-text-top" style={{ textAlign: 'left', alignSelf: 'end' }}>
             <h1 className="animate-fade-up" style={{
               animationDelay: '70ms',
-              fontSize: 'clamp(22px, 3vw, 40px)',
+              fontSize: 'clamp(18px, 2.3vw, 30px)',
               fontWeight: 800,
-              lineHeight: 1.08,
+              lineHeight: 1.1,
               letterSpacing: '-0.035em',
               color: '#0A0A0A',
-              marginBottom: 20,
+              marginBottom: 16,
             }}>
               O conteúdo que já estruturou o comercial de mais de{' '}
               <span style={{ background: 'linear-gradient(90deg, #E01515, #1E52E8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
@@ -291,17 +291,16 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
             </h1>
             <p className="animate-fade-up" style={{
               animationDelay: '140ms',
-              fontSize: 'clamp(15px, 1.6vw, 18px)',
+              fontSize: 'clamp(13px, 1.3vw, 15px)',
               color: '#525252',
               lineHeight: 1.65,
-              maxWidth: 570,
             }}>
               Aprenda gratuitamente a construir um sistema comercial com previsibilidade, escala e liberdade com quem fez R$40M em dois anos de operação.
             </p>
           </div>
 
           {/* VIDEO  col 2 / rows 1+2 (desktop); between text and buttons (mobile via source order) */}
-          <FadeUp style={{ gridRow: 'span 2', alignSelf: 'center' }} >
+          <FadeUp style={{ gridRow: 'span 2', alignSelf: 'start' }} >
             <div id="hero-video" style={{
               position: 'relative',
               borderRadius: 14,
