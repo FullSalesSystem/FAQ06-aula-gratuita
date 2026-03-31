@@ -268,39 +268,53 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 500, background: 'radial-gradient(ellipse at 30% top, rgba(224,21,21,0.05) 0%, transparent 65%)', pointerEvents: 'none' }} />
 
       <div className="section-container" style={{ position: 'relative', maxWidth: 1200 }}>
-        {/* Hero grid: desktop = 2 cols (text-top | video spanning 2 rows, buttons | video)
-            mobile  = 1 col  (text-top → video → buttons, source order) */}
-        <div id="hero-grid" style={{ display: 'grid', gridTemplateColumns: '2fr 3fr', gap: 40 }}>
+        {/* Hero grid: desktop = 2 cols (left: text+button flex | right: video matching height)
+            mobile  = 1 col  (text → video → button, source order) */}
+        <div id="hero-grid" style={{ display: 'grid', gridTemplateColumns: '2fr 3fr', gap: 40, alignItems: 'stretch' }}>
 
-          {/* TEXT TOP  col 1 / row 1 */}
-          <div id="hero-text-top" style={{ textAlign: 'left', alignSelf: 'end' }}>
-            <h1 className="animate-fade-up" style={{
-              animationDelay: '70ms',
-              fontSize: 'clamp(18px, 2.3vw, 30px)',
-              fontWeight: 800,
-              lineHeight: 1.1,
-              letterSpacing: '-0.035em',
-              color: '#0A0A0A',
-              marginBottom: 16,
-            }}>
-              O conteúdo que já estruturou o comercial de mais de{' '}
-              <span style={{ background: 'linear-gradient(90deg, #E01515, #1E52E8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                600 empresas
-              </span>{' '}
-              agora gratuito para você
-            </h1>
-            <p className="animate-fade-up" style={{
-              animationDelay: '140ms',
-              fontSize: 'clamp(13px, 1.3vw, 15px)',
-              color: '#525252',
-              lineHeight: 1.65,
-            }}>
-              Aprenda gratuitamente a construir um sistema comercial com previsibilidade, escala e liberdade com quem fez R$40M em dois anos de operação.
-            </p>
+          {/* LEFT COL: text + button stacked */}
+          <div id="hero-left" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: 24 }}>
+            <div id="hero-text-top" style={{ textAlign: 'left' }}>
+              <h1 className="animate-fade-up" style={{
+                animationDelay: '70ms',
+                fontSize: 'clamp(16px, 2vw, 26px)',
+                fontWeight: 800,
+                lineHeight: 1.15,
+                letterSpacing: '-0.03em',
+                color: '#0A0A0A',
+                marginBottom: 12,
+              }}>
+                O conteúdo que já estruturou o comercial de mais de{' '}
+                <span style={{ background: 'linear-gradient(90deg, #E01515, #1E52E8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                  600 empresas
+                </span>{' '}
+                agora gratuito para você
+              </h1>
+              <p className="animate-fade-up" style={{
+                animationDelay: '140ms',
+                fontSize: 'clamp(12px, 1.2vw, 14px)',
+                color: '#525252',
+                lineHeight: 1.65,
+              }}>
+                Aprenda gratuitamente a construir um sistema comercial com previsibilidade, escala e liberdade com quem fez R$40M em dois anos de operação.
+              </p>
+            </div>
+
+            {/* BUTTONS */}
+            <div id="hero-buttons" className="animate-fade-up" style={{ animationDelay: '200ms', display: 'flex', flexWrap: 'wrap', gap: 12 }}>
+              {/* Botão original oculto temporariamente */}
+              <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 14, padding: '12px 24px', width: '100%', visibility: 'hidden', position: 'absolute', left: -9999 }}>
+                Acessar Full Sales Flix <IconArrow />
+              </button>
+              {/* Botão Playlist YouTube temporário */}
+              <a href={YOUTUBE_PLAYLIST_URL} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, backgroundColor: '#E01515', color: '#ffffff', fontWeight: 800, fontSize: 14, padding: '12px 24px', borderRadius: 8, width: '100%', textDecoration: 'none', boxSizing: 'border-box' as const }}>
+                <IconYouTube /> Playlist no YouTube
+              </a>
+            </div>
           </div>
 
-          {/* VIDEO  col 2 / rows 1+2 (desktop); between text and buttons (mobile via source order) */}
-          <FadeUp style={{ gridRow: 'span 2', alignSelf: 'start' }} >
+          {/* VIDEO  col 2 — mesma altura da coluna esquerda */}
+          <FadeUp style={{ alignSelf: 'stretch', height: '100%' }} >
             <div id="hero-video" style={{
               position: 'relative',
               borderRadius: 14,
@@ -308,7 +322,7 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
               border: '1px solid rgba(0,0,0,0.09)',
               boxShadow: '0 24px 64px rgba(0,0,0,0.11), 0 4px 16px rgba(0,0,0,0.06)',
               background: '#000',
-              aspectRatio: '16/9',
+              height: '100%',
             }}>
               {/* Thumbnail + overlay */}
               {!active && (
@@ -364,25 +378,13 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
             </div>
           </FadeUp>
 
-          {/* BUTTONS  col 1 / row 2 */}
-          <div id="hero-buttons" className="animate-fade-up" style={{ animationDelay: '200ms', display: 'flex', flexWrap: 'wrap', gap: 12, alignSelf: 'start', maxWidth: 500 }}>
-            {/* Botão original oculto temporariamente */}
-            <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 16, padding: '15px 32px', width: '100%', visibility: 'hidden', position: 'absolute', left: -9999 }}>
-              Acessar Full Sales Flix <IconArrow />
-            </button>
-            {/* Botão Playlist YouTube temporário */}
-            <a href={YOUTUBE_PLAYLIST_URL} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, backgroundColor: '#E01515', color: '#ffffff', fontWeight: 800, fontSize: 16, padding: '15px 32px', borderRadius: 8, width: '100%', maxWidth: 400, textDecoration: 'none', boxSizing: 'border-box' as const }}>
-              <IconYouTube /> Playlist no YouTube
-            </a>
-          </div>
 
         </div>
       </div>
       <style>{`
         @media (max-width: 768px) {
           #hero-grid { grid-template-columns: 1fr !important; gap: 24px !important; }
-          #hero-text-top { margin-bottom: 0 !important; }
-          #hero-video { grid-row: auto !important; }
+          #hero-left { gap: 20px !important; }
         }
       `}</style>
     </section>
