@@ -882,7 +882,13 @@ function HomeContent() {
     setShowPopup(true)
   }, [])
 
-  const openPopup = () => setShowPopup(true)
+  const openPopup = () => {
+    if (hasAccess) {
+      window.open(FSSFLIX_URL, '_blank')
+    } else {
+      setShowPopup(true)
+    }
+  }
   const closePopup = () => setShowPopup(false)
   const handleSuccess = () => setHasAccess(true)
 
