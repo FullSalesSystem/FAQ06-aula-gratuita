@@ -130,7 +130,7 @@ function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess
         </div>
 
         <h2 style={{ fontSize: 'clamp(17px, 2.4vw, 21px)', fontWeight: 800, color: '#0A0A0A', marginBottom: 6, letterSpacing: '-0.025em', lineHeight: 1.3 }}>
-          Libere seu acesso a nossa <span style={{ color: '#E01515' }}>primeira aula gratuita</span>
+          Libere seu acesso gratuito ao <span style={{ color: '#E01515' }}>Full Sales Academy</span>
         </h2>
         <p style={{ fontSize: 13, color: '#6B7280', marginBottom: 18, lineHeight: 1.5 }}>
           Cadastre-se uma única vez e tenha acesso a horas de conteúdo gratuito sobre estruturação comercial, vendas e crescimento na plataforma da Full Sales System.
