@@ -100,13 +100,14 @@ function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess
     <div
       style={{
         position: 'fixed', inset: 0, zIndex: 1000,
-        background: 'rgba(0,0,0,0.52)',
+        background: 'rgba(0,0,0,0.6)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         padding: 20,
-        backdropFilter: 'blur(4px)',
+        backdropFilter: 'blur(8px)',
       }}
     >
       <div
+        onClick={e => e.stopPropagation()}
         style={{
           background: '#fff', borderRadius: 18, padding: 'clamp(24px, 4vw, 36px)',
           maxWidth: 520, width: '100%', position: 'relative',
@@ -862,8 +863,9 @@ function StickyMobileCTA({ onOpenPopup }: { onOpenPopup: () => void }) {
    PAGE
 ───────────────────────────────────────────── */
 function HomeContent() {
-  const [showPopup, setShowPopup] = useState(false)
-  const [hasAccess, setHasAccess] = useState(false)
+  const [hasAccess, setHasAccess] = useState(() => {
+    try { return !!sessionStorage.getItem('fss_registered') } catch { return false }
+  })
   const searchParams = useSearchParams()
 
   const utm = useMemo<UtmParams>(() => {
@@ -876,25 +878,14 @@ function HomeContent() {
     return params
   }, [searchParams])
 
-  useEffect(() => {
-    if (sessionStorage.getItem('fss_registered')) setHasAccess(true)
-    if (sessionStorage.getItem('fss_popup')) return
-    setShowPopup(true)
-  }, [])
-
   const openPopup = () => {
-    if (hasAccess) {
-      window.open(FSSFLIX_URL, '_blank')
-    } else {
-      setShowPopup(true)
-    }
+    if (hasAccess) window.open(FSSFLIX_URL, '_blank')
   }
-  const closePopup = () => setShowPopup(false)
   const handleSuccess = () => setHasAccess(true)
 
   return (
     <main style={{ backgroundColor: '#FFFFFF', color: '#0A0A0A', overflowX: 'hidden' }}>
-      {showPopup && <LeadPopup onClose={closePopup} onSuccess={handleSuccess} utm={utm} />}
+      {!hasAccess && <LeadPopup onClose={() => {}} onSuccess={handleSuccess} utm={utm} />}
       <Navbar onOpenPopup={openPopup} />
       <HeroSection onOpenPopup={openPopup} hasAccess={hasAccess} />
       <FlixCTASection onOpenPopup={openPopup} />
