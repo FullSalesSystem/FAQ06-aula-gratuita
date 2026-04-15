@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+// O fluxo n8n (com integrações Curseduca) pode levar >15s.
+// Default do Vercel Hobby é 10s; estendemos para 60s.
+export const maxDuration = 60
+
 /**
  * POST /api/register
  *
@@ -50,12 +54,13 @@ export async function POST(req: NextRequest) {
     utm_term,
   }
 
-  // Aguarda até 15s pela resposta do n8n (o fluxo leva ~10s para
-  // gerar e retornar a variável `url_acesso`).
+  // Aguarda até 45s pela resposta do n8n. O fluxo no n8n é longo
+  // (inclui integrações Curseduca) e pode demorar >15s antes de
+  // retornar a variável `url_acesso`.
   let urlAcesso: string | undefined
   try {
     const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), 15000)
+    const timeoutId = setTimeout(() => controller.abort(), 45000)
 
     const webhookRes = await fetch('https://responsefss.fullsalessystem.com.br/webhook/e44e7b84-7751-48e9-aaab-1f250c02b40b', {
       method: 'POST',
@@ -64,27 +69,36 @@ export async function POST(req: NextRequest) {
       signal: controller.signal,
     })
     clearTimeout(timeoutId)
-    console.log('[register] Webhook response:', webhookRes.status)
+    console.log('[register] Webhook response status:', webhookRes.status)
 
-    if (webhookRes.ok) {
+    // Lê o corpo como texto primeiro pra conseguirmos diagnosticar
+    // tanto respostas JSON quanto texto puro / HTML / vazio.
+    const rawBody = await webhookRes.text()
+    console.log('[register] Webhook raw body:', rawBody.slice(0, 2000))
+
+    if (webhookRes.ok && rawBody) {
       try {
-        const data = await webhookRes.json()
+        const data = JSON.parse(rawBody)
         const payload = Array.isArray(data) ? data[0] : data
         urlAcesso =
           payload?.url_acesso ||
           payload?.urlAcesso ||
-          payload?.data?.url_acesso
+          payload?.access_url ||
+          payload?.url ||
+          payload?.data?.url_acesso ||
+          payload?.json?.url_acesso
         if (urlAcesso) {
           console.log('[register] url_acesso recebida do n8n:', urlAcesso)
         } else {
-          console.warn('[register] n8n respondeu sem url_acesso:', payload)
+          console.warn('[register] n8n respondeu sem url_acesso. payload=', JSON.stringify(payload))
         }
       } catch (e) {
-        console.error('[register] Webhook JSON parse error:', e)
+        console.error('[register] Webhook JSON parse error:', (e as Error).message, '| body=', rawBody.slice(0, 500))
       }
     }
   } catch (err) {
-    console.error('[register] Webhook error:', err)
+    const e = err as Error
+    console.error('[register] Webhook error:', e.name, '|', e.message)
   }
 
   const apiKey = process.env.CURSEDUCA_API_KEY
