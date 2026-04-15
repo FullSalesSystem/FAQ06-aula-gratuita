@@ -69,10 +69,35 @@ interface UtmParams {
   utm_term?: string
 }
 
-function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess: () => void; utm: UtmParams }) {
+/** Mensagens progressivas mostradas durante a submissão (~22s).
+ *  Cada entrada define o tempo mínimo (em segundos) em que fica ativa. */
+const LOADING_STAGES = [
+  { at: 0,  title: 'Enviando seus dados...',            subtitle: 'Estamos validando suas informações.' },
+  { at: 4,  title: 'Criando seu acesso...',              subtitle: 'Configurando seu perfil no Full Sales Academy.' },
+  { at: 10, title: 'Preparando seu ambiente...',         subtitle: 'Matriculando você nos conteúdos gratuitos.' },
+  { at: 17, title: 'Estamos quase lá...',                subtitle: 'Só mais alguns instantes para liberar seu acesso.' },
+]
+/** Duração esperada (em segundos) para calcular a barra de progresso. */
+const LOADING_EXPECTED_SECONDS = 22
+
+function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess: (urlAcesso?: string) => void; utm: UtmParams }) {
   const [form, setForm] = useState({ name: '', email: '', phone: '', ddi: '+55', jobTitle: '', revenue: '', segment: '' })
   const [loading, setLoading] = useState(false)
+  const [elapsed, setElapsed] = useState(0)
   const [step, setStep] = useState(1)
+
+  // Conta segundos desde o início do loading para alternar mensagens
+  // e mover a barra de progresso.
+  useEffect(() => {
+    if (!loading) { setElapsed(0); return }
+    const interval = setInterval(() => setElapsed(e => e + 1), 1000)
+    return () => clearInterval(interval)
+  }, [loading])
+
+  const currentStage = LOADING_STAGES.reduce(
+    (acc, stage) => (elapsed >= stage.at ? stage : acc),
+    LOADING_STAGES[0]
+  )
 
   const handleNext = (e: FormEvent) => {
     e.preventDefault()
@@ -82,16 +107,29 @@ function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setLoading(true)
+    let urlAcesso: string | undefined
     try {
-      await fetch('/api/register', {
+      // O n8n leva ~10s para processar e retornar a `url_acesso`.
+      // O fetch aguarda naturalmente pela resposta (timeout de 15s no server).
+      const res = await fetch('/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...form, ...utm }),
       })
+      const data = await res.json().catch(() => ({}))
+      if (typeof data?.webhook_duration_ms === 'number') {
+        console.log(`[FSS] Webhook n8n respondeu em ${data.webhook_duration_ms}ms (${(data.webhook_duration_ms / 1000).toFixed(1)}s)`)
+      }
+      if (typeof data?.url_acesso === 'string' && data.url_acesso) {
+        urlAcesso = data.url_acesso
+      }
     } catch { /* fail silently */ }
     sessionStorage.setItem('fss_popup', '1')
     sessionStorage.setItem('fss_registered', '1')
-    onSuccess()
+    if (urlAcesso) {
+      try { sessionStorage.setItem('fss_access_url', urlAcesso) } catch {}
+    }
+    onSuccess(urlAcesso)
     onClose()
     setLoading(false)
   }
@@ -115,6 +153,9 @@ function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess
           animation: 'fadeUp 0.45s cubic-bezier(0.22,1,0.36,1) both',
         }}
       >
+        {loading ? (
+          <LoadingView stage={currentStage} elapsed={elapsed} />
+        ) : (<>
         {/* Header: logo + step indicator */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
           <img src="/logo-fss.png" alt="Full Sales System" style={{ height: 38, width: 'auto', display: 'block' }} />
@@ -269,7 +310,107 @@ function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess
             </p>
           </form>
         )}
+        </>)}
       </div>
+    </div>
+  )
+}
+
+/* ─────────────────────────────────────────────
+   LOADING VIEW (exibida durante a submissão ~22s)
+───────────────────────────────────────────── */
+function LoadingView({ stage, elapsed }: { stage: { title: string; subtitle: string }; elapsed: number }) {
+  const progress = Math.min((elapsed / LOADING_EXPECTED_SECONDS) * 100, 96)
+  return (
+    <div style={{ textAlign: 'center', padding: '12px 4px 4px' }}>
+      {/* Logo */}
+      <img
+        src="/logo-fss.png"
+        alt="Full Sales System"
+        style={{ height: 40, width: 'auto', display: 'block', margin: '0 auto 26px' }}
+      />
+
+      {/* Spinner vermelho */}
+      <div style={{ position: 'relative', width: 72, height: 72, margin: '0 auto 28px' }}>
+        <div style={{
+          position: 'absolute', inset: 0,
+          border: '4px solid rgba(224, 21, 21, 0.12)',
+          borderTop: '4px solid #E01515',
+          borderRadius: '50%',
+          animation: 'fss-spin 0.95s linear infinite',
+        }} />
+        <div style={{
+          position: 'absolute', inset: 14,
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(224,21,21,0.18) 0%, rgba(224,21,21,0) 70%)',
+          animation: 'fss-pulse 1.8s ease-in-out infinite',
+        }} />
+      </div>
+
+      {/* Mensagem progressiva — key força re-render p/ disparar animação */}
+      <h3
+        key={stage.title}
+        style={{
+          fontSize: 'clamp(18px, 2.4vw, 22px)',
+          fontWeight: 800,
+          color: '#0A0A0A',
+          marginBottom: 8,
+          letterSpacing: '-0.025em',
+          lineHeight: 1.3,
+          animation: 'fss-fade-in 0.45s ease both',
+        }}
+      >
+        {stage.title}
+      </h3>
+      <p
+        key={stage.subtitle}
+        style={{
+          fontSize: 14,
+          color: '#6B7280',
+          margin: '0 auto 26px',
+          maxWidth: 380,
+          lineHeight: 1.55,
+          animation: 'fss-fade-in 0.45s ease 0.05s both',
+        }}
+      >
+        {stage.subtitle}
+      </p>
+
+      {/* Barra de progresso */}
+      <div style={{
+        width: '100%',
+        height: 6,
+        background: '#F3F4F6',
+        borderRadius: 999,
+        overflow: 'hidden',
+        marginBottom: 14,
+      }}>
+        <div style={{
+          width: `${progress}%`,
+          height: '100%',
+          background: 'linear-gradient(90deg, #E01515 0%, #FF3B3B 100%)',
+          borderRadius: 999,
+          transition: 'width 0.9s ease',
+        }} />
+      </div>
+
+      <p style={{ fontSize: 12, color: '#9CA3AF', marginBottom: 4, lineHeight: 1.5 }}>
+        Por favor, não feche esta janela. Isso leva cerca de {LOADING_EXPECTED_SECONDS} segundos.
+      </p>
+
+      <style>{`
+        @keyframes fss-spin {
+          to { transform: rotate(360deg); }
+        }
+        @keyframes fss-pulse {
+          0%, 100% { opacity: 0.6; transform: scale(0.95); }
+          50% { opacity: 1; transform: scale(1.08); }
+        }
+        @keyframes fss-fade-in {
+          from { opacity: 0; transform: translateY(6px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
     </div>
   )
 }
@@ -866,6 +1007,9 @@ function HomeContent() {
   const [hasAccess, setHasAccess] = useState(() => {
     try { return !!sessionStorage.getItem('fss_registered') } catch { return false }
   })
+  const [accessUrl, setAccessUrl] = useState<string>(() => {
+    try { return sessionStorage.getItem('fss_access_url') || FSSFLIX_URL } catch { return FSSFLIX_URL }
+  })
   const searchParams = useSearchParams()
 
   const utm = useMemo<UtmParams>(() => {
@@ -879,9 +1023,12 @@ function HomeContent() {
   }, [searchParams])
 
   const openPopup = () => {
-    if (hasAccess) window.open(FSSFLIX_URL, '_blank')
+    if (hasAccess) window.open(accessUrl, '_blank')
   }
-  const handleSuccess = () => setHasAccess(true)
+  const handleSuccess = (urlAcesso?: string) => {
+    if (urlAcesso) setAccessUrl(urlAcesso)
+    setHasAccess(true)
+  }
 
   return (
     <main style={{ backgroundColor: '#FFFFFF', color: '#0A0A0A', overflowX: 'hidden' }}>

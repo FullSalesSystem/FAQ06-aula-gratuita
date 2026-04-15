@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+// O fluxo n8n (com integrações Curseduca) pode levar >15s.
+// Default do Vercel Hobby é 10s; estendemos para 60s.
+export const maxDuration = 60
+
 /**
  * POST /api/register
  *
@@ -50,15 +54,56 @@ export async function POST(req: NextRequest) {
     utm_term,
   }
 
+  // Aguarda até 30s pela resposta do n8n. Em produção o fluxo
+  // leva ~21-22s (inclui integrações Curseduca).
+  let urlAcesso: string | undefined
+  const t0 = Date.now()
+  let webhookDurationMs: number | undefined
   try {
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 30000)
+
     const webhookRes = await fetch('https://responsefss.fullsalessystem.com.br/webhook/e44e7b84-7751-48e9-aaab-1f250c02b40b', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(webhookPayload),
+      signal: controller.signal,
     })
-    console.log('[register] Webhook response:', webhookRes.status)
+    clearTimeout(timeoutId)
+    const tAfterFetch = Date.now()
+    console.log(`[register] Webhook headers recebidos em ${tAfterFetch - t0}ms (status ${webhookRes.status})`)
+
+    // Lê o corpo como texto primeiro pra conseguirmos diagnosticar
+    // tanto respostas JSON quanto texto puro / HTML / vazio.
+    const rawBody = await webhookRes.text()
+    const tAfterBody = Date.now()
+    webhookDurationMs = tAfterBody - t0
+    console.log(`[register] Webhook body lido em ${tAfterBody - tAfterFetch}ms (total ${webhookDurationMs}ms). body=`, rawBody.slice(0, 2000))
+
+    if (webhookRes.ok && rawBody) {
+      try {
+        const data = JSON.parse(rawBody)
+        const payload = Array.isArray(data) ? data[0] : data
+        urlAcesso =
+          payload?.url_acesso ||
+          payload?.urlAcesso ||
+          payload?.access_url ||
+          payload?.url ||
+          payload?.data?.url_acesso ||
+          payload?.json?.url_acesso
+        if (urlAcesso) {
+          console.log('[register] url_acesso recebida do n8n:', urlAcesso)
+        } else {
+          console.warn('[register] n8n respondeu sem url_acesso. payload=', JSON.stringify(payload))
+        }
+      } catch (e) {
+        console.error('[register] Webhook JSON parse error:', (e as Error).message, '| body=', rawBody.slice(0, 500))
+      }
+    }
   } catch (err) {
-    console.error('[register] Webhook error:', err)
+    const e = err as Error
+    webhookDurationMs = Date.now() - t0
+    console.error(`[register] Webhook error após ${webhookDurationMs}ms:`, e.name, '|', e.message)
   }
 
   const apiKey = process.env.CURSEDUCA_API_KEY
@@ -77,7 +122,7 @@ export async function POST(req: NextRequest) {
       revenue,
       utm: { utm_source, utm_medium, utm_campaign, utm_content, utm_term },
     })
-    return NextResponse.json({ ok: true, note: 'curseduca_not_configured' })
+    return NextResponse.json({ ok: true, note: 'curseduca_not_configured', url_acesso: urlAcesso, webhook_duration_ms: webhookDurationMs })
   }
 
   const headers: Record<string, string> = {
@@ -106,7 +151,7 @@ export async function POST(req: NextRequest) {
       const errorText = await memberRes.text()
       console.error('[register] Curseduca /members error:', memberRes.status, errorText)
       // Retornamos ok mesmo assim para não bloquear o usuário
-      return NextResponse.json({ ok: true, note: 'member_creation_failed' })
+      return NextResponse.json({ ok: true, note: 'member_creation_failed', url_acesso: urlAcesso, webhook_duration_ms: webhookDurationMs })
     }
 
     // ── 2. Matricular no conteúdo (opcional) ─────────────────────────────
@@ -124,10 +169,10 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    return NextResponse.json({ ok: true })
+    return NextResponse.json({ ok: true, url_acesso: urlAcesso, webhook_duration_ms: webhookDurationMs })
   } catch (err) {
     console.error('[register] Fetch error:', err)
     // Falha silenciosa: não bloquear o usuário por erro de integração
-    return NextResponse.json({ ok: true, note: 'fetch_error' })
+    return NextResponse.json({ ok: true, note: 'fetch_error', url_acesso: urlAcesso, webhook_duration_ms: webhookDurationMs })
   }
 }
