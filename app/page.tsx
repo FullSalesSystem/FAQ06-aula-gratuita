@@ -69,7 +69,7 @@ interface UtmParams {
   utm_term?: string
 }
 
-function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess: () => void; utm: UtmParams }) {
+function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess: (urlAcesso?: string) => void; utm: UtmParams }) {
   const [form, setForm] = useState({ name: '', email: '', phone: '', ddi: '+55', jobTitle: '', revenue: '', segment: '' })
   const [loading, setLoading] = useState(false)
   const [step, setStep] = useState(1)
@@ -82,16 +82,26 @@ function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setLoading(true)
+    let urlAcesso: string | undefined
     try {
-      await fetch('/api/register', {
+      // O n8n leva ~10s para processar e retornar a `url_acesso`.
+      // O fetch aguarda naturalmente pela resposta (timeout de 15s no server).
+      const res = await fetch('/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...form, ...utm }),
       })
+      const data = await res.json().catch(() => ({}))
+      if (typeof data?.url_acesso === 'string' && data.url_acesso) {
+        urlAcesso = data.url_acesso
+      }
     } catch { /* fail silently */ }
     sessionStorage.setItem('fss_popup', '1')
     sessionStorage.setItem('fss_registered', '1')
-    onSuccess()
+    if (urlAcesso) {
+      try { sessionStorage.setItem('fss_access_url', urlAcesso) } catch {}
+    }
+    onSuccess(urlAcesso)
     onClose()
     setLoading(false)
   }
@@ -866,6 +876,9 @@ function HomeContent() {
   const [hasAccess, setHasAccess] = useState(() => {
     try { return !!sessionStorage.getItem('fss_registered') } catch { return false }
   })
+  const [accessUrl, setAccessUrl] = useState<string>(() => {
+    try { return sessionStorage.getItem('fss_access_url') || FSSFLIX_URL } catch { return FSSFLIX_URL }
+  })
   const searchParams = useSearchParams()
 
   const utm = useMemo<UtmParams>(() => {
@@ -879,9 +892,12 @@ function HomeContent() {
   }, [searchParams])
 
   const openPopup = () => {
-    if (hasAccess) window.open(FSSFLIX_URL, '_blank')
+    if (hasAccess) window.open(accessUrl, '_blank')
   }
-  const handleSuccess = () => setHasAccess(true)
+  const handleSuccess = (urlAcesso?: string) => {
+    if (urlAcesso) setAccessUrl(urlAcesso)
+    setHasAccess(true)
+  }
 
   return (
     <main style={{ backgroundColor: '#FFFFFF', color: '#0A0A0A', overflowX: 'hidden' }}>
