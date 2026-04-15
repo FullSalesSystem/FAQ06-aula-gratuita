@@ -18,13 +18,14 @@ export const maxDuration = 60
  */
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => ({}))
-  const { name, email, phone, ddi, jobTitle, revenue, utm_source, utm_medium, utm_campaign, utm_content, utm_term } = body as {
+  const { name, email, phone, ddi, jobTitle, revenue, segment, utm_source, utm_medium, utm_campaign, utm_content, utm_term } = body as {
     name?: string
     email?: string
     phone?: string
     ddi?: string
     jobTitle?: string
     revenue?: string
+    segment?: string
     utm_source?: string
     utm_medium?: string
     utm_campaign?: string
@@ -47,6 +48,7 @@ export async function POST(req: NextRequest) {
     phone: fullPhone,
     jobTitle,
     revenue,
+    segment,
     utm_source,
     utm_medium,
     utm_campaign,
@@ -104,6 +106,42 @@ export async function POST(req: NextRequest) {
     const e = err as Error
     webhookDurationMs = Date.now() - t0
     console.error(`[register] Webhook error após ${webhookDurationMs}ms:`, e.name, '|', e.message)
+  }
+
+  // ── 2º Webhook: payload completo do pop-up + UTMs ─────────────────────────
+  // Enviado APÓS o primeiro webhook (que é crítico para o cadastro na Curseduca).
+  const popupPayload = {
+    name,
+    email,
+    phone: fullPhone,
+    ddi,
+    phone_raw: phone,
+    jobTitle,
+    revenue,
+    segment,
+    url_acesso: urlAcesso,
+    utm_source,
+    utm_medium,
+    utm_campaign,
+    utm_content,
+    utm_term,
+    submitted_at: new Date().toISOString(),
+  }
+
+  try {
+    const controller2 = new AbortController()
+    const timeoutId2 = setTimeout(() => controller2.abort(), 15000)
+    const popupRes = await fetch('https://responsefss.fullsalessystem.com.br/webhook/d6664d0f-2794-424c-93db-e2ec8e9ac25f', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(popupPayload),
+      signal: controller2.signal,
+    })
+    clearTimeout(timeoutId2)
+    console.log(`[register] Popup webhook enviado. status=${popupRes.status}`)
+  } catch (err) {
+    const e = err as Error
+    console.error('[register] Popup webhook error:', e.name, '|', e.message)
   }
 
   const apiKey = process.env.CURSEDUCA_API_KEY
