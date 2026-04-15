@@ -117,9 +117,6 @@ function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess
         body: JSON.stringify({ ...form, ...utm }),
       })
       const data = await res.json().catch(() => ({}))
-      if (typeof data?.webhook_duration_ms === 'number') {
-        console.log(`[FSS] Webhook n8n respondeu em ${data.webhook_duration_ms}ms (${(data.webhook_duration_ms / 1000).toFixed(1)}s)`)
-      }
       if (typeof data?.url_acesso === 'string' && data.url_acesso) {
         urlAcesso = data.url_acesso
       }
