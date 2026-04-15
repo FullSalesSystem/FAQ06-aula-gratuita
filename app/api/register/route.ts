@@ -54,15 +54,14 @@ export async function POST(req: NextRequest) {
     utm_term,
   }
 
-  // Aguarda até 45s pela resposta do n8n. O fluxo no n8n é longo
-  // (inclui integrações Curseduca) e pode demorar >15s antes de
-  // retornar a variável `url_acesso`.
+  // Aguarda até 30s pela resposta do n8n. Em produção o fluxo
+  // leva ~21-22s (inclui integrações Curseduca).
   let urlAcesso: string | undefined
   const t0 = Date.now()
   let webhookDurationMs: number | undefined
   try {
     const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), 45000)
+    const timeoutId = setTimeout(() => controller.abort(), 30000)
 
     const webhookRes = await fetch('https://responsefss.fullsalessystem.com.br/webhook/e44e7b84-7751-48e9-aaab-1f250c02b40b', {
       method: 'POST',
