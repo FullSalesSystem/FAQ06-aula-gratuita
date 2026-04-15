@@ -58,6 +58,7 @@ export async function POST(req: NextRequest) {
   // (inclui integrações Curseduca) e pode demorar >15s antes de
   // retornar a variável `url_acesso`.
   let urlAcesso: string | undefined
+  const t0 = Date.now()
   try {
     const controller = new AbortController()
     const timeoutId = setTimeout(() => controller.abort(), 45000)
@@ -69,12 +70,14 @@ export async function POST(req: NextRequest) {
       signal: controller.signal,
     })
     clearTimeout(timeoutId)
-    console.log('[register] Webhook response status:', webhookRes.status)
+    const tAfterFetch = Date.now()
+    console.log(`[register] Webhook headers recebidos em ${tAfterFetch - t0}ms (status ${webhookRes.status})`)
 
     // Lê o corpo como texto primeiro pra conseguirmos diagnosticar
     // tanto respostas JSON quanto texto puro / HTML / vazio.
     const rawBody = await webhookRes.text()
-    console.log('[register] Webhook raw body:', rawBody.slice(0, 2000))
+    const tAfterBody = Date.now()
+    console.log(`[register] Webhook body lido em ${tAfterBody - tAfterFetch}ms (total ${tAfterBody - t0}ms). body=`, rawBody.slice(0, 2000))
 
     if (webhookRes.ok && rawBody) {
       try {
@@ -98,7 +101,7 @@ export async function POST(req: NextRequest) {
     }
   } catch (err) {
     const e = err as Error
-    console.error('[register] Webhook error:', e.name, '|', e.message)
+    console.error(`[register] Webhook error após ${Date.now() - t0}ms:`, e.name, '|', e.message)
   }
 
   const apiKey = process.env.CURSEDUCA_API_KEY
