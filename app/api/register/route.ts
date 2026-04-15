@@ -59,6 +59,7 @@ export async function POST(req: NextRequest) {
   // retornar a variável `url_acesso`.
   let urlAcesso: string | undefined
   const t0 = Date.now()
+  let webhookDurationMs: number | undefined
   try {
     const controller = new AbortController()
     const timeoutId = setTimeout(() => controller.abort(), 45000)
@@ -77,7 +78,8 @@ export async function POST(req: NextRequest) {
     // tanto respostas JSON quanto texto puro / HTML / vazio.
     const rawBody = await webhookRes.text()
     const tAfterBody = Date.now()
-    console.log(`[register] Webhook body lido em ${tAfterBody - tAfterFetch}ms (total ${tAfterBody - t0}ms). body=`, rawBody.slice(0, 2000))
+    webhookDurationMs = tAfterBody - t0
+    console.log(`[register] Webhook body lido em ${tAfterBody - tAfterFetch}ms (total ${webhookDurationMs}ms). body=`, rawBody.slice(0, 2000))
 
     if (webhookRes.ok && rawBody) {
       try {
@@ -101,7 +103,8 @@ export async function POST(req: NextRequest) {
     }
   } catch (err) {
     const e = err as Error
-    console.error(`[register] Webhook error após ${Date.now() - t0}ms:`, e.name, '|', e.message)
+    webhookDurationMs = Date.now() - t0
+    console.error(`[register] Webhook error após ${webhookDurationMs}ms:`, e.name, '|', e.message)
   }
 
   const apiKey = process.env.CURSEDUCA_API_KEY
@@ -120,7 +123,7 @@ export async function POST(req: NextRequest) {
       revenue,
       utm: { utm_source, utm_medium, utm_campaign, utm_content, utm_term },
     })
-    return NextResponse.json({ ok: true, note: 'curseduca_not_configured', url_acesso: urlAcesso })
+    return NextResponse.json({ ok: true, note: 'curseduca_not_configured', url_acesso: urlAcesso, webhook_duration_ms: webhookDurationMs })
   }
 
   const headers: Record<string, string> = {
@@ -149,7 +152,7 @@ export async function POST(req: NextRequest) {
       const errorText = await memberRes.text()
       console.error('[register] Curseduca /members error:', memberRes.status, errorText)
       // Retornamos ok mesmo assim para não bloquear o usuário
-      return NextResponse.json({ ok: true, note: 'member_creation_failed', url_acesso: urlAcesso })
+      return NextResponse.json({ ok: true, note: 'member_creation_failed', url_acesso: urlAcesso, webhook_duration_ms: webhookDurationMs })
     }
 
     // ── 2. Matricular no conteúdo (opcional) ─────────────────────────────
@@ -167,10 +170,10 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    return NextResponse.json({ ok: true, url_acesso: urlAcesso })
+    return NextResponse.json({ ok: true, url_acesso: urlAcesso, webhook_duration_ms: webhookDurationMs })
   } catch (err) {
     console.error('[register] Fetch error:', err)
     // Falha silenciosa: não bloquear o usuário por erro de integração
-    return NextResponse.json({ ok: true, note: 'fetch_error', url_acesso: urlAcesso })
+    return NextResponse.json({ ok: true, note: 'fetch_error', url_acesso: urlAcesso, webhook_duration_ms: webhookDurationMs })
   }
 }
