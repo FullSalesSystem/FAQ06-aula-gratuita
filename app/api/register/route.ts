@@ -18,11 +18,12 @@ export const maxDuration = 60
  */
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => ({}))
-  const { name, email, phone, ddi, jobTitle, revenue, utm_source, utm_medium, utm_campaign, utm_content, utm_term } = body as {
+  const { name, email, phone, ddi, segment, jobTitle, revenue, utm_source, utm_medium, utm_campaign, utm_content, utm_term } = body as {
     name?: string
     email?: string
     phone?: string
     ddi?: string
+    segment?: string
     jobTitle?: string
     revenue?: string
     utm_source?: string
@@ -45,6 +46,7 @@ export async function POST(req: NextRequest) {
     name,
     email,
     phone: fullPhone,
+    segment,
     jobTitle,
     revenue,
     utm_source,
@@ -52,6 +54,31 @@ export async function POST(req: NextRequest) {
     utm_campaign,
     utm_content,
     utm_term,
+  }
+
+  // ── Webhook secundário (fire-and-forget) ────────────────────────────────────
+  // Envia os mesmos dados para o segundo webhook sem bloquear a resposta.
+  try {
+    const secondaryController = new AbortController()
+    const secondaryTimeoutId = setTimeout(() => secondaryController.abort(), 30000)
+    fetch('https://responsefss.fullsalessystem.com.br/webhook/d6664d0f-2794-424c-93db-e2ec8e9ac25f', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(webhookPayload),
+      signal: secondaryController.signal,
+    })
+      .then(res => {
+        clearTimeout(secondaryTimeoutId)
+        console.log(`[register] Webhook secundário (d6664d0f) status ${res.status}`)
+      })
+      .catch(err => {
+        clearTimeout(secondaryTimeoutId)
+        const e = err as Error
+        console.error('[register] Webhook secundário (d6664d0f) error:', e.name, '|', e.message)
+      })
+  } catch (err) {
+    const e = err as Error
+    console.error('[register] Webhook secundário (d6664d0f) setup error:', e.name, '|', e.message)
   }
 
   // Aguarda até 30s pela resposta do n8n. Em produção o fluxo
@@ -63,7 +90,7 @@ export async function POST(req: NextRequest) {
     const controller = new AbortController()
     const timeoutId = setTimeout(() => controller.abort(), 30000)
 
-    const webhookRes = await fetch('https://responsefss.fullsalessystem.com.br/webhook/d6664d0f-2794-424c-93db-e2ec8e9ac25f', {
+    const webhookRes = await fetch('https://responsefss.fullsalessystem.com.br/webhook/e44e7b84-7751-48e9-aaab-1f250c02b40b', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(webhookPayload),
@@ -118,6 +145,7 @@ export async function POST(req: NextRequest) {
       name,
       email,
       phone: ddi && phone ? `${ddi}${phone}` : phone,
+      segment,
       jobTitle,
       revenue,
       utm: { utm_source, utm_medium, utm_campaign, utm_content, utm_term },
