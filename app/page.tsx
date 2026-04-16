@@ -498,22 +498,23 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
 
             {/* BUTTONS */}
             <div id="hero-buttons" className="animate-fade-up" style={{ animationDelay: '200ms', display: 'flex', flexWrap: 'wrap', gap: 12 }}>
-              <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 14, padding: '12px 24px', width: '100%' }}>
+              <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 17, padding: '15px 28px', width: '100%' }}>
                 Acessar Full Sales Academy <IconArrow />
               </button>
             </div>
           </div>
 
-          {/* VIDEO  col 2 — mesma altura da coluna esquerda */}
-          <FadeUp style={{ alignSelf: 'stretch', height: '100%' }} >
+          {/* VIDEO  col 2 — proporção 16:9 para que a thumb fique perfeita */}
+          <FadeUp style={{ alignSelf: 'center', width: '100%' }} >
             <div id="hero-video" style={{
               position: 'relative',
+              width: '100%',
+              aspectRatio: '16 / 9',
               borderRadius: 14,
               overflow: 'hidden',
               border: '1px solid rgba(0,0,0,0.09)',
-              boxShadow: '0 24px 64px rgba(0,0,0,0.11), 0 4px 16px rgba(0,0,0,0.06)',
+              boxShadow: '0 24px 64px rgba(0,0,0,0.35), 0 4px 16px rgba(0,0,0,0.2)',
               background: '#000',
-              height: '100%',
             }}>
               {/* Thumbnail + overlay */}
               {!active && (
@@ -756,10 +757,6 @@ function AboutSection() {
                 style={{ objectFit: 'cover', objectPosition: 'center top' }}
               />
               <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '40%', background: 'linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 100%)', pointerEvents: 'none' }} />
-              <div style={{ position: 'absolute', bottom: 24, right: 24, background: '#fff', border: '1px solid rgba(0,0,0,0.09)', borderRadius: 10, padding: '10px 14px', boxShadow: '0 4px 12px rgba(0,0,0,0.08)' }}>
-                <div style={{ fontSize: 18, fontWeight: 800, color: '#16A34A' }}>R$30M</div>
-                <div style={{ fontSize: 11, color: '#9CA3AF', marginTop: 2 }}>no 2º ano</div>
-              </div>
             </div>
           </FadeUp>
 
@@ -801,6 +798,7 @@ const pressItems = [
     outlet: 'Estadão',
     title: 'Full Sales System: três mentes empreendedoras que transformaram desafios em estratégias',
     quote: 'Nos últimos anos, ajudamos os nossos clientes a girar mais de 500 milhões de faturamento em vendas. Mas quando olhamos para esses números enxergamos algo ainda maior: não foi só o aumento nas vendas, mas eles se tornaram protagonistas da própria empresa.',
+    image: '/press-foto-estadao.webp',
     logo: '/estadao-novo.png',
     logoBg: '#FFFFFF',
   },
@@ -808,6 +806,7 @@ const pressItems = [
     outlet: 'Valor Econômico',
     title: 'Full Sales System aponta o caminho para crescer em 2026 com estratégias mais inteligentes',
     quote: 'Empresas que adotam estruturas de vendas inteligentes e estratégias orgânicas robustas tendem a prosperar em cenários de incerteza, criando vantagem competitiva mesmo com menor investimento direto em mídia.',
+    image: '/press-foto-valor-economico.webp',
     logo: '/press-valor-economico.png',
     logoBg: '#FFFFFF',
   },
@@ -815,6 +814,7 @@ const pressItems = [
     outlet: 'Pequenas Empresas & Grandes Negócios',
     title: 'Yuri Barbosa, Vinícius de Sá e Matheus Garcia trilharam caminhos distintos, mas marcados pelo mesmo ponto de virada',
     quote: 'Os sócios desenvolveram uma metodologia própria, capaz de integrar processos comerciais eficientes, automação estratégica e construção de autoridade digital. O objetivo não era apenas aumentar vendas, mas criar um modelo de crescimento consistente.',
+    image: '/press-foto-pequenas-empresas.webp',
     logo: '/press-pequenas-empresas.png',
     logoBg: '#D35400',
   },
@@ -867,15 +867,25 @@ function PressSection() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16 }}>
           {pressItems.map((item, i) => (
             <FadeUp key={i} delay={i * 80}>
-              <div className="card" style={{ padding: '28px 26px', height: '100%', display: 'flex', flexDirection: 'column' }}>
-                <div style={{ fontSize: 32, color: '#E01515', fontWeight: 900, lineHeight: 1, marginBottom: 10, fontFamily: 'Georgia, serif' }}>"</div>
-                <p style={{ fontSize: 13, fontWeight: 700, color: '#0A0A0A', lineHeight: 1.4, marginBottom: 12 }}>
-                  {item.title}
-                </p>
-                <p style={{ fontSize: 14, color: '#374151', lineHeight: 1.65, marginBottom: 20, fontStyle: 'italic', flexGrow: 1 }}>
-                  {item.quote}
-                </p>
-                <p style={{ fontSize: 13, fontWeight: 700, color: '#0A0A0A' }}>{item.outlet}</p>
+              <div className="card" style={{ padding: 0, height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+                <div style={{
+                  width: '100%',
+                  aspectRatio: '16 / 11',
+                  backgroundImage: `url(${item.image})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'top center',
+                  borderBottom: '1px solid rgba(0,0,0,0.06)',
+                }} />
+                <div style={{ padding: '24px 26px 28px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                  <div style={{ fontSize: 32, color: '#E01515', fontWeight: 900, lineHeight: 1, marginBottom: 10, fontFamily: 'Georgia, serif' }}>"</div>
+                  <p style={{ fontSize: 13, fontWeight: 700, color: '#0A0A0A', lineHeight: 1.4, marginBottom: 12 }}>
+                    {item.title}
+                  </p>
+                  <p style={{ fontSize: 14, color: '#374151', lineHeight: 1.65, marginBottom: 20, fontStyle: 'italic', flexGrow: 1 }}>
+                    {item.quote}
+                  </p>
+                  <p style={{ fontSize: 13, fontWeight: 700, color: '#0A0A0A' }}>{item.outlet}</p>
+                </div>
               </div>
             </FadeUp>
           ))}
