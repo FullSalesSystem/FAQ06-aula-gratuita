@@ -700,15 +700,25 @@ const areas2 = [
 /* ─────────────────────────────────────────────
    CTA BLOCK reutilizavel (botao + tagline)
 ───────────────────────────────────────────── */
-function CtaBlock({ onOpenPopup, taglineColor = '#8893A8' }: { onOpenPopup: () => void; taglineColor?: string }) {
+function CtaBlock({ onOpenPopup, taglineColor = '#8893A8', fullWidth = false, showTagline = true, align = 'center' }: { onOpenPopup: () => void; taglineColor?: string; fullWidth?: boolean; showTagline?: boolean; align?: 'center' | 'flex-start' }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
-      <button onClick={onOpenPopup} className="btn-primary cta-block-btn" style={{ fontSize: 18, padding: '20px 52px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: align, gap: 10 }}>
+      <button
+        onClick={onOpenPopup}
+        className="btn-primary cta-block-btn"
+        style={{
+          fontSize: 18,
+          padding: '20px 52px',
+          ...(fullWidth ? { width: '100%', maxWidth: 'none' } : {}),
+        }}
+      >
         Conheça o Full Sales Flix <IconArrow />
       </button>
-      <p style={{ fontSize: 13, color: taglineColor, margin: 0 }}>
-        Gratuito · Acesso imediato
-      </p>
+      {showTagline && (
+        <p style={{ fontSize: 13, color: taglineColor, margin: 0 }}>
+          Gratuito · Acesso imediato
+        </p>
+      )}
     </div>
   )
 }
@@ -777,11 +787,11 @@ function AboutSection({ onOpenPopup }: { onOpenPopup: () => void }) {
       backgroundRepeat: 'no-repeat',
     }}>
       <div className="section-container">
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 56, alignItems: 'center' }}>
+        <div id="about-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 56, alignItems: 'stretch' }}>
           {/* Photo */}
-          <FadeUp>
-            <div style={{
-              width: '100%', maxWidth: 420, aspectRatio: '4/5',
+          <FadeUp style={{ height: '100%' }}>
+            <div id="about-photo" style={{
+              width: '100%', height: '100%', minHeight: 480,
               borderRadius: 16, position: 'relative', overflow: 'hidden',
               boxShadow: '0 4px 20px rgba(0,0,0,0.35)',
             }}>
@@ -817,12 +827,16 @@ function AboutSection({ onOpenPopup }: { onOpenPopup: () => void }) {
                 </div>
               ))}
             </div>
-            <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-              <CtaBlock onOpenPopup={onOpenPopup} taglineColor="#8893A8" />
-            </div>
+            <CtaBlock onOpenPopup={onOpenPopup} fullWidth showTagline={false} align="flex-start" />
           </FadeUp>
         </div>
       </div>
+      <style>{`
+        @media (max-width: 768px) {
+          #about-grid { align-items: start !important; }
+          #about-photo { aspect-ratio: 4/5; max-width: 420px; min-height: 0 !important; margin: 0 auto; }
+        }
+      `}</style>
     </section>
   )
 }
