@@ -63,7 +63,7 @@ export async function POST(req: NextRequest) {
     const controller = new AbortController()
     const timeoutId = setTimeout(() => controller.abort(), 30000)
 
-    const webhookRes = await fetch('https://responsefss.fullsalessystem.com.br/webhook/e44e7b84-7751-48e9-aaab-1f250c02b40b', {
+    const webhookRes = await fetch('https://responsefss.fullsalessystem.com.br/webhook/d6664d0f-2794-424c-93db-e2ec8e9ac25f', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(webhookPayload),
