@@ -708,8 +708,9 @@ function CtaBlock({ onOpenPopup, taglineColor = '#8893A8', fullWidth = false, sh
         className="btn-primary cta-block-btn"
         style={{
           fontSize: 18,
-          padding: '20px 52px',
-          ...(fullWidth ? { width: '100%', maxWidth: 'none' } : {}),
+          padding: '20px 60px',
+          minWidth: 520,
+          ...(fullWidth ? { width: '100%', maxWidth: 'none', minWidth: 0 } : {}),
         }}
       >
         Conheça o Full Sales Flix <IconArrow />
