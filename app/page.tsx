@@ -1063,7 +1063,7 @@ function ExitIntentPopup({ onClose, onCTA }: { onClose: () => void; onCTA: () =>
           letterSpacing: '-0.025em',
           marginBottom: 14,
         }}>
-          Não vá embora antes de acessar o{' '}
+          Não vá embora antes de acessar gratuitamente o{' '}
           <span style={{ color: '#E01515' }}>Full Sales Flix</span>
         </h2>
 
@@ -1084,13 +1084,14 @@ function ExitIntentPopup({ onClose, onCTA }: { onClose: () => void; onCTA: () =>
           onClick={onCTA}
           className="btn-primary"
           style={{
-            fontSize: 15,
-            padding: '15px 28px',
+            fontSize: 'clamp(11px, 1.3vw, 13px)',
+            padding: '14px 22px',
             borderRadius: 999,
             width: '100%',
-            maxWidth: 360,
+            maxWidth: 380,
             textTransform: 'uppercase',
-            letterSpacing: '0.03em',
+            letterSpacing: '0.02em',
+            whiteSpace: 'nowrap',
           }}
         >
           Acesse gratuitamente o Full Sales Flix →
@@ -1098,7 +1099,7 @@ function ExitIntentPopup({ onClose, onCTA }: { onClose: () => void; onCTA: () =>
 
         {/* Below button */}
         <p style={{ fontSize: 12, color: '#8893A8', marginTop: 12 }}>
-          Gratuito / Acesso imediato
+          Gratuito • Acesso imediato
         </p>
       </div>
     </div>
