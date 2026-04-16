@@ -252,6 +252,16 @@ label {
   .hide-mobile {
     display: none !important;
   }
+  /* CtaBlock button (secao 2, TrustSection e AboutSection) -
+     encolhe proporcionalmente, permite quebra e ocupa a largura
+     do container ate 360px em mobile */
+  .cta-block-btn {
+    font-size: 15px !important;
+    padding: 15px 22px !important;
+    white-space: normal !important;
+    width: 100%;
+    max-width: 360px;
+  }
   /* Submit do LeadPopup: permite encolher proporcionalmente em mobile
      e, se nao couber ao lado do Voltar, o wrapper (flexWrap) empilha. */
   #lead-submit-btn {
