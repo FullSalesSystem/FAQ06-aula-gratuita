@@ -549,10 +549,10 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
               )}
               {/* Unlocked play state */}
               {hasAccess && !active && (
-                <div onClick={() => setActive(true)} style={{ position: 'absolute', inset: 0, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2 }}>
-                  <div style={{ width: 68, height: 68, borderRadius: '50%', background: '#E01515', display: 'flex', alignItems: 'center', justifyContent: 'center', animation: 'pulse-ring 2.4s ease infinite' }}
-                    onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.08)')}
-                    onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}>
+                <div onClick={() => setActive(true)} style={{ position: 'absolute', inset: 0, cursor: 'pointer', zIndex: 2 }}>
+                  <div style={{ position: 'absolute', top: '70%', left: '50%', transform: 'translate(-50%, -50%)', width: 68, height: 68, borderRadius: '50%', background: '#E01515', display: 'flex', alignItems: 'center', justifyContent: 'center', animation: 'pulse-ring 2.4s ease infinite' }}
+                    onMouseEnter={e => (e.currentTarget.style.transform = 'translate(-50%, -50%) scale(1.08)')}
+                    onMouseLeave={e => (e.currentTarget.style.transform = 'translate(-50%, -50%) scale(1)')}>
                     <svg width="24" height="24" viewBox="0 0 26 26" fill="none"><path d="M8 5.5L21 13L8 20.5V5.5Z" fill="white" /></svg>
                   </div>
                   <div style={{ position: 'absolute', bottom: 12, right: 12, background: 'rgba(0,0,0,0.72)', color: '#fff', fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 4 }}>45 min</div>
