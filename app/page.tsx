@@ -453,8 +453,8 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
   }, [active])
 
   return (
-    <section style={{
-      paddingTop: 80, paddingBottom: 80,
+    <section id="hero-section" style={{
+      paddingTop: 120, paddingBottom: 80,
       position: 'relative',
       overflow: 'hidden',
     }}>
@@ -569,8 +569,10 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
       </div>
       <style>{`
         @media (max-width: 768px) {
-          #hero-grid { grid-template-columns: 1fr !important; gap: 24px !important; }
-          #hero-left { gap: 20px !important; }
+          #hero-section { padding-top: 96px !important; padding-bottom: 56px !important; }
+          #hero-grid { grid-template-columns: 1fr !important; gap: 20px !important; }
+          #hero-left { gap: 18px !important; min-height: 0 !important; }
+          #hero-buttons button { font-size: 15px !important; padding: 13px 20px !important; }
         }
       `}</style>
     </section>
@@ -578,7 +580,7 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
 }
 function FlixCTASection({ onOpenPopup }: { onOpenPopup: () => void }) {
   return (
-    <section className="section-pad" style={{ position: 'relative' }}>
+    <section id="flix-cta-section" className="section-pad" style={{ position: 'relative' }}>
       <div className="section-container" style={{ maxWidth: 800, textAlign: 'center' }}>
         <FadeUp>
           <h2 style={{ fontSize: 'clamp(26px, 4vw, 46px)', fontWeight: 800, letterSpacing: '-0.03em', color: '#FFFFFF', lineHeight: 1.1, marginBottom: 18 }}>
@@ -607,7 +609,7 @@ function FlixCTASection({ onOpenPopup }: { onOpenPopup: () => void }) {
           </div>
 
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center' }}>
-            <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 16, padding: '16px 40px' }}>
+            <button onClick={onOpenPopup} className="btn-primary" id="flix-cta-btn" style={{ fontSize: 16, padding: '16px 40px' }}>
               Acesse gratuitamente o Full Sales Flix <IconArrow />
             </button>
           </div>
@@ -617,6 +619,11 @@ function FlixCTASection({ onOpenPopup }: { onOpenPopup: () => void }) {
           </p>
         </FadeUp>
       </div>
+      <style>{`
+        @media (max-width: 768px) {
+          #flix-cta-btn { font-size: 14px !important; padding: 14px 22px !important; width: 100%; max-width: 360px; }
+        }
+      `}</style>
     </section>
   )
 }
@@ -1078,6 +1085,7 @@ function ExitIntentPopup({ onClose, onCTA }: { onClose: () => void; onCTA: () =>
         {/* CTA button */}
         <button
           onClick={onCTA}
+          id="exit-intent-cta"
           className="btn-primary"
           style={{
             fontSize: 'clamp(11px, 1.3vw, 13px)',
@@ -1098,6 +1106,11 @@ function ExitIntentPopup({ onClose, onCTA }: { onClose: () => void; onCTA: () =>
           Gratuito • Acesso imediato
         </p>
       </div>
+      <style>{`
+        @media (max-width: 480px) {
+          #exit-intent-cta { white-space: normal !important; letter-spacing: 0 !important; padding: 14px 18px !important; }
+        }
+      `}</style>
     </div>
   )
 }
