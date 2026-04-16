@@ -487,15 +487,18 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
                 color: '#C7D0E0',
                 lineHeight: 1.6,
               }}>
-                O Full Sales Flix é a plataforma de conteúdo gratuito da FSS.
+                O Full Sales Flix é a plataforma completa com todo o conteúdo que já estruturou o processo comercial de mais de 600 empresas.
               </p>
             </div>
 
             {/* BUTTONS */}
-            <div id="hero-buttons" className="animate-fade-up" style={{ animationDelay: '200ms', display: 'flex', flexWrap: 'wrap', gap: 12 }}>
+            <div id="hero-buttons" className="animate-fade-up" style={{ animationDelay: '200ms', display: 'flex', flexDirection: 'column', gap: 8 }}>
               <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 17, padding: '15px 28px', width: '100%' }}>
                 Acesse gratuitamente o Full Sales Flix <IconArrow />
               </button>
+              <p style={{ fontSize: 13, color: '#8893A8', textAlign: 'center', margin: 0 }}>
+                Gratuito · Acesso imediato
+              </p>
             </div>
           </div>
 
