@@ -454,7 +454,7 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
 
   return (
     <section id="hero-section" style={{
-      paddingTop: 120, paddingBottom: 80,
+      paddingTop: 120, paddingBottom: 40,
       position: 'relative',
       overflow: 'hidden',
     }}>
@@ -572,7 +572,7 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
       </div>
       <style>{`
         @media (max-width: 768px) {
-          #hero-section { padding-top: 96px !important; padding-bottom: 56px !important; }
+          #hero-section { padding-top: 96px !important; padding-bottom: 28px !important; }
           #hero-grid { grid-template-columns: 1fr !important; gap: 20px !important; }
           #hero-left { gap: 18px !important; min-height: 0 !important; }
           #hero-buttons button { font-size: 15px !important; padding: 13px 20px !important; }
@@ -583,7 +583,7 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
 }
 function FlixCTASection({ onOpenPopup }: { onOpenPopup: () => void }) {
   return (
-    <section id="flix-cta-section" className="section-pad" style={{ position: 'relative' }}>
+    <section id="flix-cta-section" className="section-pad" style={{ position: 'relative', paddingTop: 60 }}>
       <div className="section-container" style={{ maxWidth: 1000, textAlign: 'center' }}>
         <FadeUp>
           <h2 style={{ fontSize: 'clamp(22px, 3.2vw, 36px)', fontWeight: 800, letterSpacing: '-0.025em', color: '#FFFFFF', lineHeight: 1.18, marginBottom: 18 }}>
@@ -627,6 +627,7 @@ function FlixCTASection({ onOpenPopup }: { onOpenPopup: () => void }) {
       </div>
       <style>{`
         @media (max-width: 768px) {
+          #flix-cta-section { padding-top: 40px !important; }
           #flix-cta-btn { font-size: 14px !important; padding: 14px 22px !important; width: 100%; max-width: 360px; }
         }
       `}</style>
