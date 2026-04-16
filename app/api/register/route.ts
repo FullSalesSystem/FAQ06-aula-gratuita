@@ -56,30 +56,26 @@ export async function POST(req: NextRequest) {
     utm_term,
   }
 
-  // ── Webhook secundário (fire-and-forget) ────────────────────────────────────
-  // Envia os mesmos dados para o segundo webhook sem bloquear a resposta.
-  try {
-    const secondaryController = new AbortController()
-    const secondaryTimeoutId = setTimeout(() => secondaryController.abort(), 30000)
-    fetch('https://responsefss.fullsalessystem.com.br/webhook/d6664d0f-2794-424c-93db-e2ec8e9ac25f', {
+  // ── Webhook secundário (paralelo) ───────────────────────────────────────────
+  // Dispara o envio ao segundo webhook em paralelo ao primário. A promise
+  // é aguardada mais adiante (antes do retorno) para garantir que em
+  // ambiente serverless a requisição não seja cortada.
+  const secondaryWebhookPromise = fetch(
+    'https://responsefss.fullsalessystem.com.br/webhook/d6664d0f-2794-424c-93db-e2ec8e9ac25f',
+    {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(webhookPayload),
-      signal: secondaryController.signal,
+    }
+  )
+    .then(async res => {
+      const text = await res.text().catch(() => '')
+      console.log(`[register] Webhook secundário (d6664d0f) status ${res.status} body=`, text.slice(0, 500))
     })
-      .then(res => {
-        clearTimeout(secondaryTimeoutId)
-        console.log(`[register] Webhook secundário (d6664d0f) status ${res.status}`)
-      })
-      .catch(err => {
-        clearTimeout(secondaryTimeoutId)
-        const e = err as Error
-        console.error('[register] Webhook secundário (d6664d0f) error:', e.name, '|', e.message)
-      })
-  } catch (err) {
-    const e = err as Error
-    console.error('[register] Webhook secundário (d6664d0f) setup error:', e.name, '|', e.message)
-  }
+    .catch(err => {
+      const e = err as Error
+      console.error('[register] Webhook secundário (d6664d0f) error:', e.name, '|', e.message)
+    })
 
   // Aguarda até 30s pela resposta do n8n. Em produção o fluxo
   // leva ~21-22s (inclui integrações Curseduca).
@@ -150,6 +146,7 @@ export async function POST(req: NextRequest) {
       revenue,
       utm: { utm_source, utm_medium, utm_campaign, utm_content, utm_term },
     })
+    await secondaryWebhookPromise
     return NextResponse.json({ ok: true, note: 'curseduca_not_configured', url_acesso: urlAcesso, webhook_duration_ms: webhookDurationMs })
   }
 
@@ -179,6 +176,7 @@ export async function POST(req: NextRequest) {
       const errorText = await memberRes.text()
       console.error('[register] Curseduca /members error:', memberRes.status, errorText)
       // Retornamos ok mesmo assim para não bloquear o usuário
+      await secondaryWebhookPromise
       return NextResponse.json({ ok: true, note: 'member_creation_failed', url_acesso: urlAcesso, webhook_duration_ms: webhookDurationMs })
     }
 
@@ -197,10 +195,12 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    await secondaryWebhookPromise
     return NextResponse.json({ ok: true, url_acesso: urlAcesso, webhook_duration_ms: webhookDurationMs })
   } catch (err) {
     console.error('[register] Fetch error:', err)
     // Falha silenciosa: não bloquear o usuário por erro de integração
+    await secondaryWebhookPromise
     return NextResponse.json({ ok: true, note: 'fetch_error', url_acesso: urlAcesso, webhook_duration_ms: webhookDurationMs })
   }
 }
