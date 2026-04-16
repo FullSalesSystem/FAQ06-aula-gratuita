@@ -481,7 +481,7 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
                 marginBottom: 12,
               }}>
                 O conteúdo que já estruturou o comercial de mais de{' '}
-                <span style={{ background: 'linear-gradient(90deg, #FF4747, #5B8CFF)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                <span style={{ color: '#E01515' }}>
                   600 empresas
                 </span>{' '}
                 agora gratuito para você
@@ -519,13 +519,12 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
               {!active && (
                 <div style={{
                   position: 'absolute', inset: 0,
-                  backgroundImage: `url(https://img.youtube.com/vi/8GPRCLbxNRA/maxresdefault.jpg)`,
+                  backgroundImage: `url(/thumb-aula-gratuita.png)`,
                   backgroundSize: 'cover', backgroundPosition: 'center',
-                  ...(hasAccess ? {} : { filter: 'blur(4px)', transform: 'scale(1.06)' }),
                 }} />
               )}
               {!active && (
-                <div style={{ position: 'absolute', inset: 0, background: hasAccess ? 'rgba(0,0,0,0.35)' : 'rgba(0,0,0,0.62)' }} />
+                <div style={{ position: 'absolute', inset: 0, background: hasAccess ? 'rgba(0,0,0,0.20)' : 'rgba(0,0,0,0.30)' }} />
               )}
               {/* Locked state */}
               {!hasAccess && !active && (
@@ -583,14 +582,14 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
 }
 function FlixCTASection({ onOpenPopup }: { onOpenPopup: () => void }) {
   return (
-    <section className="section-pad" style={{ background: '#F8F9FA', borderTop: '1px solid rgba(0,0,0,0.06)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+    <section className="section-pad" style={{ backgroundColor: '#0F1627' }}>
       <div className="section-container" style={{ maxWidth: 800, textAlign: 'center' }}>
         <FadeUp>
-          <h2 style={{ fontSize: 'clamp(26px, 4vw, 46px)', fontWeight: 800, letterSpacing: '-0.03em', color: '#0A0A0A', lineHeight: 1.1, marginBottom: 18 }}>
+          <h2 style={{ fontSize: 'clamp(26px, 4vw, 46px)', fontWeight: 800, letterSpacing: '-0.03em', color: '#FFFFFF', lineHeight: 1.1, marginBottom: 18 }}>
             Acesse gratuitamente todo o conteúdo da{' '}
             <span style={{ color: '#E01515' }}>Full Sales System</span>
           </h2>
-          <p style={{ fontSize: 'clamp(15px, 2vw, 18px)', color: '#525252', lineHeight: 1.65, maxWidth: 580, margin: '0 auto 36px' }}>
+          <p style={{ fontSize: 'clamp(15px, 2vw, 18px)', color: '#C7D0E0', lineHeight: 1.65, maxWidth: 580, margin: '0 auto 36px' }}>
             O Full Sales Academy é a plataforma de conteúdo gratuito da FSS. Aulas, frameworks e playbooks práticos para estruturar seu comercial, disponíveis para você agora.
           </p>
 
@@ -606,7 +605,7 @@ function FlixCTASection({ onOpenPopup }: { onOpenPopup: () => void }) {
             ].map((item, i) => (
               <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <IconCheck />
-                <span style={{ fontSize: 14, color: '#374151', fontWeight: 500 }}>{item}</span>
+                <span style={{ fontSize: 14, color: '#E5E9F2', fontWeight: 500 }}>{item}</span>
               </div>
             ))}
           </div>
@@ -617,7 +616,7 @@ function FlixCTASection({ onOpenPopup }: { onOpenPopup: () => void }) {
             </button>
           </div>
 
-          <p style={{ fontSize: 13, color: '#9CA3AF', marginTop: 14 }}>
+          <p style={{ fontSize: 13, color: '#8893A8', marginTop: 14 }}>
             Gratuito · Sem cartão de crédito · Acesso imediato após cadastro
           </p>
         </FadeUp>
@@ -677,7 +676,7 @@ function TrustSection() {
       <div className="section-container">
         <FadeUp style={{ textAlign: 'center', marginBottom: 52 }}>
           <h2 style={{ fontSize: 'clamp(24px, 4vw, 40px)', fontWeight: 800, letterSpacing: '-0.025em', color: '#0A0A0A', lineHeight: 1.12 }}>
-            +550 empresas já atuaram com a Full Sales System
+            Mais de 600 empresas já atuaram com a Full Sales System
           </h2>
           <p style={{ color: '#6B7280', fontSize: 16, marginTop: 12, maxWidth: 520, margin: '12px auto 0' }}>
             De escritórios de advocacia a empresas de tecnologia, em todos os segmentos
@@ -734,7 +733,13 @@ function TrustSection() {
 
 function AboutSection() {
   return (
-    <section className="section-pad" style={{ background: '#F8F9FA', borderTop: '1px solid rgba(0,0,0,0.06)' }}>
+    <section className="section-pad" style={{
+      backgroundColor: '#0F1627',
+      backgroundImage: 'url(/background-fss.png)',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+    }}>
       <div className="section-container">
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 56, alignItems: 'center' }}>
           {/* Photo */}
@@ -742,7 +747,7 @@ function AboutSection() {
             <div style={{
               width: '100%', maxWidth: 420, aspectRatio: '4/5',
               borderRadius: 16, position: 'relative', overflow: 'hidden',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.12)',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.35)',
             }}>
               <Image
                 src="/socios.png"
@@ -760,35 +765,23 @@ function AboutSection() {
 
           {/* Bio */}
           <FadeUp delay={120}>
-            <h2 style={{ fontSize: 'clamp(24px, 3.5vw, 38px)', fontWeight: 800, letterSpacing: '-0.025em', color: '#0A0A0A', lineHeight: 1.14, marginBottom: 16 }}>
+            <h2 style={{ fontSize: 'clamp(24px, 3.5vw, 38px)', fontWeight: 800, letterSpacing: '-0.025em', color: '#FFFFFF', lineHeight: 1.14, marginBottom: 16 }}>
               A Full Sales System é uma empresa de{' '}
               <span style={{ color: '#E01515' }}>estruturação comercial</span>, não de cursos
             </h2>
-            <p style={{ fontSize: 15, color: '#525252', lineHeight: 1.7, marginBottom: 24 }}>
-              Fundada por Vinícius de Sá, Yuri Barbosa e Matheus Garcia, a Full Sales System é uma consultoria especializada em equipes comerciais que ajuda empresas a otimizarem o ROI de seus funis de vendas. Com mais de 8 anos de experiência, a FSS acumula mais de 550 empresas aceleradas, mais de R$110 milhões em vendas próprias e mais de R$1 bilhão em faturamento gerado para seus clientes.
+            <p style={{ fontSize: 15, color: '#C7D0E0', lineHeight: 1.7, marginBottom: 24 }}>
+              Fundada por Vinícius de Sá, Yuri Barbosa e Matheus Garcia, a Full Sales System é uma consultoria especializada em equipes comerciais que ajuda empresas a otimizarem o ROI de seus funis de vendas. Com mais de 8 anos de experiência, a FSS acumula mais de 600 empresas aceleradas, mais de R$110 milhões em vendas próprias e mais de R$1 bilhão em faturamento gerado para seus clientes.
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 28 }}>
               {[
-                'Mais de 550 empresas aceleradas no Brasil, Portugal e EUA em segmentos como advocacia, contabilidade, saúde e tech',
+                'Mais de 600 empresas aceleradas no Brasil, Portugal e EUA em segmentos como advocacia, contabilidade, saúde e tech',
                 'Mais de R$1 bilhão em faturamento gerado para empresas aceleradas e mais de R$110 milhões em vendas próprias',
                 'NPS de 87 e nota de avaliação 9,44 com foco em resultado real, não só em conteúdo',
                 'Metodologia própria de 6 pilares que ativa todos os canais de receita da operação comercial',
               ].map((item, i) => (
                 <div key={i} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
                   <IconCheck />
-                  <p style={{ fontSize: 14, color: '#525252', lineHeight: 1.55 }}>{item}</p>
-                </div>
-              ))}
-            </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
-              {[
-                { label: '+8 anos', desc: 'de experiência' },
-                { label: '+550 empresas', desc: 'estruturadas' },
-                { label: 'Brasil · Portugal · EUA', desc: 'atuação global' },
-              ].map(t => (
-                <div key={t.label} style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)', borderRadius: 8, padding: '7px 14px', boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}>
-                  <div style={{ fontSize: 13, fontWeight: 700, color: '#0A0A0A' }}>{t.label}</div>
-                  <div style={{ fontSize: 11, color: '#9CA3AF', marginTop: 1 }}>{t.desc}</div>
+                  <p style={{ fontSize: 14, color: '#C7D0E0', lineHeight: 1.55 }}>{item}</p>
                 </div>
               ))}
             </div>
