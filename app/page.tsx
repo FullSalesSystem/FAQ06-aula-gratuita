@@ -483,11 +483,11 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
               </h1>
               <p className="animate-fade-up" style={{
                 animationDelay: '140ms',
-                fontSize: 'clamp(14px, 1.5vw, 17px)',
+                fontSize: 'clamp(14px, 1.6vw, 18px)',
                 color: '#C7D0E0',
-                lineHeight: 1.65,
+                lineHeight: 1.6,
               }}>
-                O mesmo sistema que gerou R$40M em 2 anos de operação e mais de R$500M para nossos clientes agora está disponível gratuitamente para você.
+                O Full Sales Flix é a plataforma de conteúdo gratuito da FSS.
               </p>
             </div>
 
@@ -583,12 +583,15 @@ function FlixCTASection({ onOpenPopup }: { onOpenPopup: () => void }) {
     <section id="flix-cta-section" className="section-pad" style={{ position: 'relative' }}>
       <div className="section-container" style={{ maxWidth: 800, textAlign: 'center' }}>
         <FadeUp>
-          <h2 style={{ fontSize: 'clamp(26px, 4vw, 46px)', fontWeight: 800, letterSpacing: '-0.03em', color: '#FFFFFF', lineHeight: 1.1, marginBottom: 18 }}>
-            Acesse gratuitamente todo o conteúdo da{' '}
-            <span style={{ color: '#E01515' }}>Full Sales System</span>
+          <h2 style={{ fontSize: 'clamp(22px, 3.2vw, 36px)', fontWeight: 800, letterSpacing: '-0.025em', color: '#FFFFFF', lineHeight: 1.18, marginBottom: 18 }}>
+            O mesmo sistema que gerou{' '}
+            <span style={{ color: '#E01515' }}>R$40M em 2 anos de operação</span>
+            {' '}e mais de{' '}
+            <span style={{ color: '#E01515' }}>R$500M para nossos clientes</span>
+            {' '}agora está disponível gratuitamente
           </h2>
-          <p style={{ fontSize: 'clamp(15px, 2vw, 18px)', color: '#C7D0E0', lineHeight: 1.65, maxWidth: 580, margin: '0 auto 36px' }}>
-            O Full Sales Flix é a plataforma de conteúdo gratuito da FSS. Aulas, frameworks e playbooks práticos para estruturar seu comercial, disponíveis para você agora.
+          <p style={{ fontSize: 'clamp(15px, 2vw, 18px)', color: '#C7D0E0', lineHeight: 1.65, maxWidth: 620, margin: '0 auto 36px' }}>
+            Aulas, frameworks e playbooks práticos para estruturar seu comercial, disponíveis para você agora.
           </p>
 
           {/* Features */}
