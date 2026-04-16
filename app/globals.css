@@ -258,6 +258,7 @@ label {
     white-space: normal !important;
     width: 100%;
     max-width: 360px;
+    min-width: 0 !important;
   }
   /* Submit do LeadPopup: permite encolher proporcionalmente em mobile
      e, se nao couber ao lado do Voltar, o wrapper (flexWrap) empilha. */
