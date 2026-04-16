@@ -919,7 +919,7 @@ function Footer({ onOpenPopup }: { onOpenPopup: () => void }) {
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: 40, marginBottom: 48 }}>
           <div style={{ maxWidth: 300 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-              <img src="/logo-fss.png" alt="Full Sales System" style={{ height: 40, width: 'auto', display: 'block' }} />
+              <img src="/logo-fss-branco.png" alt="Full Sales System" style={{ height: 40, width: 'auto', display: 'block' }} />
             </div>
             <p style={{ fontSize: 14, color: '#71717A', lineHeight: 1.65 }}>
               Estruturação comercial para empresas que já faturam e querem crescer com processo e previsibilidade.
