@@ -999,6 +999,114 @@ function StickyMobileCTA({ onOpenPopup }: { onOpenPopup: () => void }) {
 }
 
 /* ─────────────────────────────────────────────
+   EXIT INTENT POPUP
+───────────────────────────────────────────── */
+function ExitIntentPopup({ onClose, onCTA }: { onClose: () => void; onCTA: () => void }) {
+  return (
+    <div
+      onClick={onClose}
+      style={{
+        position: 'fixed', inset: 0, zIndex: 1100,
+        background: 'rgba(0,0,0,0.72)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        padding: 20,
+        backdropFilter: 'blur(8px)',
+      }}
+    >
+      <div
+        onClick={e => e.stopPropagation()}
+        style={{
+          backgroundColor: '#0F1627',
+          backgroundImage: 'url(/background-fss.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          borderRadius: 18,
+          padding: 'clamp(32px, 4vw, 48px) clamp(24px, 4vw, 44px)',
+          maxWidth: 640, width: '100%', position: 'relative',
+          boxShadow: '0 40px 80px rgba(0,0,0,0.5)',
+          animation: 'fadeUp 0.45s cubic-bezier(0.22,1,0.36,1) both',
+          textAlign: 'center',
+        }}
+      >
+        {/* Close X */}
+        <button
+          onClick={onClose}
+          aria-label="Fechar"
+          style={{
+            position: 'absolute', top: 14, right: 14,
+            background: 'transparent', border: 'none', cursor: 'pointer',
+            color: 'rgba(255,255,255,0.55)',
+            padding: 6, display: 'flex', alignItems: 'center', justifyContent: 'center',
+            transition: 'color 0.2s',
+          }}
+          onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.9)')}
+          onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.55)')}
+        >
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M6 6L18 18M6 18L18 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          </svg>
+        </button>
+
+        {/* Logo */}
+        <img
+          src="/logo-fss-branco.png"
+          alt="Full Sales System"
+          style={{ height: 56, width: 'auto', margin: '0 auto 28px', display: 'block' }}
+        />
+
+        {/* Title */}
+        <h2 style={{
+          fontSize: 'clamp(22px, 3.2vw, 34px)',
+          fontWeight: 800,
+          color: '#FFFFFF',
+          lineHeight: 1.2,
+          letterSpacing: '-0.025em',
+          marginBottom: 18,
+        }}>
+          Não vá embora antes de acessar o{' '}
+          <span style={{ color: '#E01515' }}>Full Sales Flix</span>
+        </h2>
+
+        {/* Subtitle */}
+        <p style={{
+          fontSize: 'clamp(14px, 1.7vw, 17px)',
+          color: '#C7D0E0',
+          lineHeight: 1.6,
+          marginBottom: 30,
+          maxWidth: 480,
+          margin: '0 auto 30px',
+        }}>
+          Tenha acesso a horas de conteúdo gratuito sobre estruturação comercial, vendas e crescimento para o seu negócio.
+        </p>
+
+        {/* CTA button */}
+        <button
+          onClick={onCTA}
+          className="btn-primary"
+          style={{
+            fontSize: 16,
+            padding: '18px 36px',
+            borderRadius: 999,
+            width: '100%',
+            maxWidth: 440,
+            textTransform: 'uppercase',
+            letterSpacing: '0.03em',
+          }}
+        >
+          Acessar Full Sales Flix →
+        </button>
+
+        {/* Below button */}
+        <p style={{ fontSize: 13, color: '#8893A8', marginTop: 16 }}>
+          Gratuito · Sem cartão de crédito · Acesso imediato
+        </p>
+      </div>
+    </div>
+  )
+}
+
+/* ─────────────────────────────────────────────
    PAGE
 ───────────────────────────────────────────── */
 function HomeContent() {
@@ -1008,6 +1116,8 @@ function HomeContent() {
   const [accessUrl, setAccessUrl] = useState<string>(() => {
     try { return sessionStorage.getItem('fss_access_url') || FSSFLIX_URL } catch { return FSSFLIX_URL }
   })
+  const [showExitIntent, setShowExitIntent] = useState(false)
+  const [exitIntentUsed, setExitIntentUsed] = useState(false)
   const searchParams = useSearchParams()
 
   const utm = useMemo<UtmParams>(() => {
@@ -1020,6 +1130,32 @@ function HomeContent() {
     return params
   }, [searchParams])
 
+  // UTM efetiva: quando o exit-intent foi usado, marca utm_content=faq06-popup
+  // (preserva qualquer utm_source original do anúncio)
+  const effectiveUtm = useMemo<UtmParams>(() => {
+    return exitIntentUsed ? { ...utm, utm_content: 'faq06-popup' } : utm
+  }, [utm, exitIntentUsed])
+
+  // Exit intent: dispara 1x por sessão quando o mouse sai pelo topo
+  // (e só se o usuário ainda não estiver cadastrado)
+  useEffect(() => {
+    if (hasAccess) return
+    try { if (sessionStorage.getItem('fss_exit_intent_shown') === '1') return } catch {}
+
+    let fired = false
+    const handler = (e: MouseEvent) => {
+      if (fired) return
+      // mouse saiu pela parte de cima da viewport (intenção de fechar a aba)
+      if (e.clientY <= 0) {
+        fired = true
+        try { sessionStorage.setItem('fss_exit_intent_shown', '1') } catch {}
+        setShowExitIntent(true)
+      }
+    }
+    document.documentElement.addEventListener('mouseleave', handler)
+    return () => document.documentElement.removeEventListener('mouseleave', handler)
+  }, [hasAccess])
+
   const openPopup = () => {
     if (hasAccess) window.open(accessUrl, '_blank')
   }
@@ -1027,10 +1163,17 @@ function HomeContent() {
     if (urlAcesso) setAccessUrl(urlAcesso)
     setHasAccess(true)
   }
+  const handleExitIntentCTA = () => {
+    setExitIntentUsed(true)
+    setShowExitIntent(false)
+  }
 
   return (
     <main style={{ backgroundColor: '#FFFFFF', color: '#0A0A0A', overflowX: 'hidden' }}>
-      {!hasAccess && <LeadPopup onClose={() => {}} onSuccess={handleSuccess} utm={utm} />}
+      {!hasAccess && <LeadPopup onClose={() => {}} onSuccess={handleSuccess} utm={effectiveUtm} />}
+      {showExitIntent && !hasAccess && (
+        <ExitIntentPopup onClose={() => setShowExitIntent(false)} onCTA={handleExitIntentCTA} />
+      )}
       <Navbar onOpenPopup={openPopup} />
       <HeroSection onOpenPopup={openPopup} hasAccess={hasAccess} />
       <FlixCTASection onOpenPopup={openPopup} />
