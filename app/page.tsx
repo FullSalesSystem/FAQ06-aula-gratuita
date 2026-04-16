@@ -640,21 +640,12 @@ function FlixCTASection({ onOpenPopup }: { onOpenPopup: () => void }) {
             ))}
           </div>
 
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center' }}>
-            <button onClick={onOpenPopup} className="btn-primary" id="flix-cta-btn" style={{ fontSize: 16, padding: '16px 40px' }}>
-              Acesse gratuitamente o Full Sales Flix <IconArrow />
-            </button>
-          </div>
-
-          <p style={{ fontSize: 13, color: '#8893A8', marginTop: 14 }}>
-            Gratuito · Acesso imediato
-          </p>
+          <CtaBlock onOpenPopup={onOpenPopup} taglineColor="#8893A8" />
         </FadeUp>
       </div>
       <style>{`
         @media (max-width: 768px) {
           #flix-cta-section { padding-top: 40px !important; }
-          #flix-cta-btn { font-size: 14px !important; padding: 14px 22px !important; width: 100%; max-width: 360px; }
         }
       `}</style>
     </section>
@@ -706,7 +697,23 @@ const areas2 = [
   { icon: '🎓', text: 'Educação' },
 ]
 
-function TrustSection() {
+/* ─────────────────────────────────────────────
+   CTA BLOCK reutilizavel (botao + tagline)
+───────────────────────────────────────────── */
+function CtaBlock({ onOpenPopup, taglineColor = '#8893A8' }: { onOpenPopup: () => void; taglineColor?: string }) {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
+      <button onClick={onOpenPopup} className="btn-primary cta-block-btn" style={{ fontSize: 18, padding: '20px 52px' }}>
+        Acesse <span className="hide-mobile">gratuitamente </span>o Full Sales Flix <IconArrow />
+      </button>
+      <p style={{ fontSize: 13, color: taglineColor, margin: 0 }}>
+        Gratuito · Acesso imediato
+      </p>
+    </div>
+  )
+}
+
+function TrustSection({ onOpenPopup }: { onOpenPopup: () => void }) {
   return (
     <section className="section-pad" style={{ background: '#FFFFFF' }}>
       <div className="section-container">
@@ -762,12 +769,15 @@ function TrustSection() {
             </div>
           </div>
         </FadeUp>
+        <FadeUp delay={160} style={{ marginTop: 56 }}>
+          <CtaBlock onOpenPopup={onOpenPopup} taglineColor="#6B7280" />
+        </FadeUp>
       </div>
     </section>
   )
 }
 
-function AboutSection() {
+function AboutSection({ onOpenPopup }: { onOpenPopup: () => void }) {
   return (
     <section className="section-pad" style={{
       backgroundColor: '#0F1627',
@@ -816,6 +826,9 @@ function AboutSection() {
                   <p style={{ fontSize: 14, color: '#C7D0E0', lineHeight: 1.55 }}>{item}</p>
                 </div>
               ))}
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+              <CtaBlock onOpenPopup={onOpenPopup} taglineColor="#8893A8" />
             </div>
           </FadeUp>
         </div>
@@ -1228,8 +1241,8 @@ function HomeContent() {
         <HeroSection onOpenPopup={openPopup} hasAccess={hasAccess} />
         <FlixCTASection onOpenPopup={openPopup} />
       </div>
-      <TrustSection />
-      <AboutSection />
+      <TrustSection onOpenPopup={openPopup} />
+      <AboutSection onOpenPopup={openPopup} />
       <PressSection />
       <Footer onOpenPopup={openPopup} />
       <StickyMobileCTA onOpenPopup={openPopup} />
