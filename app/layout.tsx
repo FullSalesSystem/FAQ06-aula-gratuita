@@ -9,7 +9,7 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'Estrutura Comercial do Zero | Aula Gratuita | Full Sales System',
+  title: 'Aula Gratuita FSS',
   description:
     'Aprenda como construir um sistema comercial que gera R$1M–2M/mês com previsibilidade. Aula gratuita com Vinícius de Sá — fundador da Full Sales System, responsável por estruturar mais de 600 operações comerciais.',
   keywords: [
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     'aula gratuita vendas',
   ],
   openGraph: {
-    title: 'Estrutura Comercial do Zero | Full Sales System',
+    title: 'Aula Gratuita FSS',
     description:
       'O sistema exato que gerou R$25,2M em 2 anos. Aula gratuita com Vinícius de Sá.',
     type: 'website',
