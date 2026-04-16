@@ -246,3 +246,10 @@ label {
 .marquee-track:hover {
   animation-play-state: paused;
 }
+
+/* Utility: esconder spans/palavras especificas apenas em mobile */
+@media (max-width: 768px) {
+  .hide-mobile {
+    display: none !important;
+  }
+}

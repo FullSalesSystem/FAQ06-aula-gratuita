@@ -296,7 +296,7 @@ function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess
                 className="btn-primary"
                 style={{ flex: 1, fontSize: 15, opacity: loading ? 0.7 : 1 }}
               >
-                {loading ? 'Liberando...' : 'Acesse gratuitamente o Full Sales Flix →'}
+                {loading ? 'Liberando...' : (<>Acesse <span className="hide-mobile">gratuitamente </span>o Full Sales Flix →</>)}
               </button>
             </div>
             <p style={{ fontSize: 11, color: '#9CA3AF', textAlign: 'center', marginTop: 10, lineHeight: 1.5 }}>
@@ -540,7 +540,7 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
                     </p>
                     <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 13, marginBottom: 18 }}>Acesso gratuito e imediato</p>
                     <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 13, padding: '11px 24px' }}>
-                      Acesse gratuitamente o Full Sales Flix <IconArrow />
+                      Acesse <span className="hide-mobile">gratuitamente </span>o Full Sales Flix <IconArrow />
                     </button>
                   </div>
                 </div>
@@ -548,13 +548,13 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
               {/* Unlocked play state */}
               {hasAccess && !active && (
                 <div onClick={() => setActive(true)} style={{ position: 'absolute', inset: 0, cursor: 'pointer', zIndex: 2 }}>
-                  <div style={{ position: 'absolute', top: '70%', left: '50%', transform: 'translate(-50%, -50%)', width: 68, height: 68, borderRadius: '50%', background: '#E01515', display: 'flex', alignItems: 'center', justifyContent: 'center', animation: 'pulse-ring 2.4s ease infinite' }}
+                  <div id="hero-play-btn" style={{ position: 'absolute', top: '70%', left: '50%', transform: 'translate(-50%, -50%)', width: 68, height: 68, borderRadius: '50%', background: '#E01515', display: 'flex', alignItems: 'center', justifyContent: 'center', animation: 'pulse-ring 2.4s ease infinite' }}
                     onMouseEnter={e => (e.currentTarget.style.transform = 'translate(-50%, -50%) scale(1.08)')}
                     onMouseLeave={e => (e.currentTarget.style.transform = 'translate(-50%, -50%) scale(1)')}>
                     <svg width="24" height="24" viewBox="0 0 26 26" fill="none"><path d="M8 5.5L21 13L8 20.5V5.5Z" fill="white" /></svg>
                   </div>
                   <div style={{ position: 'absolute', bottom: 12, right: 12, background: 'rgba(0,0,0,0.72)', color: '#fff', fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 4 }}>45 min</div>
-                  <div style={{ position: 'absolute', top: 12, left: 12, background: '#E01515', color: '#fff', fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 4, letterSpacing: '0.04em', textTransform: 'uppercase' }}>Aula Gratuita</div>
+                  <div id="hero-aula-tag" style={{ position: 'absolute', top: 12, left: 12, background: '#E01515', color: '#fff', fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 4, letterSpacing: '0.04em', textTransform: 'uppercase' }}>Aula Gratuita</div>
                 </div>
               )}
               {/* Active vturb player */}
@@ -567,6 +567,15 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
             </div>
           </FadeUp>
 
+          {/* BUTTONS - apenas mobile, aparece abaixo do video */}
+          <div id="hero-buttons-mobile" style={{ display: 'none', flexDirection: 'column', gap: 8 }}>
+            <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 15, padding: '13px 20px', width: '100%' }}>
+              Acesse gratuitamente o Full Sales Flix <IconArrow />
+            </button>
+            <p style={{ fontSize: 13, color: '#8893A8', textAlign: 'center', margin: 0 }}>
+              Gratuito · Acesso imediato
+            </p>
+          </div>
 
         </div>
       </div>
@@ -575,7 +584,14 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
           #hero-section { padding-top: 96px !important; padding-bottom: 28px !important; }
           #hero-grid { grid-template-columns: 1fr !important; gap: 20px !important; }
           #hero-left { gap: 18px !important; min-height: 0 !important; }
-          #hero-buttons button { font-size: 15px !important; padding: 13px 20px !important; }
+          /* No mobile: botao desktop-interno some, botao mobile (abaixo do video) aparece */
+          #hero-buttons { display: none !important; }
+          #hero-buttons-mobile { display: flex !important; }
+          /* Esconde a tag "Aula Gratuita" para nao conflitar com o video em telas pequenas */
+          #hero-aula-tag { display: none !important; }
+          /* Play button menor */
+          #hero-play-btn { width: 52px !important; height: 52px !important; }
+          #hero-play-btn svg { width: 20px !important; height: 20px !important; }
         }
       `}</style>
     </section>
@@ -956,7 +972,7 @@ function Footer({ onOpenPopup }: { onOpenPopup: () => void }) {
             <p style={{ fontSize: 13, color: '#A1A1AA' }}>Crie sua conta gratuita no Full Sales Flix agora.</p>
           </div>
           <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 14 }}>
-            Acesse gratuitamente o Full Sales Flix <IconArrow />
+            Acesse <span className="hide-mobile">gratuitamente </span>o Full Sales Flix <IconArrow />
           </button>
         </div>
 
