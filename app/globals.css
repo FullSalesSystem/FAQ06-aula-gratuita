@@ -252,4 +252,18 @@ label {
   .hide-mobile {
     display: none !important;
   }
+  /* Submit do LeadPopup: permite encolher proporcionalmente em mobile
+     e, se nao couber ao lado do Voltar, o wrapper (flexWrap) empilha. */
+  #lead-submit-btn {
+    font-size: 13px !important;
+    padding: 12px 14px !important;
+    white-space: normal !important;
+    line-height: 1.25;
+  }
+}
+@media (max-width: 400px) {
+  #lead-submit-btn {
+    font-size: 12px !important;
+    padding: 11px 12px !important;
+  }
 }

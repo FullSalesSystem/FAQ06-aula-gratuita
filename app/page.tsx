@@ -282,9 +282,10 @@ function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess
                 <option value="Acima de R$1 milhão">Acima de R$1 milhão</option>
               </select>
             </div>
-            <div style={{ display: 'flex', gap: 10 }}>
+            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
               <button
                 type="button"
+                id="lead-back-btn"
                 onClick={() => setStep(1)}
                 style={{ padding: '12px 20px', borderRadius: 8, border: '1px solid #E5E7EB', background: '#fff', color: '#6B7280', fontWeight: 600, fontSize: 14, cursor: 'pointer', flexShrink: 0 }}
               >
@@ -292,9 +293,10 @@ function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess
               </button>
               <button
                 type="submit"
+                id="lead-submit-btn"
                 disabled={loading}
                 className="btn-primary"
-                style={{ flex: 1, fontSize: 15, opacity: loading ? 0.7 : 1 }}
+                style={{ flex: 1, minWidth: 0, fontSize: 15, padding: '13px 16px', opacity: loading ? 0.7 : 1 }}
               >
                 {loading ? 'Liberando...' : (<>Acesse <span className="hide-mobile">gratuitamente </span>o Full Sales Flix →</>)}
               </button>
