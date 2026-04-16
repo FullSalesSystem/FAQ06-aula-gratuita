@@ -872,11 +872,8 @@ function PressSection() {
       <div className="section-container">
         <FadeUp style={{ textAlign: 'center', marginBottom: 48 }}>
           <h2 style={{ fontSize: 'clamp(24px, 4vw, 40px)', fontWeight: 800, letterSpacing: '-0.025em', color: '#0A0A0A', lineHeight: 1.12 }}>
-            Full Sales System na Mídia
+            O que a imprensa fala sobre a Full Sales System
           </h2>
-          <p style={{ color: '#6B7280', fontSize: 16, marginTop: 12, maxWidth: 480, margin: '12px auto 0' }}>
-            Como a imprensa fala sobre a metodologia da Full Sales System
-          </p>
         </FadeUp>
 
         {/* Press logos strip  desktop: flex wrap | mobile: marquee */}
