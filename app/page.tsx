@@ -73,7 +73,7 @@ interface UtmParams {
  *  Cada entrada define o tempo mínimo (em segundos) em que fica ativa. */
 const LOADING_STAGES = [
   { at: 0,  title: 'Enviando seus dados...',            subtitle: 'Estamos validando suas informações.' },
-  { at: 4,  title: 'Criando seu acesso...',              subtitle: 'Configurando seu perfil no Full Sales Academy.' },
+  { at: 4,  title: 'Criando seu acesso...',              subtitle: 'Configurando seu perfil no Full Sales Flix.' },
   { at: 10, title: 'Preparando seu ambiente...',         subtitle: 'Matriculando você nos conteúdos gratuitos.' },
   { at: 17, title: 'Estamos quase lá...',                subtitle: 'Só mais alguns instantes para liberar seu acesso.' },
 ]
@@ -169,7 +169,7 @@ function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess
         </div>
 
         <h2 style={{ fontSize: 'clamp(17px, 2.4vw, 21px)', fontWeight: 800, color: '#0A0A0A', marginBottom: 6, letterSpacing: '-0.025em', lineHeight: 1.3 }}>
-          Libere seu acesso gratuito ao <span style={{ color: '#E01515' }}>Full Sales Academy</span>
+          Libere seu acesso gratuito ao <span style={{ color: '#E01515' }}>Full Sales Flix</span>
         </h2>
         <p style={{ fontSize: 13, color: '#6B7280', marginBottom: 18, lineHeight: 1.5 }}>
           Cadastre-se uma única vez e tenha acesso a horas de conteúdo gratuito sobre estruturação comercial, vendas e crescimento na plataforma da Full Sales System.
@@ -428,7 +428,7 @@ function Navbar({ onOpenPopup }: { onOpenPopup: () => void }) {
           <img src="/logo-fss-branco.png" alt="Full Sales System" style={{ height: 36, width: 'auto', display: 'block' }} />
         </div>
         <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 13, padding: '9px 20px', display: 'none' }} id="nav-cta">
-          Acessar Full Sales Academy
+          Acessar Full Sales Flix
         </button>
       </div>
     </nav>
@@ -499,7 +499,7 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
             {/* BUTTONS */}
             <div id="hero-buttons" className="animate-fade-up" style={{ animationDelay: '200ms', display: 'flex', flexWrap: 'wrap', gap: 12 }}>
               <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 17, padding: '15px 28px', width: '100%' }}>
-                Acessar Full Sales Academy <IconArrow />
+                Acessar Full Sales Flix <IconArrow />
               </button>
             </div>
           </div>
@@ -591,7 +591,7 @@ function FlixCTASection({ onOpenPopup }: { onOpenPopup: () => void }) {
             <span style={{ color: '#E01515' }}>Full Sales System</span>
           </h2>
           <p style={{ fontSize: 'clamp(15px, 2vw, 18px)', color: '#C7D0E0', lineHeight: 1.65, maxWidth: 580, margin: '0 auto 36px' }}>
-            O Full Sales Academy é a plataforma de conteúdo gratuito da FSS. Aulas, frameworks e playbooks práticos para estruturar seu comercial, disponíveis para você agora.
+            O Full Sales Flix é a plataforma de conteúdo gratuito da FSS. Aulas, frameworks e playbooks práticos para estruturar seu comercial, disponíveis para você agora.
           </p>
 
           {/* Features */}
@@ -613,7 +613,7 @@ function FlixCTASection({ onOpenPopup }: { onOpenPopup: () => void }) {
 
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center' }}>
             <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 16, padding: '16px 40px' }}>
-              Quero Acessar o Full Sales Academy <IconArrow />
+              Quero Acessar o Full Sales Flix <IconArrow />
             </button>
           </div>
 
@@ -923,7 +923,7 @@ function Footer({ onOpenPopup }: { onOpenPopup: () => void }) {
               <div style={{ fontSize: 11, fontWeight: 600, color: '#71717A', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: 14 }}>Conteúdo</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                 {[
-                  { label: 'Full Sales Academy', action: () => onOpenPopup() },
+                  { label: 'Full Sales Flix', action: () => onOpenPopup() },
                   { label: 'YouTube  Comercial Faixa Preta', href: YOUTUBE_PLAYLIST_URL },
                 ].map((l) => (
                   l.action
@@ -944,10 +944,10 @@ function Footer({ onOpenPopup }: { onOpenPopup: () => void }) {
         }}>
           <div>
             <p style={{ fontWeight: 700, fontSize: 17, color: '#fff', marginBottom: 4 }}>Pronto para acessar o conteúdo gratuito?</p>
-            <p style={{ fontSize: 13, color: '#A1A1AA' }}>Crie sua conta gratuita no Full Sales Academy agora.</p>
+            <p style={{ fontSize: 13, color: '#A1A1AA' }}>Crie sua conta gratuita no Full Sales Flix agora.</p>
           </div>
           <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 14 }}>
-            Acessar Full Sales Academy <IconArrow />
+            Acessar Full Sales Flix <IconArrow />
           </button>
         </div>
 
@@ -991,7 +991,7 @@ function StickyMobileCTA({ onOpenPopup }: { onOpenPopup: () => void }) {
         }}
       >
         <button onClick={onOpenPopup} className="btn-primary" style={{ width: '100%', fontSize: 15, padding: '15px 24px', display: 'none' }}>
-          Acessar Full Sales Academy Gratuitamente <IconArrow />
+          Acessar Full Sales Flix Gratuitamente <IconArrow />
         </button>
       </div>
     </>
