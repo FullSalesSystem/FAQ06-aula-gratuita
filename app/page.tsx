@@ -1021,9 +1021,9 @@ function ExitIntentPopup({ onClose, onCTA }: { onClose: () => void; onCTA: () =>
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
-          borderRadius: 18,
-          padding: 'clamp(32px, 4vw, 48px) clamp(24px, 4vw, 44px)',
-          maxWidth: 640, width: '100%', position: 'relative',
+          borderRadius: 16,
+          padding: 'clamp(24px, 3.2vw, 36px) clamp(20px, 3.2vw, 32px)',
+          maxWidth: 500, width: '100%', position: 'relative',
           boxShadow: '0 40px 80px rgba(0,0,0,0.5)',
           animation: 'fadeUp 0.45s cubic-bezier(0.22,1,0.36,1) both',
           textAlign: 'center',
@@ -1034,7 +1034,7 @@ function ExitIntentPopup({ onClose, onCTA }: { onClose: () => void; onCTA: () =>
           onClick={onClose}
           aria-label="Fechar"
           style={{
-            position: 'absolute', top: 14, right: 14,
+            position: 'absolute', top: 12, right: 12,
             background: 'transparent', border: 'none', cursor: 'pointer',
             color: 'rgba(255,255,255,0.55)',
             padding: 6, display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -1043,7 +1043,7 @@ function ExitIntentPopup({ onClose, onCTA }: { onClose: () => void; onCTA: () =>
           onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.9)')}
           onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.55)')}
         >
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
             <path d="M6 6L18 18M6 18L18 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
           </svg>
         </button>
@@ -1052,17 +1052,17 @@ function ExitIntentPopup({ onClose, onCTA }: { onClose: () => void; onCTA: () =>
         <img
           src="/logo-fss-branco.png"
           alt="Full Sales System"
-          style={{ height: 56, width: 'auto', margin: '0 auto 28px', display: 'block' }}
+          style={{ height: 44, width: 'auto', margin: '0 auto 22px', display: 'block' }}
         />
 
         {/* Title */}
         <h2 style={{
-          fontSize: 'clamp(22px, 3.2vw, 34px)',
+          fontSize: 'clamp(19px, 2.6vw, 26px)',
           fontWeight: 800,
           color: '#FFFFFF',
           lineHeight: 1.2,
           letterSpacing: '-0.025em',
-          marginBottom: 18,
+          marginBottom: 14,
         }}>
           Não vá embora antes de acessar o{' '}
           <span style={{ color: '#E01515' }}>Full Sales Flix</span>
@@ -1070,12 +1070,12 @@ function ExitIntentPopup({ onClose, onCTA }: { onClose: () => void; onCTA: () =>
 
         {/* Subtitle */}
         <p style={{
-          fontSize: 'clamp(14px, 1.7vw, 17px)',
+          fontSize: 'clamp(13px, 1.4vw, 15px)',
           color: '#C7D0E0',
-          lineHeight: 1.6,
-          marginBottom: 30,
-          maxWidth: 480,
-          margin: '0 auto 30px',
+          lineHeight: 1.55,
+          marginBottom: 24,
+          maxWidth: 400,
+          margin: '0 auto 24px',
         }}>
           Tenha acesso a horas de conteúdo gratuito sobre estruturação comercial, vendas e crescimento para o seu negócio.
         </p>
@@ -1085,11 +1085,11 @@ function ExitIntentPopup({ onClose, onCTA }: { onClose: () => void; onCTA: () =>
           onClick={onCTA}
           className="btn-primary"
           style={{
-            fontSize: 16,
-            padding: '18px 36px',
+            fontSize: 15,
+            padding: '15px 28px',
             borderRadius: 999,
             width: '100%',
-            maxWidth: 440,
+            maxWidth: 360,
             textTransform: 'uppercase',
             letterSpacing: '0.03em',
           }}
@@ -1098,8 +1098,8 @@ function ExitIntentPopup({ onClose, onCTA }: { onClose: () => void; onCTA: () =>
         </button>
 
         {/* Below button */}
-        <p style={{ fontSize: 13, color: '#8893A8', marginTop: 16 }}>
-          Gratuito · Sem cartão de crédito · Acesso imediato
+        <p style={{ fontSize: 12, color: '#8893A8', marginTop: 12 }}>
+          Gratuito / Acesso imediato
         </p>
       </div>
     </div>
