@@ -581,14 +581,14 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
 function FlixCTASection({ onOpenPopup }: { onOpenPopup: () => void }) {
   return (
     <section id="flix-cta-section" className="section-pad" style={{ position: 'relative' }}>
-      <div className="section-container" style={{ maxWidth: 800, textAlign: 'center' }}>
+      <div className="section-container" style={{ maxWidth: 1000, textAlign: 'center' }}>
         <FadeUp>
           <h2 style={{ fontSize: 'clamp(22px, 3.2vw, 36px)', fontWeight: 800, letterSpacing: '-0.025em', color: '#FFFFFF', lineHeight: 1.18, marginBottom: 18 }}>
             O mesmo sistema que gerou{' '}
             <span style={{ color: '#E01515' }}>R$40M em 2 anos de operação</span>
             {' '}e mais de{' '}
             <span style={{ color: '#E01515' }}>R$500M para nossos clientes</span>
-            {' '}agora está disponível gratuitamente
+            {' '}agora está disponível gratuitamente para você
           </h2>
           <p style={{ fontSize: 'clamp(15px, 2vw, 18px)', color: '#C7D0E0', lineHeight: 1.65, maxWidth: 620, margin: '0 auto 36px' }}>
             Aulas, frameworks e playbooks práticos para estruturar seu comercial, disponíveis para você agora.
@@ -618,7 +618,7 @@ function FlixCTASection({ onOpenPopup }: { onOpenPopup: () => void }) {
           </div>
 
           <p style={{ fontSize: 13, color: '#8893A8', marginTop: 14 }}>
-            Gratuito · Sem cartão de crédito · Acesso imediato após cadastro
+            Gratuito · Acesso imediato
           </p>
         </FadeUp>
       </div>
