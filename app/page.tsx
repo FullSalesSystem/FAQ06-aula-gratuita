@@ -455,11 +455,6 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
   return (
     <section style={{
       paddingTop: 80, paddingBottom: 80,
-      backgroundColor: '#0F1627',
-      backgroundImage: 'url(/background-fss.png)',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat',
       position: 'relative',
       overflow: 'hidden',
     }}>
@@ -473,17 +468,18 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
             <div id="hero-text-top" style={{ textAlign: 'left' }}>
               <h1 className="animate-fade-up" style={{
                 animationDelay: '70ms',
-                fontSize: 'clamp(22px, 2.8vw, 38px)',
+                fontSize: 'clamp(19px, 2.3vw, 30px)',
                 fontWeight: 800,
-                lineHeight: 1.15,
-                letterSpacing: '-0.03em',
+                lineHeight: 1.2,
+                letterSpacing: '-0.025em',
                 color: '#FFFFFF',
                 marginBottom: 12,
               }}>
-                Descubra como empresários comuns estão estruturando o processo comercial das suas empresas do zero, e parando de depender de{' '}
+                Descubra como empresários comuns estão{' '}
                 <span style={{ color: '#E01515' }}>
-                  improviso para vender
+                  estruturando o processo comercial das suas empresas do zero
                 </span>
+                , e parando de depender de improviso para vender
               </h1>
               <p className="animate-fade-up" style={{
                 animationDelay: '140ms',
@@ -582,7 +578,7 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
 }
 function FlixCTASection({ onOpenPopup }: { onOpenPopup: () => void }) {
   return (
-    <section className="section-pad" style={{ backgroundColor: '#0F1627' }}>
+    <section className="section-pad" style={{ position: 'relative' }}>
       <div className="section-container" style={{ maxWidth: 800, textAlign: 'center' }}>
         <FadeUp>
           <h2 style={{ fontSize: 'clamp(26px, 4vw, 46px)', fontWeight: 800, letterSpacing: '-0.03em', color: '#FFFFFF', lineHeight: 1.1, marginBottom: 18 }}>
@@ -1175,8 +1171,17 @@ function HomeContent() {
         <ExitIntentPopup onClose={() => setShowExitIntent(false)} onCTA={handleExitIntentCTA} />
       )}
       <Navbar onOpenPopup={openPopup} />
-      <HeroSection onOpenPopup={openPopup} hasAccess={hasAccess} />
-      <FlixCTASection onOpenPopup={openPopup} />
+      {/* Wrapper com background estendido da secao 1 ate a secao 2 */}
+      <div style={{
+        backgroundColor: '#0F1627',
+        backgroundImage: 'url(/background-fss.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}>
+        <HeroSection onOpenPopup={openPopup} hasAccess={hasAccess} />
+        <FlixCTASection onOpenPopup={openPopup} />
+      </div>
       <TrustSection />
       <AboutSection />
       <PressSection />
