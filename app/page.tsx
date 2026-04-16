@@ -416,24 +416,16 @@ function LoadingView({ stage, elapsed }: { stage: { title: string; subtitle: str
    NAVBAR
 ───────────────────────────────────────────── */
 function Navbar({ onOpenPopup }: { onOpenPopup: () => void }) {
-  const [scrolled, setScrolled] = useState(false)
-  useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 20)
-    window.addEventListener('scroll', fn)
-    return () => window.removeEventListener('scroll', fn)
-  }, [])
-
   return (
     <nav style={{
       position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-      borderBottom: scrolled ? '1px solid rgba(0,0,0,0.08)' : '1px solid transparent',
-      backgroundColor: scrolled ? 'rgba(255,255,255,0.97)' : 'transparent',
-      backdropFilter: scrolled ? 'blur(14px)' : 'none',
+      borderBottom: '1px solid rgba(255,255,255,0.06)',
+      backgroundColor: '#0F1627',
       transition: 'all 0.3s',
     }}>
       <div className="section-container" style={{ height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <img src="/logo-fss.png" alt="Full Sales System" style={{ height: 36, width: 'auto', display: 'block' }} />
+          <img src="/logo-fss-branco.png" alt="Full Sales System" style={{ height: 36, width: 'auto', display: 'block' }} />
         </div>
         <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 13, padding: '9px 20px', display: 'none' }} id="nav-cta">
           Acessar Full Sales Academy
@@ -461,10 +453,16 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
   }, [active])
 
   return (
-    <section style={{ paddingTop: 80, paddingBottom: 80, background: '#FFFFFF', position: 'relative', overflow: 'hidden' }}>
-      {/* Glow */}
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 500, background: 'radial-gradient(ellipse at 30% top, rgba(224,21,21,0.05) 0%, transparent 65%)', pointerEvents: 'none' }} />
-
+    <section style={{
+      paddingTop: 80, paddingBottom: 80,
+      backgroundColor: '#0F1627',
+      backgroundImage: 'url(/background-fss.png)',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      position: 'relative',
+      overflow: 'hidden',
+    }}>
       <div className="section-container" style={{ position: 'relative', maxWidth: 1200 }}>
         {/* Hero grid: desktop = 2 cols (left: text+button flex | right: video matching height)
             mobile  = 1 col  (text → video → button, source order) */}
@@ -479,11 +477,11 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
                 fontWeight: 800,
                 lineHeight: 1.15,
                 letterSpacing: '-0.03em',
-                color: '#0A0A0A',
+                color: '#FFFFFF',
                 marginBottom: 12,
               }}>
                 O conteúdo que já estruturou o comercial de mais de{' '}
-                <span style={{ background: 'linear-gradient(90deg, #E01515, #1E52E8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                <span style={{ background: 'linear-gradient(90deg, #FF4747, #5B8CFF)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                   600 empresas
                 </span>{' '}
                 agora gratuito para você
@@ -491,7 +489,7 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
               <p className="animate-fade-up" style={{
                 animationDelay: '140ms',
                 fontSize: 'clamp(14px, 1.5vw, 17px)',
-                color: '#525252',
+                color: '#C7D0E0',
                 lineHeight: 1.65,
               }}>
                 Aprenda gratuitamente a construir um sistema comercial com previsibilidade, escala e liberdade com quem fez R$40M em dois anos de operação.
