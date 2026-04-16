@@ -249,9 +249,6 @@ label {
 
 /* Utility: esconder spans/palavras especificas apenas em mobile */
 @media (max-width: 768px) {
-  .hide-mobile {
-    display: none !important;
-  }
   /* CtaBlock button (secao 2, TrustSection e AboutSection) -
      encolhe proporcionalmente, permite quebra e ocupa a largura
      do container ate 360px em mobile */
