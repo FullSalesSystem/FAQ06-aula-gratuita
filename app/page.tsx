@@ -298,7 +298,7 @@ function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess
                 className="btn-primary"
                 style={{ flex: 1, minWidth: 0, fontSize: 15, padding: '13px 16px', opacity: loading ? 0.7 : 1 }}
               >
-                {loading ? 'Liberando...' : 'Acesse gratuitamente o Full Sales Flix →'}
+                {loading ? 'Liberando...' : 'Conheça o Full Sales Flix →'}
               </button>
             </div>
             <p style={{ fontSize: 11, color: '#9CA3AF', textAlign: 'center', marginTop: 10, lineHeight: 1.5 }}>
@@ -430,7 +430,7 @@ function Navbar({ onOpenPopup }: { onOpenPopup: () => void }) {
           <img src="/logo-fss-branco.png" alt="Full Sales System" style={{ height: 36, width: 'auto', display: 'block' }} />
         </div>
         <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 13, padding: '9px 20px' }} id="nav-cta">
-          Acesse <span className="hide-mobile">gratuitamente </span>o Full Sales Flix
+          Conheça o Full Sales Flix
         </button>
       </div>
       <style>{`
@@ -504,7 +504,7 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
             {/* BUTTONS */}
             <div id="hero-buttons" className="animate-fade-up" style={{ animationDelay: '200ms', display: 'flex', flexDirection: 'column', gap: 8 }}>
               <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 17, padding: '15px 28px', width: '100%' }}>
-                Acesse gratuitamente o Full Sales Flix <IconArrow />
+                Conheça o Full Sales Flix <IconArrow />
               </button>
               <p style={{ fontSize: 13, color: '#8893A8', textAlign: 'center', margin: 0 }}>
                 Gratuito · Acesso imediato
@@ -550,7 +550,7 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
                     </p>
                     <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 13, marginBottom: 18 }}>Acesso gratuito e imediato</p>
                     <button onClick={onOpenPopup} id="video-locked-btn" className="btn-primary" style={{ fontSize: 13, padding: '11px 24px' }}>
-                      Acesse gratuitamente o Full Sales Flix <IconArrow />
+                      Conheça o Full Sales Flix <IconArrow />
                     </button>
                   </div>
                 </div>
@@ -580,7 +580,7 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
           {/* BUTTONS - apenas mobile, aparece abaixo do video */}
           <div id="hero-buttons-mobile" style={{ display: 'none', flexDirection: 'column', gap: 8 }}>
             <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 15, padding: '13px 20px', width: '100%' }}>
-              Acesse gratuitamente o Full Sales Flix <IconArrow />
+              Conheça o Full Sales Flix <IconArrow />
             </button>
             <p style={{ fontSize: 13, color: '#8893A8', textAlign: 'center', margin: 0 }}>
               Gratuito · Acesso imediato
@@ -704,7 +704,7 @@ function CtaBlock({ onOpenPopup, taglineColor = '#8893A8' }: { onOpenPopup: () =
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
       <button onClick={onOpenPopup} className="btn-primary cta-block-btn" style={{ fontSize: 18, padding: '20px 52px' }}>
-        Acesse gratuitamente o Full Sales Flix <IconArrow />
+        Conheça o Full Sales Flix <IconArrow />
       </button>
       <p style={{ fontSize: 13, color: taglineColor, margin: 0 }}>
         Gratuito · Acesso imediato
@@ -982,7 +982,7 @@ function Footer({ onOpenPopup }: { onOpenPopup: () => void }) {
             <p style={{ fontSize: 13, color: '#A1A1AA' }}>Crie sua conta gratuita no Full Sales Flix agora.</p>
           </div>
           <button onClick={onOpenPopup} id="footer-strip-btn" className="btn-primary" style={{ fontSize: 14 }}>
-            Acesse gratuitamente o Full Sales Flix <IconArrow />
+            Conheça o Full Sales Flix <IconArrow />
           </button>
         </div>
 
@@ -1026,7 +1026,7 @@ function StickyMobileCTA({ onOpenPopup }: { onOpenPopup: () => void }) {
         }}
       >
         <button onClick={onOpenPopup} className="btn-primary" style={{ width: '100%', fontSize: 15, padding: '15px 24px', display: 'none' }}>
-          Acesse gratuitamente o Full Sales Flix <IconArrow />
+          Conheça o Full Sales Flix <IconArrow />
         </button>
       </div>
     </>
@@ -1131,7 +1131,7 @@ function ExitIntentPopup({ onClose, onCTA }: { onClose: () => void; onCTA: () =>
             whiteSpace: 'nowrap',
           }}
         >
-          Acesse gratuitamente o Full Sales Flix →
+          Conheça o Full Sales Flix →
         </button>
 
         {/* Below button */}
