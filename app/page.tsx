@@ -427,10 +427,18 @@ function Navbar({ onOpenPopup }: { onOpenPopup: () => void }) {
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <img src="/logo-fss-branco.png" alt="Full Sales System" style={{ height: 36, width: 'auto', display: 'block' }} />
         </div>
-        <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 13, padding: '9px 20px', display: 'none' }} id="nav-cta">
-          Acesse gratuitamente o Full Sales Flix
+        <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 13, padding: '9px 20px' }} id="nav-cta">
+          Acesse <span className="hide-mobile">gratuitamente </span>o Full Sales Flix
         </button>
       </div>
+      <style>{`
+        @media (max-width: 768px) {
+          #nav-cta { font-size: 12px !important; padding: 8px 14px !important; }
+        }
+        @media (max-width: 400px) {
+          #nav-cta { font-size: 11px !important; padding: 7px 10px !important; }
+        }
+      `}</style>
     </nav>
   )
 }
