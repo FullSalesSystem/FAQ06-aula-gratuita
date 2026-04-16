@@ -1159,7 +1159,11 @@ function HomeContent() {
     try { return sessionStorage.getItem('fss_access_url') || FSSFLIX_URL } catch { return FSSFLIX_URL }
   })
   const [showExitIntent, setShowExitIntent] = useState(false)
-  const [exitIntentUsed, setExitIntentUsed] = useState(false)
+  // Persiste em sessionStorage: se o usuario clicar no CTA do exit popup
+  // e depois recarregar a pagina antes de submeter, a flag nao se perde.
+  const [exitIntentUsed, setExitIntentUsed] = useState<boolean>(() => {
+    try { return sessionStorage.getItem('fss_exit_intent_used') === '1' } catch { return false }
+  })
   const searchParams = useSearchParams()
 
   const utm = useMemo<UtmParams>(() => {
@@ -1206,6 +1210,7 @@ function HomeContent() {
     setHasAccess(true)
   }
   const handleExitIntentCTA = () => {
+    try { sessionStorage.setItem('fss_exit_intent_used', '1') } catch {}
     setExitIntentUsed(true)
     setShowExitIntent(false)
   }
