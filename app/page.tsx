@@ -298,7 +298,7 @@ function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess
                 className="btn-primary"
                 style={{ flex: 1, minWidth: 0, fontSize: 15, padding: '13px 16px', opacity: loading ? 0.7 : 1 }}
               >
-                {loading ? 'Liberando...' : (<>Acesse <span className="hide-mobile">gratuitamente </span>o Full Sales Flix →</>)}
+                {loading ? 'Liberando...' : 'Acesse gratuitamente o Full Sales Flix →'}
               </button>
             </div>
             <p style={{ fontSize: 11, color: '#9CA3AF', textAlign: 'center', marginTop: 10, lineHeight: 1.5 }}>
@@ -549,8 +549,8 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
                       Preencha o cadastro para assistir
                     </p>
                     <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 13, marginBottom: 18 }}>Acesso gratuito e imediato</p>
-                    <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 13, padding: '11px 24px' }}>
-                      Acesse <span className="hide-mobile">gratuitamente </span>o Full Sales Flix <IconArrow />
+                    <button onClick={onOpenPopup} id="video-locked-btn" className="btn-primary" style={{ fontSize: 13, padding: '11px 24px' }}>
+                      Acesse gratuitamente o Full Sales Flix <IconArrow />
                     </button>
                   </div>
                 </div>
@@ -704,7 +704,7 @@ function CtaBlock({ onOpenPopup, taglineColor = '#8893A8' }: { onOpenPopup: () =
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
       <button onClick={onOpenPopup} className="btn-primary cta-block-btn" style={{ fontSize: 18, padding: '20px 52px' }}>
-        Acesse <span className="hide-mobile">gratuitamente </span>o Full Sales Flix <IconArrow />
+        Acesse gratuitamente o Full Sales Flix <IconArrow />
       </button>
       <p style={{ fontSize: 13, color: taglineColor, margin: 0 }}>
         Gratuito · Acesso imediato
@@ -994,8 +994,8 @@ function Footer({ onOpenPopup }: { onOpenPopup: () => void }) {
             <p style={{ fontWeight: 700, fontSize: 17, color: '#fff', marginBottom: 4 }}>Pronto para acessar o conteúdo gratuito?</p>
             <p style={{ fontSize: 13, color: '#A1A1AA' }}>Crie sua conta gratuita no Full Sales Flix agora.</p>
           </div>
-          <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 14 }}>
-            Acesse <span className="hide-mobile">gratuitamente </span>o Full Sales Flix <IconArrow />
+          <button onClick={onOpenPopup} id="footer-strip-btn" className="btn-primary" style={{ fontSize: 14 }}>
+            Acesse gratuitamente o Full Sales Flix <IconArrow />
           </button>
         </div>
 

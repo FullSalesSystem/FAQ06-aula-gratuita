@@ -270,6 +270,14 @@ label {
     white-space: normal !important;
     line-height: 1.25;
   }
+  /* Footer strip e video locked: manter o texto completo e permitir
+     quebrar em 2 linhas em vez de estourar a margem */
+  #footer-strip-btn,
+  #video-locked-btn {
+    white-space: normal !important;
+    line-height: 1.25;
+    max-width: 100%;
+  }
 }
 @media (max-width: 400px) {
   #lead-submit-btn {
