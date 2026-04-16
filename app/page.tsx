@@ -296,7 +296,7 @@ function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess
                 className="btn-primary"
                 style={{ flex: 1, fontSize: 15, opacity: loading ? 0.7 : 1 }}
               >
-                {loading ? 'Liberando...' : 'Liberar Acesso Gratuito →'}
+                {loading ? 'Liberando...' : 'Acesse gratuitamente o Full Sales Flix →'}
               </button>
             </div>
             <p style={{ fontSize: 11, color: '#9CA3AF', textAlign: 'center', marginTop: 10, lineHeight: 1.5 }}>
@@ -428,7 +428,7 @@ function Navbar({ onOpenPopup }: { onOpenPopup: () => void }) {
           <img src="/logo-fss-branco.png" alt="Full Sales System" style={{ height: 36, width: 'auto', display: 'block' }} />
         </div>
         <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 13, padding: '9px 20px', display: 'none' }} id="nav-cta">
-          Acessar Full Sales Flix
+          Acesse gratuitamente o Full Sales Flix
         </button>
       </div>
     </nav>
@@ -480,11 +480,10 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
                 color: '#FFFFFF',
                 marginBottom: 12,
               }}>
-                O conteúdo que já estruturou o comercial de mais de{' '}
+                Descubra como empresários comuns estão estruturando o processo comercial das suas empresas do zero, e parando de depender de{' '}
                 <span style={{ color: '#E01515' }}>
-                  600 empresas
-                </span>{' '}
-                agora gratuito para você
+                  improviso para vender
+                </span>
               </h1>
               <p className="animate-fade-up" style={{
                 animationDelay: '140ms',
@@ -492,14 +491,14 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
                 color: '#C7D0E0',
                 lineHeight: 1.65,
               }}>
-                Aprenda gratuitamente a construir um sistema comercial com previsibilidade, escala e liberdade com quem fez R$40M em dois anos de operação.
+                O mesmo sistema que gerou R$40M em 2 anos de operação e mais de R$500M para nossos clientes agora está disponível gratuitamente para você.
               </p>
             </div>
 
             {/* BUTTONS */}
             <div id="hero-buttons" className="animate-fade-up" style={{ animationDelay: '200ms', display: 'flex', flexWrap: 'wrap', gap: 12 }}>
               <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 17, padding: '15px 28px', width: '100%' }}>
-                Acessar Full Sales Flix <IconArrow />
+                Acesse gratuitamente o Full Sales Flix <IconArrow />
               </button>
             </div>
           </div>
@@ -542,7 +541,7 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
                     </p>
                     <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 13, marginBottom: 18 }}>Acesso gratuito e imediato</p>
                     <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 13, padding: '11px 24px' }}>
-                      Liberar Acesso Gratuito <IconArrow />
+                      Acesse gratuitamente o Full Sales Flix <IconArrow />
                     </button>
                   </div>
                 </div>
@@ -613,7 +612,7 @@ function FlixCTASection({ onOpenPopup }: { onOpenPopup: () => void }) {
 
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center' }}>
             <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 16, padding: '16px 40px' }}>
-              Quero Acessar o Full Sales Flix <IconArrow />
+              Acesse gratuitamente o Full Sales Flix <IconArrow />
             </button>
           </div>
 
@@ -947,7 +946,7 @@ function Footer({ onOpenPopup }: { onOpenPopup: () => void }) {
             <p style={{ fontSize: 13, color: '#A1A1AA' }}>Crie sua conta gratuita no Full Sales Flix agora.</p>
           </div>
           <button onClick={onOpenPopup} className="btn-primary" style={{ fontSize: 14 }}>
-            Acessar Full Sales Flix <IconArrow />
+            Acesse gratuitamente o Full Sales Flix <IconArrow />
           </button>
         </div>
 
@@ -991,7 +990,7 @@ function StickyMobileCTA({ onOpenPopup }: { onOpenPopup: () => void }) {
         }}
       >
         <button onClick={onOpenPopup} className="btn-primary" style={{ width: '100%', fontSize: 15, padding: '15px 24px', display: 'none' }}>
-          Acessar Full Sales Flix Gratuitamente <IconArrow />
+          Acesse gratuitamente o Full Sales Flix <IconArrow />
         </button>
       </div>
     </>
@@ -1094,7 +1093,7 @@ function ExitIntentPopup({ onClose, onCTA }: { onClose: () => void; onCTA: () =>
             letterSpacing: '0.03em',
           }}
         >
-          Acessar Full Sales Flix →
+          Acesse gratuitamente o Full Sales Flix →
         </button>
 
         {/* Below button */}
