@@ -422,7 +422,8 @@ function Navbar({ onOpenPopup }: { onOpenPopup: () => void }) {
     <nav style={{
       position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
       borderBottom: '1px solid rgba(255,255,255,0.06)',
-      backgroundColor: '#0F1627',
+      backgroundColor: 'rgba(15,22,39,0.85)',
+      backdropFilter: 'blur(12px)',
       transition: 'all 0.3s',
     }}>
       <div className="section-container" style={{ height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -489,7 +490,6 @@ function HeroSection({ onOpenPopup, hasAccess }: { onOpenPopup: () => void; hasA
                 <span style={{ color: '#E01515' }}>
                   estruturando o processo comercial das suas empresas do zero
                 </span>
-                , e parando de depender de improviso para vender
               </h1>
               <p className="animate-fade-up" style={{
                 animationDelay: '140ms',
@@ -682,13 +682,7 @@ function CtaBlock({ onOpenPopup, taglineColor = '#8893A8', fullWidth = false, sh
 
 function AboutSection({ onOpenPopup }: { onOpenPopup: () => void }) {
   return (
-    <section className="section-pad" style={{
-      backgroundColor: '#0F1627',
-      backgroundImage: 'url(/background-fss.png)',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat',
-    }}>
+    <section className="section-pad">
       <div className="section-container">
         <div id="about-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 56, alignItems: 'stretch' }}>
           {/* Photo */}
@@ -793,7 +787,7 @@ const pressLogos = [
 ───────────────────────────────────────────── */
 function Footer({ onOpenPopup }: { onOpenPopup: () => void }) {
   return (
-    <footer style={{ background: '#0A0A0A', borderTop: '1px solid rgba(255,255,255,0.06)', padding: '56px 0 40px' }}>
+    <footer style={{ borderTop: '1px solid rgba(255,255,255,0.08)', padding: '56px 0 40px' }}>
       <div className="section-container">
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: 40, marginBottom: 48 }}>
           <div style={{ maxWidth: 300 }}>
@@ -872,7 +866,7 @@ function StickyMobileCTA({ onOpenPopup }: { onOpenPopup: () => void }) {
         style={{
           position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 90,
           padding: '12px 20px 20px',
-          background: 'linear-gradient(to top, rgba(255,255,255,1) 60%, rgba(255,255,255,0))',
+          background: 'linear-gradient(to top, rgba(15,22,39,1) 60%, rgba(15,22,39,0))',
           transform: visible ? 'translateY(0)' : 'translateY(100%)',
           transition: 'transform 0.35s cubic-bezier(0.22,1,0.36,1)',
         }}
@@ -1068,23 +1062,22 @@ function HomeContent() {
   }
 
   return (
-    <main style={{ backgroundColor: '#FFFFFF', color: '#0A0A0A', overflowX: 'hidden' }}>
+    <main style={{
+      backgroundColor: '#0F1627',
+      backgroundImage: 'url(/background-fss.png)',
+      backgroundSize: '100% auto',
+      backgroundPosition: 'top center',
+      backgroundRepeat: 'no-repeat',
+      color: '#FFFFFF',
+      overflowX: 'hidden',
+    }}>
       {!hasAccess && <LeadPopup onClose={() => {}} onSuccess={handleSuccess} utm={effectiveUtm} />}
       {showExitIntent && !hasAccess && (
         <ExitIntentPopup onClose={() => setShowExitIntent(false)} onCTA={handleExitIntentCTA} />
       )}
       <Navbar onOpenPopup={openPopup} />
-      {/* Wrapper com background estendido da secao 1 ate a secao 2 */}
-      <div style={{
-        backgroundColor: '#0F1627',
-        backgroundImage: 'url(/background-fss.png)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-      }}>
-        <HeroSection onOpenPopup={openPopup} hasAccess={hasAccess} />
-        <FlixCTASection onOpenPopup={openPopup} />
-      </div>
+      <HeroSection onOpenPopup={openPopup} hasAccess={hasAccess} />
+      <FlixCTASection onOpenPopup={openPopup} />
       <AboutSection onOpenPopup={openPopup} />
       <Footer onOpenPopup={openPopup} />
       <StickyMobileCTA onOpenPopup={openPopup} />
