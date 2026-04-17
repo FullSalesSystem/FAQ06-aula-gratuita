@@ -733,11 +733,41 @@ function AboutSection({ onOpenPopup }: { onOpenPopup: () => void }) {
             <CtaBlock onOpenPopup={onOpenPopup} fullWidth showTagline={false} align="flex-start" />
           </FadeUp>
         </div>
+        {/* Sub-seção: Imprensa */}
+        <FadeUp style={{ marginTop: 80, textAlign: 'center' }}>
+          <h3 style={{ fontSize: 'clamp(20px, 3vw, 30px)', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.025em', lineHeight: 1.2, marginBottom: 36 }}>
+            Por que a Full Sales System está ganhando destaque na mídia
+          </h3>
+
+          {/* Desktop: logos clicáveis */}
+          <div id="press-logos-desktop" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 12 }}>
+            {pressLogos.map((logo, i) => (
+              <a key={i} href={logo.href} target="_blank" rel="noopener noreferrer" style={{ height: 72, width: 180, background: logo.bg, border: '1px solid rgba(255,255,255,0.12)', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', padding: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.15)', transition: 'transform 0.2s, box-shadow 0.2s', cursor: 'pointer', textDecoration: 'none' }}
+                onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.25)' }}
+                onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)' }}>
+                <Image src={logo.src} alt={logo.name} width={156} height={48} style={{ objectFit: 'contain', width: '100%', height: '100%', transform: `scale(${logo.scale})`, transformOrigin: 'center center' }} />
+              </a>
+            ))}
+          </div>
+
+          {/* Mobile: marquee */}
+          <div id="press-logos-mobile" style={{ overflow: 'hidden', position: 'relative', display: 'none' }}>
+            <div className="marquee-track" style={{ animationDuration: '18s' }}>
+              {[...pressLogos, ...pressLogos].map((logo, i) => (
+                <a key={i} href={logo.href} target="_blank" rel="noopener noreferrer" style={{ flexShrink: 0, height: 64, width: 150, background: logo.bg, border: '1px solid rgba(255,255,255,0.12)', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', padding: 10, boxShadow: '0 2px 8px rgba(0,0,0,0.15)', marginRight: 12, textDecoration: 'none' }}>
+                  <Image src={logo.src} alt={logo.name} width={130} height={44} style={{ objectFit: 'contain', width: '100%', height: '100%', transform: `scale(${logo.scale})`, transformOrigin: 'center center' }} />
+                </a>
+              ))}
+            </div>
+          </div>
+        </FadeUp>
       </div>
       <style>{`
         @media (max-width: 768px) {
           #about-grid { align-items: start !important; }
           #about-photo { aspect-ratio: 4/5; max-width: 420px; min-height: 0 !important; margin: 0 auto; }
+          #press-logos-desktop { display: none !important; }
+          #press-logos-mobile { display: block !important; }
         }
       `}</style>
     </section>
@@ -748,110 +778,15 @@ function AboutSection({ onOpenPopup }: { onOpenPopup: () => void }) {
    SESSÃO DE IMPRENSA
 ───────────────────────────────────────────── */
 
-const pressItems = [
-  {
-    outlet: 'Estadão',
-    title: 'Full Sales System: três mentes empreendedoras que transformaram desafios em estratégias',
-    quote: 'Nos últimos anos, ajudamos os nossos clientes a girar mais de 500 milhões de faturamento em vendas. Mas quando olhamos para esses números enxergamos algo ainda maior: não foi só o aumento nas vendas, mas eles se tornaram protagonistas da própria empresa.',
-    image: '/press-foto-estadao.webp',
-    logo: '/estadao-novo.png',
-    logoBg: '#FFFFFF',
-  },
-  {
-    outlet: 'Valor Econômico',
-    title: 'Full Sales System aponta o caminho para crescer em 2026 com estratégias mais inteligentes',
-    quote: 'Empresas que adotam estruturas de vendas inteligentes e estratégias orgânicas robustas tendem a prosperar em cenários de incerteza, criando vantagem competitiva mesmo com menor investimento direto em mídia.',
-    image: '/press-foto-valor-economico.webp',
-    logo: '/press-valor-economico.png',
-    logoBg: '#FFFFFF',
-  },
-  {
-    outlet: 'Pequenas Empresas & Grandes Negócios',
-    title: 'Yuri Barbosa, Vinícius de Sá e Matheus Garcia trilharam caminhos distintos, mas marcados pelo mesmo ponto de virada',
-    quote: 'Os sócios desenvolveram uma metodologia própria, capaz de integrar processos comerciais eficientes, automação estratégica e construção de autoridade digital. O objetivo não era apenas aumentar vendas, mas criar um modelo de crescimento consistente.',
-    image: '/press-foto-pequenas-empresas.webp',
-    logo: '/press-pequenas-empresas.png',
-    logoBg: '#D35400',
-  },
-]
-
 const pressLogos = [
-  { name: 'Valor Econômico', src: '/press-valor-economico.png', bg: '#FFFFFF', scale: 1.2 },
-  { name: 'Pequenas Empresas & Grandes Negócios', src: '/press-pequenas-empresas.png', bg: '#D35400', scale: 2.3 },
-  { name: 'Band', src: '/press-band.png', bg: '#1A1A1A', scale: 1 },
-  { name: 'Estadão', src: '/estadao-novo.png', bg: '#FFFFFF', scale: 2.0 },
-  { name: 'Terra', src: '/press-terra.png', bg: '#FFFFFF', scale: 1.0 },
+  { name: 'Valor Econômico', src: '/press-valor-economico.png', bg: '#FFFFFF', scale: 1.2, href: 'https://valor.globo.com/patrocinado/pressworks/noticia/2025/11/24/full-sales-system-aponta-o-caminho-para-crescer-em-2026-com-estrategias-mais-inteligentes-1.ghtml' },
+  { name: 'Pequenas Empresas & Grandes Negócios', src: '/press-pequenas-empresas.png', bg: '#D35400', scale: 2.3, href: 'https://revistapegn.globo.com/conteudo-de-marca/pressworks/noticia/2025/11/full-sales-system-tres-mentes-empreendedoras-que-transformaram-desafios-em-estrategias-1.ghtml' },
+  { name: 'Band', src: '/press-band.png', bg: '#1A1A1A', scale: 1, href: 'https://www.band.com.br/band-vale/noticias/full-sales-system-aponta-o-caminho-para-crescer-com-estrategia-inteligente-202511211836' },
+  { name: 'Estadão', src: '/estadao-novo.png', bg: '#FFFFFF', scale: 2.0, href: 'https://bluestudio.estadao.com.br/agencia-de-comunicacao/saftec-digital/full-sales-system-tres-mentes-empreendedoras-que-transformaram-desafios-em-estrategias/' },
+  { name: 'Terra', src: '/press-terra.png', bg: '#FFFFFF', scale: 1.0, href: 'https://www.terra.com.br/economia/vendas-que-colocam-sua-empresa-no-protagonismo-full-sales-mostra-o-caminho,f72fe2c2ee9101ee76a02aea5e3eef8c69xd33kv.html' },
 ]
 
-function PressSection() {
-  return (
-    <section className="section-pad" style={{ background: '#FFFFFF' }}>
-      <div className="section-container">
-        <FadeUp style={{ textAlign: 'center', marginBottom: 48 }}>
-          <h2 style={{ fontSize: 'clamp(24px, 4vw, 40px)', fontWeight: 800, letterSpacing: '-0.025em', color: '#0A0A0A', lineHeight: 1.12 }}>
-            O que a imprensa fala sobre a Full Sales System
-          </h2>
-        </FadeUp>
-
-        {/* Press logos strip  desktop: flex wrap | mobile: marquee */}
-        <FadeUp delay={60}>
-          {/* Desktop */}
-          <div id="press-logos-desktop" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 12, marginBottom: 48 }}>
-            {pressLogos.map((logo, i) => (
-              <div key={i} style={{ height: 72, width: 180, background: logo.bg, border: '1px solid rgba(0,0,0,0.09)', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', padding: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
-                <Image src={logo.src} alt={logo.name} width={156} height={48} style={{ objectFit: 'contain', width: '100%', height: '100%', transform: `scale(${logo.scale})`, transformOrigin: 'center center' }} />
-              </div>
-            ))}
-          </div>
-          {/* Mobile: marquee carousel */}
-          <div id="press-logos-mobile" style={{ overflow: 'hidden', marginBottom: 48, position: 'relative', display: 'none' }}>
-            <div className="marquee-track" style={{ animationDuration: '18s' }}>
-              {[...pressLogos, ...pressLogos].map((logo, i) => (
-                <div key={i} style={{ flexShrink: 0, height: 64, width: 150, background: logo.bg, border: '1px solid rgba(0,0,0,0.09)', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', padding: 10, boxShadow: '0 2px 8px rgba(0,0,0,0.06)', marginRight: 12 }}>
-                  <Image src={logo.src} alt={logo.name} width={130} height={44} style={{ objectFit: 'contain', width: '100%', height: '100%', transform: `scale(${logo.scale})`, transformOrigin: 'center center' }} />
-                </div>
-              ))}
-            </div>
-          </div>
-        </FadeUp>
-
-        {/* Press quote cards */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16 }}>
-          {pressItems.map((item, i) => (
-            <FadeUp key={i} delay={i * 80}>
-              <div className="card" style={{ padding: 0, height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-                <div style={{
-                  width: '100%',
-                  aspectRatio: '16 / 11',
-                  backgroundImage: `url(${item.image})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'top center',
-                  borderBottom: '1px solid rgba(0,0,0,0.06)',
-                }} />
-                <div style={{ padding: '24px 26px 28px', display: 'flex', flexDirection: 'column', flex: 1 }}>
-                  <div style={{ fontSize: 32, color: '#E01515', fontWeight: 900, lineHeight: 1, marginBottom: 10, fontFamily: 'Georgia, serif' }}>"</div>
-                  <p style={{ fontSize: 13, fontWeight: 700, color: '#0A0A0A', lineHeight: 1.4, marginBottom: 12 }}>
-                    {item.title}
-                  </p>
-                  <p style={{ fontSize: 14, color: '#374151', lineHeight: 1.65, marginBottom: 20, fontStyle: 'italic', flexGrow: 1 }}>
-                    {item.quote}
-                  </p>
-                  <p style={{ fontSize: 13, fontWeight: 700, color: '#0A0A0A' }}>{item.outlet}</p>
-                </div>
-              </div>
-            </FadeUp>
-          ))}
-        </div>
-      </div>
-      <style>{`
-        @media (max-width: 768px) {
-          #press-logos-desktop { display: none !important; }
-          #press-logos-mobile { display: block !important; }
-        }
-      `}</style>
-    </section>
-  )
-}
+/* PressSection removida — logos integrados na AboutSection */
 
 /* ─────────────────────────────────────────────
    FOOTER (dark)
@@ -1151,7 +1086,6 @@ function HomeContent() {
         <FlixCTASection onOpenPopup={openPopup} />
       </div>
       <AboutSection onOpenPopup={openPopup} />
-      <PressSection />
       <Footer onOpenPopup={openPopup} />
       <StickyMobileCTA onOpenPopup={openPopup} />
     </main>
