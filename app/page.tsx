@@ -754,6 +754,10 @@ function AboutSection({ onOpenPopup }: { onOpenPopup: () => void }) {
               ))}
             </div>
           </div>
+
+          <p style={{ fontSize: 13, color: '#8893A8', marginTop: 16, fontStyle: 'italic' }}>
+            Clique na imagem para ler as matérias na íntegra
+          </p>
         </FadeUp>
       </div>
       <style>{`
