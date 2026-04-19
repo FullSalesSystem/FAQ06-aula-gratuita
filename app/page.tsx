@@ -1071,7 +1071,7 @@ function HomeContent() {
       backgroundImage: 'url(/background-fss.png)',
       backgroundSize: '100% auto',
       backgroundPosition: 'top center',
-      backgroundRepeat: 'no-repeat',
+      backgroundRepeat: 'repeat-y',
       color: '#FFFFFF',
       overflowX: 'hidden',
     }}>
