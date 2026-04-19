@@ -1066,12 +1066,13 @@ function HomeContent() {
   }
 
   return (
-    <main style={{
+    <main id="page-main" style={{
       backgroundColor: '#0F1627',
       backgroundImage: 'url(/background-fss.png)',
-      backgroundSize: '100% auto',
-      backgroundPosition: 'top center',
-      backgroundRepeat: 'repeat-y',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundAttachment: 'fixed',
+      backgroundRepeat: 'no-repeat',
       color: '#FFFFFF',
       overflowX: 'hidden',
     }}>

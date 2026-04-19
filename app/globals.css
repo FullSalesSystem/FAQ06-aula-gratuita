@@ -247,6 +247,13 @@ label {
   animation-play-state: paused;
 }
 
+@supports (-webkit-touch-callout: none) {
+  #page-main {
+    background-attachment: scroll !important;
+    background-size: 100% auto !important;
+  }
+}
+
 /* Utility: esconder spans/palavras especificas apenas em mobile */
 @media (max-width: 768px) {
   /* CtaBlock button (secao 2, TrustSection e AboutSection) -
