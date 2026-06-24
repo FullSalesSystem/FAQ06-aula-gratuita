@@ -1016,15 +1016,40 @@ function HomeContent() {
   })
   const searchParams = useSearchParams()
 
-  const utm = useMemo<UtmParams>(() => {
-    const params: UtmParams = {}
-    const s = searchParams.get('utm_source'); if (s) params.utm_source = s
-    const m = searchParams.get('utm_medium'); if (m) params.utm_medium = m
-    const c = searchParams.get('utm_campaign'); if (c) params.utm_campaign = c
-    const co = searchParams.get('utm_content'); if (co) params.utm_content = co
-    const t = searchParams.get('utm_term'); if (t) params.utm_term = t
-    return params
+  // UTMs lidas da URL atual. Usa useSearchParams (client) e cai para
+  // window.location.search como fallback — assim, mesmo que o hook ainda
+  // não tenha hidratado, capturamos a query real do navegador.
+  const urlUtm = useMemo<UtmParams>(() => {
+    const keys: (keyof UtmParams)[] = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']
+    const out: UtmParams = {}
+    let qs: URLSearchParams | null = null
+    try {
+      const fromHook = searchParams?.toString()
+      qs = new URLSearchParams(fromHook || (typeof window !== 'undefined' ? window.location.search : ''))
+    } catch { qs = null }
+    if (qs) for (const k of keys) { const v = qs.get(k); if (v) out[k] = v }
+    return out
   }, [searchParams])
+
+  // Fallback persistido: grava as UTMs no localStorage assim que aparecem na
+  // URL e as recupera depois, para que sobrevivam a reloads ou navegações que
+  // porventura percam a query string antes do envio do formulário.
+  const [storedUtm, setStoredUtm] = useState<UtmParams>(() => {
+    try { return JSON.parse(localStorage.getItem('fss_utms') || '{}') as UtmParams } catch { return {} }
+  })
+
+  useEffect(() => {
+    if (Object.keys(urlUtm).length > 0) {
+      try { localStorage.setItem('fss_utms', JSON.stringify(urlUtm)) } catch {}
+      setStoredUtm(urlUtm)
+    }
+  }, [urlUtm])
+
+  // UTM efetiva da fonte: prioriza a URL atual; se vier vazia, usa a persistida.
+  const utm = useMemo<UtmParams>(
+    () => (Object.keys(urlUtm).length > 0 ? urlUtm : storedUtm),
+    [urlUtm, storedUtm]
+  )
 
   // UTM efetiva: quando o exit-intent foi usado, marca utm_content=faq06-popup
   // (preserva qualquer utm_source original do anúncio)
