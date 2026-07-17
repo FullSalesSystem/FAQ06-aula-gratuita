@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "ghl": {
+      "command": "npx",
+      "args": ["-y", "@gohighlevel/mcp-server"],
+      "env": {
+        "GHL_PIT_TOKEN": "pit-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+        "GHL_LOCATION_ID": "FUoQ8Kefs7Wj8cbgdJnS",
+        "GHL_BASE_URL": "https://services.leadconnectorhq.com"
+      }
+    }
+  }
+}
