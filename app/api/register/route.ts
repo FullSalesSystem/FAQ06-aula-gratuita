@@ -28,6 +28,7 @@ const TAG_REENTRADA    = 'reentrada-fssflix'
 const CLOSERS_PIPELINE_ID                  = 'mhe441mBoc0aQkVpwXXN'
 const PRE_SALES_PIPELINE_ID                = 'jg6YojszvhB88pE7Uhmw'
 const PRE_SALES_STAGE_FUNIL_AQUISICAO_ID   = 'db826122-011f-459b-8ccf-80b285238f9b'
+const PRE_SALES_STAGE_DESQUALIFICADOS_ID   = 'e395a10d-d4da-40c7-8280-851069b44c60'
 
 /* ─── Curseduca (do n8n [FAQ06] Curseduca) ───────────────────── */
 const CURSEDUCA_BASE_URL_DEFAULT   = 'https://prof.curseduca.pro'
@@ -302,7 +303,15 @@ async function ghlUpdateContactSource(base: string, pit: string, locationId: str
   return res.ok
 }
 
-async function ghlCreateOpportunity(base: string, pit: string, locationId: string, contactId: string, name: string) {
+/* Mesma regra do FAP01 e do playbook: desqualificado nao entra na coluna de
+   entrada do funil. Aqui a coluna de entrada e "Funil de Aquisição". */
+function pickPreSalesStageId(classificacao: Classificacao) {
+  return classificacao === 'desqualificado'
+    ? PRE_SALES_STAGE_DESQUALIFICADOS_ID
+    : PRE_SALES_STAGE_FUNIL_AQUISICAO_ID
+}
+
+async function ghlCreateOpportunity(base: string, pit: string, locationId: string, contactId: string, name: string, stageId: string) {
   const res = await fetch(`${base.replace(/\/+$/, '')}/opportunities/`, {
     method: 'POST',
     headers: ghlHeaders(pit, locationId),
@@ -310,7 +319,7 @@ async function ghlCreateOpportunity(base: string, pit: string, locationId: strin
       locationId,
       contactId,
       pipelineId: PRE_SALES_PIPELINE_ID,
-      pipelineStageId: PRE_SALES_STAGE_FUNIL_AQUISICAO_ID,
+      pipelineStageId: stageId,
       status: 'open',
       name,
       source: LEAD_SOURCE,
@@ -319,13 +328,13 @@ async function ghlCreateOpportunity(base: string, pit: string, locationId: strin
   return res.ok
 }
 
-async function ghlMoveOpportunity(base: string, pit: string, locationId: string, opportunityId: string) {
+async function ghlMoveOpportunity(base: string, pit: string, locationId: string, opportunityId: string, stageId: string) {
   const res = await fetch(`${base.replace(/\/+$/, '')}/opportunities/${opportunityId}`, {
     method: 'PUT',
     headers: ghlHeaders(pit, locationId),
     body: JSON.stringify({
       pipelineId: PRE_SALES_PIPELINE_ID,
-      pipelineStageId: PRE_SALES_STAGE_FUNIL_AQUISICAO_ID,
+      pipelineStageId: stageId,
       source: LEAD_SOURCE,
     }),
   })
@@ -499,11 +508,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'invalid_payload' }, { status: 400 })
   }
 
+  const classificacao = classifyLead(payload.cargo, payload.receita)
+
   console.log('[lead] recebido', {
     email: payload.email,
     cargo: payload.cargo,
     receita: payload.receita,
-    classificacao: classifyLead(payload.cargo, payload.receita),
+    classificacao,
     utm_source: payload.utm_source,
     utm_campaign: payload.utm_campaign,
   })
@@ -541,16 +552,20 @@ export async function POST(req: NextRequest) {
         if (hasCloser) {
           await ghlAddTags(ghlBaseUrl, pitToken, locationId, contactId, [TAG_REENTRADA])
         } else {
+          /* A coluna sai da classificacao, nao do funil. Sem isso, um lead
+             que o FAP01/playbook ja tinha mandado pra Desqualificados era
+             arrastado de volta pra Aquisição so por baixar a aula gratuita. */
+          const targetStageId = pickPreSalesStageId(classificacao)
           const preSales = opps.find(o => o.pipelineId === PRE_SALES_PIPELINE_ID)
           if (preSales) {
             if (
-              preSales.pipelineStageId !== PRE_SALES_STAGE_FUNIL_AQUISICAO_ID ||
+              preSales.pipelineStageId !== targetStageId ||
               preSales.source !== LEAD_SOURCE
             ) {
-              await ghlMoveOpportunity(ghlBaseUrl, pitToken, locationId, preSales.id)
+              await ghlMoveOpportunity(ghlBaseUrl, pitToken, locationId, preSales.id, targetStageId)
             }
           } else {
-            await ghlCreateOpportunity(ghlBaseUrl, pitToken, locationId, contactId, payload.nome)
+            await ghlCreateOpportunity(ghlBaseUrl, pitToken, locationId, contactId, payload.nome, targetStageId)
           }
         }
       }
@@ -572,6 +587,6 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({
     ok: true,
     url_acesso: urlAcesso,
-    classificacao: classifyLead(payload.cargo, payload.receita),
+    classificacao,
   })
 }
