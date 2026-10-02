@@ -101,16 +101,52 @@ function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess
     LOADING_STAGES[0]
   )
 
+  /* Parcial: e-mail OU WhatsApp válido e ainda não cadastrou → /api/partial
+     (contato no GHL com tag form-incompleto, sem card nem SDR). Dispara ao
+     passar do contato e ao sair da página; reenvia só se os dados mudaram. */
+  const formRef = useRef(form)
+  formRef.current = form
+  const partialKey = useRef('')
+  const registered = useRef(false)
+  const sendPartial = () => {
+    if (registered.current) return
+    const f = formRef.current
+    const email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.trim()) ? f.email.trim().toLowerCase() : ''
+    const tel = fssPhone(f.phone, f.ddi.replace('+', ''))
+    const whatsapp = tel.ok ? tel.full : ''
+    if (!email && !whatsapp) return
+    const key = [f.name, email, whatsapp].join('|')
+    if (key === partialKey.current) return
+    partialKey.current = key
+    const body = JSON.stringify({ nome: f.name.trim(), email, whatsapp })
+    try {
+      if (navigator.sendBeacon?.('/api/partial', new Blob([body], { type: 'application/json' }))) return
+      fetch('/api/partial', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body, keepalive: true }).catch(() => {})
+    } catch {}
+  }
+  useEffect(() => {
+    const onHide = () => { if (document.visibilityState === 'hidden') sendPartial() }
+    window.addEventListener('pagehide', sendPartial)
+    document.addEventListener('visibilitychange', onHide)
+    return () => {
+      window.removeEventListener('pagehide', sendPartial)
+      document.removeEventListener('visibilitychange', onHide)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const handleNext = (e: FormEvent) => {
     e.preventDefault()
     const tel = fssPhone(form.phone, form.ddi.replace('+', ''))
     if (!tel.ok) { setPhoneError(tel.error); return }
+    sendPartial()
     setStep(2)
   }
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setLoading(true)
+    registered.current = true
     let urlAcesso: string | undefined
     try {
       // O n8n leva ~10s para processar e retornar a `url_acesso`.
