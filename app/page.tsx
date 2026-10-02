@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useMemo, Suspense, ReactNode, FormEvent } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Image from 'next/image'
+import fssPhone from '@/lib/fss-phone'
 
 // ─── CONFIGURAR ESTES VALORES ──────────────────────────────────────────────────
 const FSSFLIX_URL = 'https://fullsalessystem.curseduca.pro/m/courses?tenant=1773430344485'
@@ -85,6 +86,7 @@ function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess
   const [loading, setLoading] = useState(false)
   const [elapsed, setElapsed] = useState(0)
   const [step, setStep] = useState(1)
+  const [phoneError, setPhoneError] = useState('')
 
   // Conta segundos desde o início do loading para alternar mensagens
   // e mover a barra de progresso.
@@ -101,6 +103,8 @@ function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess
 
   const handleNext = (e: FormEvent) => {
     e.preventDefault()
+    const tel = fssPhone(form.phone, form.ddi.replace('+', ''))
+    if (!tel.ok) { setPhoneError(tel.error); return }
     setStep(2)
   }
 
@@ -211,10 +215,12 @@ function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess
                 </select>
                 <input
                   type="tel" placeholder="WhatsApp com DDD"
-                  value={form.phone} onChange={e => setForm(p => ({ ...p, phone: e.target.value }))} required
+                  value={form.phone} onChange={e => { setPhoneError(''); setForm(p => ({ ...p, phone: e.target.value })) }} required
+                  aria-invalid={!!phoneError}
                   style={{ flex: 1, minWidth: 0 }}
                 />
               </div>
+              {phoneError && <p role="alert" style={{ fontSize: 12.5, color: '#E01515', margin: '-2px 0 0' }}>{phoneError}</p>}
             </div>
             <button type="submit" className="btn-primary" style={{ width: '100%', fontSize: 15 }}>
               Continuar →

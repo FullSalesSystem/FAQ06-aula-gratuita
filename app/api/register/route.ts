@@ -1,3 +1,4 @@
+import fssPhone from '@/lib/fss-phone'
 import { NextRequest, NextResponse } from 'next/server'
 
 /**
@@ -128,9 +129,10 @@ function normalizePayload(raw: RawInput, referer: string): LeadPayload | null {
   if (nome.length < 2) return null
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return null
 
-  const ddi   = sanitizeText(raw.ddi, 6) || '+55'
-  const phone = sanitizeText(raw.phone, 24).replace(/\D/g, '')
-  const whatsapp = phone ? `${ddi.startsWith('+') ? ddi : '+' + ddi}${phone}` : ''
+  /* regra única dos funis FSS (lib/fss-phone.js): DDD real, celular com 9, DDI */
+  const tel = fssPhone(sanitizeText(raw.phone, 24), (sanitizeText(raw.ddi, 6) || '+55').replace('+', ''))
+  if (!tel.ok) return null
+  const whatsapp = tel.e164
   const whatsappDigits = whatsapp.replace(/\D/g, '')
 
   return {
@@ -505,7 +507,8 @@ export async function POST(req: NextRequest) {
   const referer = req.headers.get('referer') || ''
   const payload = normalizePayload(raw, referer)
   if (!payload) {
-    return NextResponse.json({ error: 'invalid_payload' }, { status: 400 })
+    const tel = fssPhone(sanitizeText(raw.phone, 24), (sanitizeText(raw.ddi, 6) || '+55').replace('+', ''))
+    return NextResponse.json(tel.ok ? { error: 'invalid_payload' } : { error: 'invalid_payload', message: tel.error }, { status: 400 })
   }
 
   const classificacao = classifyLead(payload.cargo, payload.receita)
