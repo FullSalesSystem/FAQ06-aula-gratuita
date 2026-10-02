@@ -87,12 +87,13 @@ const RECEITA_50K_PLUS = new Set([
   'Entre R$500 mil e R$1 milhão',
   'Acima de R$1 milhão',
 ])
-const RECEITA_30_50K = 'Entre R$30 mil e R$50 mil'
+/* piso do SDR em 40k desde 02/10/2026; 30-50k fica aceito como legado (página em cache) */
+const RECEITAS_SEMI = new Set(['Entre R$40 mil e R$50 mil', 'Entre R$30 mil e R$50 mil'])
 
 function classifyLead(jobTitle: string, revenue: string): Classificacao {
   const isSocio = jobTitle === 'Sócio/Empresário'
   if (isSocio && RECEITA_50K_PLUS.has(revenue)) return 'qualificado'
-  if (isSocio && revenue === RECEITA_30_50K)    return 'semiqualificado'
+  if (isSocio && RECEITAS_SEMI.has(revenue))    return 'semiqualificado'
   return 'desqualificado'
 }
 

@@ -315,8 +315,8 @@ function LeadPopup({ onClose, onSuccess, utm }: { onClose: () => void; onSuccess
                 style={{ color: form.revenue ? '#0A0A0A' : '#9CA3AF' }}
               >
                 <option value="" disabled>Qual a sua receita mensal aproximada?</option>
-                <option value="Abaixo de R$30 mil">Abaixo de R$30 mil</option>
-                <option value="Entre R$30 mil e R$50 mil">Entre R$30 mil e R$50 mil</option>
+                <option value="Abaixo de R$40 mil">Abaixo de R$40 mil</option>
+                <option value="Entre R$40 mil e R$50 mil">Entre R$40 mil e R$50 mil</option>
                 <option value="Entre R$50 mil e R$100 mil">Entre R$50 mil e R$100 mil</option>
                 <option value="Entre R$100 mil e R$300 mil">Entre R$100 mil e R$300 mil</option>
                 <option value="Entre R$300 mil e R$500 mil">Entre R$300 mil e R$500 mil</option>
