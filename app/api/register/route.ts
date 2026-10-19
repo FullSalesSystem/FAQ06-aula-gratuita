@@ -24,6 +24,10 @@ const SUPABASE_TABLE   = '[Leads] [FAQ06] Pop-Up'
 const TAG_CADASTRO     = 'fssflix-cadastro'
 const TAG_TRIGGER      = 'fssflix-cadastro-trigger'
 const TAG_REENTRADA    = 'reentrada-fssflix'
+/* Tags que o upsert-com-tags tirava e que a régua depende de tirar: classificação
+   de outro cadastro e a marca de abandono do /api/partial. Nada além disso sai. */
+const CLASSIFICACOES   = ['qualificado', 'semiqualificado', 'desqualificado']
+const TAGS_INCOMPLETO  = ['form-incompleto', 'fssflix-form-incompleto']
 
 /* ─── Pipelines GHL (mesma location FUoQ8Kefs7Wj8cbgdJnS) ────── */
 const CLOSERS_PIPELINE_ID                  = 'mhe441mBoc0aQkVpwXXN'
@@ -210,9 +214,10 @@ function ghlHeaders(pit: string, locationId: string) {
   }
 }
 
+/* Upsert SEM `tags`: no upsert do GHL elas SUBSTITUEM o conjunto e apagavam o
+   histórico de outros funis (A10). As mesmas tags vão por POST /contacts/{id}/tags. */
 function buildGhlPayload(p: LeadPayload, locationId: string) {
   const { firstName, lastName } = splitName(p.nome)
-  const classificacao = classifyLead(p.cargo, p.receita)
   return {
     locationId,
     firstName,
@@ -221,15 +226,27 @@ function buildGhlPayload(p: LeadPayload, locationId: string) {
     email: p.email,
     phone: p.whatsapp,
     source: LEAD_SOURCE,
-    tags: [
-      TAG_CADASTRO,
-      TAG_TRIGGER,
-      classificacao,
-      `cargo:${p.cargo}`,
-      `segmento:${p.segmento}`,
-      `receita:${p.receita}`,
-    ],
   }
+}
+
+function tagsDoCadastro(p: LeadPayload, classificacao: Classificacao) {
+  return [
+    TAG_CADASTRO,
+    TAG_TRIGGER,
+    classificacao,
+    `cargo:${p.cargo}`,
+    `segmento:${p.segmento}`,
+    `receita:${p.receita}`,
+  ]
+}
+
+/* existentes = tags do contato antes deste cadastro (null se o GHL não devolveu) */
+function tagsParaTirar(existentes: string[] | null, atuais: string[]) {
+  const manter = new Set(atuais.map(t => t.toLowerCase()))
+  const alvo = [...CLASSIFICACOES, ...TAGS_INCOMPLETO].filter(t => !manter.has(t))
+  if (!existentes) return alvo
+  const tem = new Set(existentes.map(t => t.toLowerCase()))
+  return alvo.filter(t => tem.has(t))
 }
 
 async function ghlUpsertContact(base: string, pit: string, locationId: string, p: LeadPayload) {
@@ -238,8 +255,9 @@ async function ghlUpsertContact(base: string, pit: string, locationId: string, p
     headers: ghlHeaders(pit, locationId),
     body: JSON.stringify(buildGhlPayload(p, locationId)),
   })
-  const data = await res.json().catch(() => null) as { contact?: { id?: string; assignedTo?: string } } | null
-  return { ok: res.ok, status: res.status, contactId: data?.contact?.id, assignedTo: data?.contact?.assignedTo }
+  const data = await res.json().catch(() => null) as { contact?: { id?: string; assignedTo?: string; tags?: unknown } } | null
+  const tags = Array.isArray(data?.contact?.tags) ? (data!.contact!.tags as unknown[]).map(String) : null
+  return { ok: res.ok, status: res.status, contactId: data?.contact?.id, assignedTo: data?.contact?.assignedTo, tags }
 }
 
 async function ghlSearchContactOpportunities(base: string, pit: string, locationId: string, contactId: string) {
@@ -294,6 +312,17 @@ async function ghlAddTags(base: string, pit: string, locationId: string, contact
     headers: ghlHeaders(pit, locationId),
     body: JSON.stringify({ tags }),
   })
+  return res.ok
+}
+
+async function ghlRemoveTags(base: string, pit: string, locationId: string, contactId: string, tags: string[]) {
+  if (!tags.length) return true
+  const res = await fetch(`${base.replace(/\/+$/, '')}/contacts/${contactId}/tags`, {
+    method: 'DELETE',
+    headers: ghlHeaders(pit, locationId),
+    body: JSON.stringify({ tags }),
+  })
+  if (!res.ok) console.error('[ghl] tag remove failed', { status: res.status })
   return res.ok
 }
 
@@ -541,10 +570,14 @@ export async function POST(req: NextRequest) {
   /* 2. GHL — upsert + source + note + tags/opportunity (não bloqueia) */
   if (pitToken && locationId) {
     try {
-      const { ok, contactId, assignedTo } = await ghlUpsertContact(ghlBaseUrl, pitToken, locationId, payload)
+      const { ok, contactId, assignedTo, tags } = await ghlUpsertContact(ghlBaseUrl, pitToken, locationId, payload)
       if (!ok) {
         console.error('[ghl] upsert failed')
       } else if (contactId) {
+        /* mesmas tags e mesmo trigger de antes, sem apagar as de outros funis */
+        const atuais = tagsDoCadastro(payload, classificacao)
+        await ghlRemoveTags(ghlBaseUrl, pitToken, locationId, contactId, tagsParaTirar(tags, atuais))
+        if (!await ghlAddTags(ghlBaseUrl, pitToken, locationId, contactId, atuais)) console.error('[ghl] tags failed')
         await ghlUpdateContactSource(ghlBaseUrl, pitToken, locationId, contactId)
         try {
           const noteUserId = ghlUserId || assignedTo || ''

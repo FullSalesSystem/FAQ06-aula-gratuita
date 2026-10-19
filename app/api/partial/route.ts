@@ -3,8 +3,8 @@ import fssPhone from '@/lib/fss-phone'
 
 /* Abandono do popup com e-mail OU WhatsApp válido → contato no GHL com a tag
    'form-incompleto' (sem card, sem tag de trigger, sem SDR). Quem completa
-   entra pelo /api/register: o upsert de lá troca o conjunto de tags (tira a
-   form-incompleto) e põe a fssflix-cadastro-trigger, que atribui o SDR. */
+   entra pelo /api/register: lá a form-incompleto sai por DELETE /tags e a
+   fssflix-cadastro-trigger entra por POST /tags, que atribui o SDR. */
 const LEAD_SOURCE = 'FSSFLIX Gratuito - Aula Gratuita'
 const TAGS_INCOMPLETO = ['form-incompleto', 'fssflix-form-incompleto']
 const WINDOW_MS = 60_000
