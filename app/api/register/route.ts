@@ -1,4 +1,6 @@
 import fssPhone from '@/lib/fss-phone'
+import { buildCapture, gravarSupabase, registrarNoCrm, type Capture } from '@/lib/lead-registro'
+import { randomUUID } from 'node:crypto'
 import { NextRequest, NextResponse } from 'next/server'
 
 /**
@@ -24,6 +26,7 @@ const SUPABASE_TABLE   = '[Leads] [FAQ06] Pop-Up'
 const TAG_CADASTRO     = 'fssflix-cadastro'
 const TAG_TRIGGER      = 'fssflix-cadastro-trigger'
 const TAG_REENTRADA    = 'reentrada-fssflix'
+const REGISTRO_SOURCE  = 'fssflix'   // conector CaptureV1 · fssflix · complete (create_deal=false)
 /* Tags que o upsert-com-tags tirava e que a régua depende de tirar: classificação
    de outro cadastro e a marca de abandono do /api/partial. Nada além disso sai. */
 const CLASSIFICACOES   = ['qualificado', 'semiqualificado', 'desqualificado']
@@ -162,8 +165,7 @@ function normalizePayload(raw: RawInput, referer: string): LeadPayload | null {
    Supabase
    ═══════════════════════════════════════════════════════════════ */
 
-async function sendToSupabase(url: string, key: string, p: LeadPayload) {
-  const endpoint = `${url.replace(/\/+$/, '')}/rest/v1/${encodeURIComponent(SUPABASE_TABLE)}`
+async function sendToSupabase(url: string, key: string, p: LeadPayload, capture: Capture | null) {
   const row = {
     nome: p.nome,
     email: p.email,
@@ -180,24 +182,9 @@ async function sendToSupabase(url: string, key: string, p: LeadPayload) {
     data: p.submittedAt,
   }
 
-  const res = await fetch(endpoint, {
-    method: 'POST',
-    headers: {
-      apikey: key,
-      Authorization: `Bearer ${key}`,
-      'Content-Type': 'application/json',
-      Prefer: 'return=minimal',
-    },
-    body: JSON.stringify(row),
-  })
-
-  if (!res.ok) {
-    const err = await res.text().catch(() => '')
-    console.error('[supabase] insert failed', { status: res.status, err: err.slice(0, 300) })
-  } else {
-    console.log('[supabase] insert ok', { status: res.status })
-  }
-  return res.ok
+  /* Supabase primeiro: [Leads] [FAQ06] Pop-Up (com capture_key) + lead_capturas, em paralelo */
+  const { lead } = await gravarSupabase({ url, key, table: SUPABASE_TABLE, row, capture, source: REGISTRO_SOURCE })
+  return lead.ok
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -552,6 +539,16 @@ export async function POST(req: NextRequest) {
     utm_campaign: payload.utm_campaign,
   })
 
+  /* Corpo capture v1 de registro, montado UMA vez (Supabase e CRM recebem o mesmo objeto).
+     O form não manda id: cada envio ganha base nova, como cada envio já gerava linha nova. */
+  let capture: Capture | null = null
+  try {
+    capture = buildCapture(raw as Record<string, unknown>, payload, {
+      base: randomUUID(), submittedAt: payload.submittedAt,
+      role: payload.cargo, segment: payload.segmento, revenue: payload.receita,
+    })
+  } catch (err) { console.error('[registro] capture nao montado', { err: (err as Error).message }) }
+
   const supabaseUrl = process.env.SUPABASE_URL
   const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY
   const pitToken    = process.env.GHL_PIT_TOKEN
@@ -561,11 +558,15 @@ export async function POST(req: NextRequest) {
 
   /* 1. Supabase (não bloqueia) */
   if (supabaseUrl && supabaseKey) {
-    try { await sendToSupabase(supabaseUrl, supabaseKey, payload) }
+    try { await sendToSupabase(supabaseUrl, supabaseKey, payload, capture) }
     catch (err) { console.error('[supabase] threw', { err: (err as Error).message }) }
   } else {
     console.warn('[supabase] env missing', { hasUrl: !!supabaseUrl, hasKey: !!supabaseKey })
   }
+
+  /* Registro no CRM (create_deal=false): corre junto com GHL e Curseduca e só é
+     esperado antes de responder (teto 3 s). Falha nunca muda a resposta. */
+  const registroCrm = registrarNoCrm(capture)
 
   /* 2. GHL — upsert + source + note + tags/opportunity (não bloqueia) */
   if (pitToken && locationId) {
@@ -621,6 +622,7 @@ export async function POST(req: NextRequest) {
     console.error('[curseduca] threw', { err: (err as Error).message })
   }
 
+  await registroCrm
   return NextResponse.json({
     ok: true,
     url_acesso: urlAcesso,
