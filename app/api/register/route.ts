@@ -35,6 +35,13 @@ const REGISTRO_SOURCE  = 'fssflix'   // conector CaptureV1 · fssflix · complet
 const CLASSIFICACOES   = ['qualificado', 'semiqualificado', 'desqualificado']
 const TAGS_INCOMPLETO  = ['form-incompleto', 'fssflix-form-incompleto']
 const TAGS_GATILHO     = [TAG_REENTRADA, 'prevendas2.0']
+/* Restrição dura (20/10): o SDR não pode passar a ver lead diferente. O CRM copia as tags do
+   GHL (ghl-sync) e decide visibilidade e ICP por elas: fonte SDR em sdr_source_allowed e um único
+   receita:/faturamento: em sdr_icp_status. O upsert antigo apagava essas tags no cadastro do
+   FAQ06; seguem saindo, só elas. As demais tags de outros funis ficam (A10). */
+const TAGS_FONTE_SDR   = ['fap1-cadastro', 'institucional-cadastro', 'mssquiz-cadastro', '[mss] leads-quiz',
+                          'playbook-cadastro', 'faq3-cadastro', 'fisca1-cadastro']
+const PREFIXOS_VALOR   = ['cargo:', 'receita:', 'faturamento:', 'segmento:']
 
 /* ─── Pipelines GHL (mesma location FUoQ8Kefs7Wj8cbgdJnS) ────── */
 const CLOSERS_PIPELINE_ID                  = 'mhe441mBoc0aQkVpwXXN'
@@ -234,10 +241,12 @@ function tagsDoCadastro(p: LeadPayload, classificacao: Classificacao) {
 /* existentes = tags do contato antes deste cadastro (null se o GHL não devolveu) */
 function tagsParaTirar(existentes: string[] | null, atuais: string[]) {
   const manter = new Set(atuais.map(t => t.toLowerCase()))
-  const alvo = [...CLASSIFICACOES, ...TAGS_INCOMPLETO, ...TAGS_GATILHO].filter(t => !manter.has(t))
+  const alvo = [...CLASSIFICACOES, ...TAGS_INCOMPLETO, ...TAGS_GATILHO, ...TAGS_FONTE_SDR].filter(t => !manter.has(t))
   if (!existentes) return alvo
   const tem = new Set(existentes.map(t => t.toLowerCase()))
-  return alvo.filter(t => tem.has(t))
+  /* valor antigo (cargo:/receita:/...) de outro cadastro sai; o deste cadastro entra pelo POST */
+  const valores = existentes.filter(t => PREFIXOS_VALOR.some(px => t.toLowerCase().startsWith(px)) && !manter.has(t.toLowerCase()))
+  return [...alvo.filter(t => tem.has(t)), ...valores]
 }
 
 async function ghlUpsertContact(base: string, pit: string, locationId: string, p: LeadPayload) {

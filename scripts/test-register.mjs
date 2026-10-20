@@ -40,14 +40,16 @@ async function run(ip, { tagsAntes, leadsFail, closer, tagPostFails = 0 } = {}) 
   return { res: await POST(req), calls }
 }
 
-/* contato com histórico de outros funis: nada dele some, só classificação velha e form-incompleto */
+/* contato com histórico de outros funis: tags de fonte SDR e valor antigo (receita:...) saem como no
+   upsert antigo (visibilidade/ICP do SDR igual a hoje); as demais (medday-cadastro, cliente) ficam */
 process.env.CRM_REGISTRO_URL = 'https://crm.test/api/webhooks/inbound/tok'
-let { res, calls } = await run('a', { tagsAntes: ['fap1-cadastro', 'playbook-cadastro', 'receita:50k-100k', 'desqualificado', 'form-incompleto'] })
+let { res, calls } = await run('a', { tagsAntes: ['fap1-cadastro', 'playbook-cadastro', 'receita:50k-100k', 'Receita:Entre R$50 mil e R$100 mil', 'desqualificado', 'form-incompleto', 'medday-cadastro', 'cliente'] })
 assert.strictEqual(res.status, 200)
 const up = calls.find((c) => c.url.endsWith('/contacts/upsert'))
 assert.ok(!('tags' in up.body), 'upsert sem tags')
 const del = calls.find((c) => c.method === 'DELETE' && c.url.endsWith('/contacts/C1/tags'))
-assert.deepStrictEqual(del.body.tags, ['desqualificado', 'form-incompleto'])
+assert.deepStrictEqual(del.body.tags, ['desqualificado', 'form-incompleto', 'fap1-cadastro', 'playbook-cadastro', 'receita:50k-100k'])
+assert.ok(!del.body.tags.includes('medday-cadastro') && !del.body.tags.includes('cliente'), 'tag de funil fora da regra do SDR fica')
 const add = calls.find((c) => c.method === 'POST' && c.url.endsWith('/contacts/C1/tags'))
 assert.deepStrictEqual(add.body.tags, ['fssflix-cadastro', 'fssflix-cadastro-trigger', 'qualificado',
   'cargo:Sócio/Empresário', 'segmento:Saúde', 'receita:Entre R$50 mil e R$100 mil'], 'mesmas tags e mesmo trigger de antes')
@@ -70,7 +72,8 @@ assert.ok(!('ghl_tags' in cap.body.capture_payload.attribution.extra))
 /* GHL sem tags na resposta: tira a lista fixa (menos a classificação atual); SQL 01 ausente: insert de sempre; sem URL: sem CRM */
 delete process.env.CRM_REGISTRO_URL;
 ({ res, calls } = await run('b', { leadsFail: true }))
-assert.deepStrictEqual(calls.find((c) => c.method === 'DELETE').body.tags, ['semiqualificado', 'desqualificado', 'form-incompleto', 'fssflix-form-incompleto', 'reentrada-fssflix', 'prevendas2.0'])
+assert.deepStrictEqual(calls.find((c) => c.method === 'DELETE').body.tags, ['semiqualificado', 'desqualificado', 'form-incompleto', 'fssflix-form-incompleto', 'reentrada-fssflix', 'prevendas2.0',
+  'fap1-cadastro', 'institucional-cadastro', 'mssquiz-cadastro', '[mss] leads-quiz', 'playbook-cadastro', 'faq3-cadastro', 'fisca1-cadastro'])
 const legado = calls.filter((c) => c.url.endsWith(encodeURIComponent('[Leads] [FAQ06] Pop-Up')))
 assert.ok(legado.length === 1 && !('capture_key' in legado[0].body))
 assert.ok(!calls.some((c) => c.url.includes('crm.test')))
@@ -79,7 +82,7 @@ assert.strictEqual(res.status, 200)
 /* reentrada com closer: reentrada-fssflix e prevendas2.0 saem e a reentrada volta por POST (gera 'tag adicionada' como antes) */
 ;({ res, calls } = await run('c', { closer: true, tagsAntes: ['fssflix-cadastro', 'fssflix-cadastro-trigger', 'qualificado', 'reentrada-fssflix', 'prevendas2.0', 'fap1-cadastro'] }))
 const delR = calls.find((c) => c.method === 'DELETE' && c.url.endsWith('/contacts/C1/tags'))
-assert.deepStrictEqual(delR.body.tags, ['reentrada-fssflix', 'prevendas2.0'])
+assert.deepStrictEqual(delR.body.tags, ['reentrada-fssflix', 'prevendas2.0', 'fap1-cadastro'])
 const posts = calls.filter((c) => c.method === 'POST' && c.url.endsWith('/contacts/C1/tags'))
 assert.strictEqual(posts.length, 2)
 assert.deepStrictEqual(posts[1].body.tags, ['reentrada-fssflix'])
