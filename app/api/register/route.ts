@@ -28,9 +28,13 @@ const TAG_TRIGGER      = 'fssflix-cadastro-trigger'
 const TAG_REENTRADA    = 'reentrada-fssflix'
 const REGISTRO_SOURCE  = 'fssflix'   // conector CaptureV1 · fssflix · complete (create_deal=false)
 /* Tags que o upsert-com-tags tirava e que a régua depende de tirar: classificação
-   de outro cadastro e a marca de abandono do /api/partial. Nada além disso sai. */
+   de outro cadastro e a marca de abandono do /api/partial. Também saem as tags de
+   gatilho que o upsert antigo tirava a cada cadastro e que alguém re-adiciona
+   (reentrada-fssflix: este handler no ramo closer; prevendas2.0: workflow do GHL),
+   pra que o 'tag adicionada' continue disparando como hoje. Nada além disso sai. */
 const CLASSIFICACOES   = ['qualificado', 'semiqualificado', 'desqualificado']
 const TAGS_INCOMPLETO  = ['form-incompleto', 'fssflix-form-incompleto']
+const TAGS_GATILHO     = [TAG_REENTRADA, 'prevendas2.0']
 
 /* ─── Pipelines GHL (mesma location FUoQ8Kefs7Wj8cbgdJnS) ────── */
 const CLOSERS_PIPELINE_ID                  = 'mhe441mBoc0aQkVpwXXN'
@@ -230,7 +234,7 @@ function tagsDoCadastro(p: LeadPayload, classificacao: Classificacao) {
 /* existentes = tags do contato antes deste cadastro (null se o GHL não devolveu) */
 function tagsParaTirar(existentes: string[] | null, atuais: string[]) {
   const manter = new Set(atuais.map(t => t.toLowerCase()))
-  const alvo = [...CLASSIFICACOES, ...TAGS_INCOMPLETO].filter(t => !manter.has(t))
+  const alvo = [...CLASSIFICACOES, ...TAGS_INCOMPLETO, ...TAGS_GATILHO].filter(t => !manter.has(t))
   if (!existentes) return alvo
   const tem = new Set(existentes.map(t => t.toLowerCase()))
   return alvo.filter(t => tem.has(t))
@@ -293,13 +297,24 @@ async function ghlAddNote(base: string, pit: string, locationId: string, contact
   return res.ok
 }
 
+/* O trigger do SDR vem nestas tags: antes elas iam atômicas no upsert, então
+   aqui tenta 3x (429/5xx/timeout) antes de desistir. */
 async function ghlAddTags(base: string, pit: string, locationId: string, contactId: string, tags: string[]) {
-  const res = await fetch(`${base.replace(/\/+$/, '')}/contacts/${contactId}/tags`, {
-    method: 'POST',
-    headers: ghlHeaders(pit, locationId),
-    body: JSON.stringify({ tags }),
-  })
-  return res.ok
+  let status = 0
+  for (const espera of [0, 400, 1200]) {
+    if (espera) await new Promise(r => setTimeout(r, espera))
+    try {
+      const res = await fetch(`${base.replace(/\/+$/, '')}/contacts/${contactId}/tags`, {
+        method: 'POST',
+        headers: ghlHeaders(pit, locationId),
+        body: JSON.stringify({ tags }),
+      })
+      if (res.ok) return true
+      status = res.status
+    } catch { status = -1 }
+  }
+  console.error('[ghl] TAGS_FAILED', { contactId, tags, status })
+  return false
 }
 
 async function ghlRemoveTags(base: string, pit: string, locationId: string, contactId: string, tags: string[]) {
@@ -578,7 +593,7 @@ export async function POST(req: NextRequest) {
         /* mesmas tags e mesmo trigger de antes, sem apagar as de outros funis */
         const atuais = tagsDoCadastro(payload, classificacao)
         await ghlRemoveTags(ghlBaseUrl, pitToken, locationId, contactId, tagsParaTirar(tags, atuais))
-        if (!await ghlAddTags(ghlBaseUrl, pitToken, locationId, contactId, atuais)) console.error('[ghl] tags failed')
+        await ghlAddTags(ghlBaseUrl, pitToken, locationId, contactId, atuais)
         await ghlUpdateContactSource(ghlBaseUrl, pitToken, locationId, contactId)
         try {
           const noteUserId = ghlUserId || assignedTo || ''

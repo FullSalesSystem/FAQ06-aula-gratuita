@@ -24,7 +24,7 @@ Object.assign(process.env, { SUPABASE_URL: 'https://sb', SUPABASE_SERVICE_ROLE_K
 const BODY = { name: 'Fulana Teste', email: 'F@x.com', phone: '(11) 97425-3168', ddi: '+55', segment: 'Saúde',
   jobTitle: 'Sócio/Empresário', revenue: 'Entre R$50 mil e R$100 mil', utm_source: 'meta', page: 'https://aulagratuita.fullsalessystem.com/' }
 
-async function run(ip, { tagsAntes, leadsFail } = {}) {
+async function run(ip, { tagsAntes, leadsFail, closer, tagPostFails = 0 } = {}) {
   const calls = []
   globalThis.fetch = async (url, opts = {}) => {
     calls.push({ url: String(url), method: opts.method || 'GET', headers: opts.headers || {}, body: opts.body ? JSON.parse(opts.body) : null })
@@ -32,7 +32,8 @@ async function run(ip, { tagsAntes, leadsFail } = {}) {
     if (String(url).includes('crm.test')) return j(201, { received: true })
     if (leadsFail && String(url).includes('on_conflict=capture_key')) return j(400, { code: 'PGRST204' })
     if (String(url).endsWith('/contacts/upsert')) return j(200, { contact: { id: 'C1', ...(tagsAntes ? { tags: tagsAntes } : {}) } })
-    if (String(url).includes('/opportunities/search')) return j(200, { opportunities: [] })
+    if (String(url).includes('/opportunities/search')) return j(200, { opportunities: closer ? [{ id: 'O1', pipelineId: 'mhe441mBoc0aQkVpwXXN' }] : [] })
+    if ((opts.method || 'GET') === 'POST' && String(url).endsWith('/tags') && tagPostFails-- > 0) return j(429, {})
     return j(201, {})
   }
   const req = { json: async () => ({ ...BODY }), headers: { get: (h) => (h === 'x-forwarded-for' ? ip : null) } }
@@ -69,9 +70,26 @@ assert.ok(!('ghl_tags' in cap.body.capture_payload.attribution.extra))
 /* GHL sem tags na resposta: tira a lista fixa (menos a classificação atual); SQL 01 ausente: insert de sempre; sem URL: sem CRM */
 delete process.env.CRM_REGISTRO_URL;
 ({ res, calls } = await run('b', { leadsFail: true }))
-assert.deepStrictEqual(calls.find((c) => c.method === 'DELETE').body.tags, ['semiqualificado', 'desqualificado', 'form-incompleto', 'fssflix-form-incompleto'])
+assert.deepStrictEqual(calls.find((c) => c.method === 'DELETE').body.tags, ['semiqualificado', 'desqualificado', 'form-incompleto', 'fssflix-form-incompleto', 'reentrada-fssflix', 'prevendas2.0'])
 const legado = calls.filter((c) => c.url.endsWith(encodeURIComponent('[Leads] [FAQ06] Pop-Up')))
 assert.ok(legado.length === 1 && !('capture_key' in legado[0].body))
 assert.ok(!calls.some((c) => c.url.includes('crm.test')))
+assert.strictEqual(res.status, 200)
+
+/* reentrada com closer: reentrada-fssflix e prevendas2.0 saem e a reentrada volta por POST (gera 'tag adicionada' como antes) */
+;({ res, calls } = await run('c', { closer: true, tagsAntes: ['fssflix-cadastro', 'fssflix-cadastro-trigger', 'qualificado', 'reentrada-fssflix', 'prevendas2.0', 'fap1-cadastro'] }))
+const delR = calls.find((c) => c.method === 'DELETE' && c.url.endsWith('/contacts/C1/tags'))
+assert.deepStrictEqual(delR.body.tags, ['reentrada-fssflix', 'prevendas2.0'])
+const posts = calls.filter((c) => c.method === 'POST' && c.url.endsWith('/contacts/C1/tags'))
+assert.strictEqual(posts.length, 2)
+assert.deepStrictEqual(posts[1].body.tags, ['reentrada-fssflix'])
+assert.ok(calls.indexOf(delR) < calls.indexOf(posts[0]) && calls.indexOf(posts[0]) < calls.indexOf(posts[1]))
+assert.ok(!calls.some((c) => c.url.includes('/opportunities') && c.method !== 'GET' && !c.url.includes('search')), 'closer: sem opp nova')
+
+/* POST das tags (trigger do SDR) com 429 duas vezes: tenta de novo e chega */
+;({ res, calls } = await run('d', { tagPostFails: 2 }))
+const tentativas = calls.filter((c) => c.method === 'POST' && c.url.endsWith('/contacts/C1/tags'))
+assert.strictEqual(tentativas.length, 3)
+assert.ok(tentativas.every((c) => c.body.tags.includes('fssflix-cadastro-trigger')))
 assert.strictEqual(res.status, 200)
 console.log('ok test-register')
