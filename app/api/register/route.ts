@@ -1,4 +1,6 @@
 import fssPhone from '@/lib/fss-phone'
+import { buildCapture, gravarSupabase, registrarNoCrm, type Capture } from '@/lib/lead-registro'
+import { randomUUID } from 'node:crypto'
 import { NextRequest, NextResponse } from 'next/server'
 
 /**
@@ -24,6 +26,22 @@ const SUPABASE_TABLE   = '[Leads] [FAQ06] Pop-Up'
 const TAG_CADASTRO     = 'fssflix-cadastro'
 const TAG_TRIGGER      = 'fssflix-cadastro-trigger'
 const TAG_REENTRADA    = 'reentrada-fssflix'
+const REGISTRO_SOURCE  = 'fssflix'   // conector CaptureV1 · fssflix · complete (create_deal=false)
+/* Tags que o upsert-com-tags tirava e que a régua depende de tirar: classificação
+   de outro cadastro e a marca de abandono do /api/partial. Também saem as tags de
+   gatilho que o upsert antigo tirava a cada cadastro e que alguém re-adiciona
+   (reentrada-fssflix: este handler no ramo closer; prevendas2.0: workflow do GHL),
+   pra que o 'tag adicionada' continue disparando como hoje. Nada além disso sai. */
+const CLASSIFICACOES   = ['qualificado', 'semiqualificado', 'desqualificado']
+const TAGS_INCOMPLETO  = ['form-incompleto', 'fssflix-form-incompleto']
+const TAGS_GATILHO     = [TAG_REENTRADA, 'prevendas2.0']
+/* Restrição dura (20/10): o SDR não pode passar a ver lead diferente. O CRM copia as tags do
+   GHL (ghl-sync) e decide visibilidade e ICP por elas: fonte SDR em sdr_source_allowed e um único
+   receita:/faturamento: em sdr_icp_status. O upsert antigo apagava essas tags no cadastro do
+   FAQ06; seguem saindo, só elas. As demais tags de outros funis ficam (A10). */
+const TAGS_FONTE_SDR   = ['fap1-cadastro', 'institucional-cadastro', 'mssquiz-cadastro', '[mss] leads-quiz',
+                          'playbook-cadastro', 'faq3-cadastro', 'fisca1-cadastro']
+const PREFIXOS_VALOR   = ['cargo:', 'receita:', 'faturamento:', 'segmento:']
 
 /* ─── Pipelines GHL (mesma location FUoQ8Kefs7Wj8cbgdJnS) ────── */
 const CLOSERS_PIPELINE_ID                  = 'mhe441mBoc0aQkVpwXXN'
@@ -158,8 +176,7 @@ function normalizePayload(raw: RawInput, referer: string): LeadPayload | null {
    Supabase
    ═══════════════════════════════════════════════════════════════ */
 
-async function sendToSupabase(url: string, key: string, p: LeadPayload) {
-  const endpoint = `${url.replace(/\/+$/, '')}/rest/v1/${encodeURIComponent(SUPABASE_TABLE)}`
+async function sendToSupabase(url: string, key: string, p: LeadPayload, capture: Capture | null) {
   const row = {
     nome: p.nome,
     email: p.email,
@@ -176,24 +193,9 @@ async function sendToSupabase(url: string, key: string, p: LeadPayload) {
     data: p.submittedAt,
   }
 
-  const res = await fetch(endpoint, {
-    method: 'POST',
-    headers: {
-      apikey: key,
-      Authorization: `Bearer ${key}`,
-      'Content-Type': 'application/json',
-      Prefer: 'return=minimal',
-    },
-    body: JSON.stringify(row),
-  })
-
-  if (!res.ok) {
-    const err = await res.text().catch(() => '')
-    console.error('[supabase] insert failed', { status: res.status, err: err.slice(0, 300) })
-  } else {
-    console.log('[supabase] insert ok', { status: res.status })
-  }
-  return res.ok
+  /* Supabase primeiro: [Leads] [FAQ06] Pop-Up (com capture_key) + lead_capturas, em paralelo */
+  const { lead } = await gravarSupabase({ url, key, table: SUPABASE_TABLE, row, capture, source: REGISTRO_SOURCE })
+  return lead.ok
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -210,9 +212,10 @@ function ghlHeaders(pit: string, locationId: string) {
   }
 }
 
+/* Upsert SEM `tags`: no upsert do GHL elas SUBSTITUEM o conjunto e apagavam o
+   histórico de outros funis (A10). As mesmas tags vão por POST /contacts/{id}/tags. */
 function buildGhlPayload(p: LeadPayload, locationId: string) {
   const { firstName, lastName } = splitName(p.nome)
-  const classificacao = classifyLead(p.cargo, p.receita)
   return {
     locationId,
     firstName,
@@ -221,15 +224,29 @@ function buildGhlPayload(p: LeadPayload, locationId: string) {
     email: p.email,
     phone: p.whatsapp,
     source: LEAD_SOURCE,
-    tags: [
-      TAG_CADASTRO,
-      TAG_TRIGGER,
-      classificacao,
-      `cargo:${p.cargo}`,
-      `segmento:${p.segmento}`,
-      `receita:${p.receita}`,
-    ],
   }
+}
+
+function tagsDoCadastro(p: LeadPayload, classificacao: Classificacao) {
+  return [
+    TAG_CADASTRO,
+    TAG_TRIGGER,
+    classificacao,
+    `cargo:${p.cargo}`,
+    `segmento:${p.segmento}`,
+    `receita:${p.receita}`,
+  ]
+}
+
+/* existentes = tags do contato antes deste cadastro (null se o GHL não devolveu) */
+function tagsParaTirar(existentes: string[] | null, atuais: string[]) {
+  const manter = new Set(atuais.map(t => t.toLowerCase()))
+  const alvo = [...CLASSIFICACOES, ...TAGS_INCOMPLETO, ...TAGS_GATILHO, ...TAGS_FONTE_SDR].filter(t => !manter.has(t))
+  if (!existentes) return alvo
+  const tem = new Set(existentes.map(t => t.toLowerCase()))
+  /* valor antigo (cargo:/receita:/...) de outro cadastro sai; o deste cadastro entra pelo POST */
+  const valores = existentes.filter(t => PREFIXOS_VALOR.some(px => t.toLowerCase().startsWith(px)) && !manter.has(t.toLowerCase()))
+  return [...alvo.filter(t => tem.has(t)), ...valores]
 }
 
 async function ghlUpsertContact(base: string, pit: string, locationId: string, p: LeadPayload) {
@@ -238,8 +255,9 @@ async function ghlUpsertContact(base: string, pit: string, locationId: string, p
     headers: ghlHeaders(pit, locationId),
     body: JSON.stringify(buildGhlPayload(p, locationId)),
   })
-  const data = await res.json().catch(() => null) as { contact?: { id?: string; assignedTo?: string } } | null
-  return { ok: res.ok, status: res.status, contactId: data?.contact?.id, assignedTo: data?.contact?.assignedTo }
+  const data = await res.json().catch(() => null) as { contact?: { id?: string; assignedTo?: string; tags?: unknown } } | null
+  const tags = Array.isArray(data?.contact?.tags) ? (data!.contact!.tags as unknown[]).map(String) : null
+  return { ok: res.ok, status: res.status, contactId: data?.contact?.id, assignedTo: data?.contact?.assignedTo, tags }
 }
 
 async function ghlSearchContactOpportunities(base: string, pit: string, locationId: string, contactId: string) {
@@ -288,12 +306,34 @@ async function ghlAddNote(base: string, pit: string, locationId: string, contact
   return res.ok
 }
 
+/* O trigger do SDR vem nestas tags: antes elas iam atômicas no upsert, então
+   aqui tenta 3x (429/5xx/timeout) antes de desistir. */
 async function ghlAddTags(base: string, pit: string, locationId: string, contactId: string, tags: string[]) {
+  let status = 0
+  for (const espera of [0, 400, 1200]) {
+    if (espera) await new Promise(r => setTimeout(r, espera))
+    try {
+      const res = await fetch(`${base.replace(/\/+$/, '')}/contacts/${contactId}/tags`, {
+        method: 'POST',
+        headers: ghlHeaders(pit, locationId),
+        body: JSON.stringify({ tags }),
+      })
+      if (res.ok) return true
+      status = res.status
+    } catch { status = -1 }
+  }
+  console.error('[ghl] TAGS_FAILED', { contactId, tags, status })
+  return false
+}
+
+async function ghlRemoveTags(base: string, pit: string, locationId: string, contactId: string, tags: string[]) {
+  if (!tags.length) return true
   const res = await fetch(`${base.replace(/\/+$/, '')}/contacts/${contactId}/tags`, {
-    method: 'POST',
+    method: 'DELETE',
     headers: ghlHeaders(pit, locationId),
     body: JSON.stringify({ tags }),
   })
+  if (!res.ok) console.error('[ghl] tag remove failed', { status: res.status })
   return res.ok
 }
 
@@ -523,6 +563,16 @@ export async function POST(req: NextRequest) {
     utm_campaign: payload.utm_campaign,
   })
 
+  /* Corpo capture v1 de registro, montado UMA vez (Supabase e CRM recebem o mesmo objeto).
+     O form não manda id: cada envio ganha base nova, como cada envio já gerava linha nova. */
+  let capture: Capture | null = null
+  try {
+    capture = buildCapture(raw as Record<string, unknown>, payload, {
+      base: randomUUID(), submittedAt: payload.submittedAt,
+      role: payload.cargo, segment: payload.segmento, revenue: payload.receita,
+    })
+  } catch (err) { console.error('[registro] capture nao montado', { err: (err as Error).message }) }
+
   const supabaseUrl = process.env.SUPABASE_URL
   const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY
   const pitToken    = process.env.GHL_PIT_TOKEN
@@ -532,19 +582,27 @@ export async function POST(req: NextRequest) {
 
   /* 1. Supabase (não bloqueia) */
   if (supabaseUrl && supabaseKey) {
-    try { await sendToSupabase(supabaseUrl, supabaseKey, payload) }
+    try { await sendToSupabase(supabaseUrl, supabaseKey, payload, capture) }
     catch (err) { console.error('[supabase] threw', { err: (err as Error).message }) }
   } else {
     console.warn('[supabase] env missing', { hasUrl: !!supabaseUrl, hasKey: !!supabaseKey })
   }
 
+  /* Registro no CRM (create_deal=false): corre junto com GHL e Curseduca e só é
+     esperado antes de responder (teto 3 s). Falha nunca muda a resposta. */
+  const registroCrm = registrarNoCrm(capture)
+
   /* 2. GHL — upsert + source + note + tags/opportunity (não bloqueia) */
   if (pitToken && locationId) {
     try {
-      const { ok, contactId, assignedTo } = await ghlUpsertContact(ghlBaseUrl, pitToken, locationId, payload)
+      const { ok, contactId, assignedTo, tags } = await ghlUpsertContact(ghlBaseUrl, pitToken, locationId, payload)
       if (!ok) {
         console.error('[ghl] upsert failed')
       } else if (contactId) {
+        /* mesmas tags e mesmo trigger de antes, sem apagar as de outros funis */
+        const atuais = tagsDoCadastro(payload, classificacao)
+        await ghlRemoveTags(ghlBaseUrl, pitToken, locationId, contactId, tagsParaTirar(tags, atuais))
+        await ghlAddTags(ghlBaseUrl, pitToken, locationId, contactId, atuais)
         await ghlUpdateContactSource(ghlBaseUrl, pitToken, locationId, contactId)
         try {
           const noteUserId = ghlUserId || assignedTo || ''
@@ -588,6 +646,7 @@ export async function POST(req: NextRequest) {
     console.error('[curseduca] threw', { err: (err as Error).message })
   }
 
+  await registroCrm
   return NextResponse.json({
     ok: true,
     url_acesso: urlAcesso,
